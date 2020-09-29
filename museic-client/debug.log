@@ -1,3 +1,6 @@
 [0925/111902.454:ERROR:crash_report_database_win.cc(580)] CreateDirectory C:\Program Files (x86)\Junemike\Reports\Dump: El sistema no puede encontrar la ruta especificada. (0x3)
 [0925/111902.465:ERROR:registration_protocol_win.cc(131)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
 [0925/111902.466:ERROR:crash_report_database_win.cc(580)] CreateDirectory C:\Program Files (x86)\Junemike\Reports\Dump: El sistema no puede encontrar la ruta especificada. (0x3)
+[0928/211236.689:ERROR:crash_report_database_win.cc(580)] CreateDirectory C:\Program Files (x86)\Junemike\Reports\Dump: El sistema no puede encontrar la ruta especificada. (0x3)
+[0928/211236.699:ERROR:registration_protocol_win.cc(131)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
+[0928/211236.778:ERROR:crash_report_database_win.cc(580)] CreateDirectory C:\Program Files (x86)\Junemike\Reports\Dump: El sistema no puede encontrar la ruta especificada. (0x3)

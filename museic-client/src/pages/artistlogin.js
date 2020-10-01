@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import imagenLogin from '../images/loginimage.jpg';
+import imagenLogin from '../images/artistloginimage.jpg';
 
 //MUI stuff
 import Grid from '@material-ui/core/Grid';
@@ -10,7 +10,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
-import PersonIcon from '@material-ui/icons/Person';
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
@@ -48,7 +48,7 @@ const styles = {
 
 
 
-class login extends Component {
+class artistlogin extends Component {
     constructor(){
         super();
         this.state = {
@@ -77,10 +77,10 @@ class login extends Component {
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                     <div className={classes.paper}>
                         <Avatar className={classes.avatar}>
-                            <PersonIcon />
+                            <MusicNoteIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Iniciar Sesión
+                            Iniciar Sesión como Artista
                         </Typography>
                         <form className={classes.form} noValidate onSubmit={this.handleSubmit}>
                         <TextField
@@ -143,8 +143,8 @@ class login extends Component {
     }
 }
 
-login.propTypes = {
+artistlogin.propTypes = {
     classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(login);
+export default withStyles(styles)(artistlogin);

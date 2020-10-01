@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import home from "./pages/home";
 import login from "./pages/login";
 import signup from "./pages/signup";
+import artistlogin from "./pages/artistlogin";
 
 const theme = createMuiTheme({
   palette: {
@@ -19,8 +20,8 @@ const theme = createMuiTheme({
       contrastText: "#fff",
     },
     secondary: {
-      light: "#ff6333",
-      main: "#ff3d00",
+      light: "##03a9f4",
+      main: "##03a9f4",
       dark: "#b22a00",
       contrastText: "#fff",
     },
@@ -37,6 +38,7 @@ function App() {
 						<Switch>
 							<Route exact path="/" component={home} />
 							<Route exact path="/login" component={login} />
+              <Route exact path="/artistLogin" component={artistlogin} />
 							<Route exact path="/signup" component={signup} />
 						</Switch>
 					</div>

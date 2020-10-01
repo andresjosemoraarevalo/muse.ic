@@ -34,9 +34,7 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
       Nombre: request.body.Nombre,
       interesesMusicales: request.body.interesesMusicales,
       FechaNacimiento: request.body.FechaNacimiento,
-      contraseña: request.body.contraseña,
-      createAt: admin.firestore.Timestamp.fromDate(new Date())
-
+      contraseña: request.body.contraseña      
     };
     admin
       .firestore()

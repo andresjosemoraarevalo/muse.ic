@@ -14,12 +14,12 @@ const app = express();
  Salidas: archivo .json con los usuarios de la base de datos
  Descripción: Esta función retorna en un archivo los datos de la colección "Usuarios" 
   */
- app.get('/Usuarios', (req, res) => {
+ app.get('/Usuarios', (request, response) => {
   admin
   .firestore()
   .collection("Usuarios")
   .get()
-    .then((data) => {
+  .then((data) => {
       let usuarios = [];
       data.forEach((doc) => {
         usuarios.push(doc.data());

@@ -5,18 +5,16 @@ admin.initializeApp();
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
-exports.helloWorld = functions.https.onRequest((request, response) => {
-   
-   response.send("Hello from Firebase wow!");
- });
+const express = require('express');
+const app = express();
+
 /*
  getUsuarios:
  Parametros: No
  Salidas: archivo .json con los usuarios de la base de datos
  Descripción: Esta función retorna en un archivo los datos de la colección "Usuarios" 
   */
- exports.getUsuarios= functions.https.onRequest((request, response) => {
-
+ app.get('/Usuarios', (req, res) => {
   admin
   .firestore()
   .collection("Usuarios")
@@ -39,7 +37,11 @@ Descripción: Esta función crea un usuario a partir de los datos recibidos en e
 y lo guarda en la base de datos en la colección correspondiente 
  */
  exports.createUsuario= functions.https.onRequest((request, response) => {
-    const newUsuario = {
+    if(request.method !== 'POST'){
+        return response.status(400).json({ error: 'Método no permitido'});
+    }  
+  
+  const newUsuario = {
       username: request.body.username,
       Fotolink: request.body.Fotolink,
       Nombre: request.body.Nombre,
@@ -60,3 +62,5 @@ y lo guarda en la base de datos en la colección correspondiente
       })
  });
 
+ // https://baseurl.com/api/
+exports.api = functions.https.onRequest(app);

@@ -85,11 +85,9 @@ app.post("/signup", (request, response) => {
   };
 
   // TODO validate data
-<<<<<<< HEAD
-  db.doc('/users/${newUsuario.username}')
-=======
+ HEAD
+
   db.doc("/Usuarios/${newUsuario.username}")
->>>>>>> PipePruebas
     .get()
     .then((doc) => {
       if (doc.exists) {

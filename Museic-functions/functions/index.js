@@ -86,8 +86,8 @@ app.post("/signup", (request, response) => {
 
   // TODO validate data
 
-
-  db.doc("/Usuarios/${newUsuario.username}")
+let token, userId;
+  db.doc(`/Usuarios/${newUsuario.username}`)
     .get()
     .then((doc) => {
       if (doc.exists) {
@@ -104,13 +104,29 @@ app.post("/signup", (request, response) => {
       }
     })
     .then((data) => {
+      userId= data.user.uid;
       return data.user.getIdToken();
     })
   .then((token) => {
-    return response.status(201).json({ token });
-  }).catch((err) => {
+    token = token;
+    const userCredentials={
+      username: newUsuario.username,
+      email: newUsuario.email,
+      userId 
+    };
+    return db.doc(`/Usuarios/${newUsuario.username}`).set(userCredentials);
+  })
+  .then(() => {
+    return response.status(201).json({token});
+  })
+  .catch((err) => {
     console.error(err);
-    return response.status(500).json({ error: err.code });
+    if(err.code == 'auth/email-already-in-use' ){
+      return response.status(400).json({email: 'Email a está en uso'})
+    }else{
+      return response.status(500).json({ error: err.code });
+    }
+    
   });
 });
 exports.api = functions.https.onRequest(app);

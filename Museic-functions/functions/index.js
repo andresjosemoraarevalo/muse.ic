@@ -36,11 +36,8 @@ Salidas: un request
 Descripción: Esta función crea un usuario a partir de los datos recibidos en el .json 
 y lo guarda en la base de datos en la colección correspondiente 
  */
- exports.createUsuario= functions.https.onRequest((request, response) => {
-    if(request.method !== 'POST'){
-        return response.status(400).json({ error: 'Método no permitido'});
-    }  
-  
+ app.post('/Usuario', (request, response) => {
+      
   const newUsuario = {
       username: request.body.username,
       Fotolink: request.body.Fotolink,

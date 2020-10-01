@@ -29,8 +29,12 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 
  exports.createUsuario= functions.https.onRequest((request, response) => {
     const newUsuario = {
-      body: request.body.body,
-      userHandle: request.body.userHandle,
+      username: request.body.username,
+      Fotolink: request.body.Fotolink,
+      Nombre: request.body.Nombre,
+      interesesMusicales: request.body.interesesMusicales,
+      FechaNacimiento: request.body.FechaNacimiento,
+      contraseña: request.body.contraseña,
       createAt: admin.firestore.Timestamp.fromDate(new Date())
 
     };

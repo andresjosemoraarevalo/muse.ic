@@ -85,7 +85,7 @@ app.post("/signup", (request, response) => {
   };
 
   // TODO validate data
-  db.doc('/Usuarios/${newUsuario.username}')
+  db.doc("/Usuarios/${newUsuario.username}")
     .get()
     .then((doc) => {
       if (doc.exists) {
@@ -94,8 +94,11 @@ app.post("/signup", (request, response) => {
           .json({ username: "Este nombre de usuario ya está en uso" });
       } else {
         return firebase
-      .auth()
-      .createUserWithEmailAndPassword(newUsuario.email, newUsuario.password);
+          .auth()
+          .createUserWithEmailAndPassword(
+            newUsuario.email,
+            newUsuario.password
+          );
       }
     })
     .then((data) => {
@@ -103,8 +106,7 @@ app.post("/signup", (request, response) => {
     });
   then((token) => {
     return response.status(201).json({ token });
-  })
-  .catch((err) => {
+  }).catch((err) => {
     console.error(err);
     return response.status(500).json({ error: err.code });
   });

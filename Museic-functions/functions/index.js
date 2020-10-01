@@ -18,11 +18,20 @@ const app = express();
   admin
   .firestore()
   .collection("Usuarios")
+  .orderBy('username', 'desc')
   .get()
   .then((data) => {
       let usuarios = [];
       data.forEach((doc) => {
-        usuarios.push(doc.data());
+        usuarios.push({
+          usuarioId: doc.id,
+          username: doc.data().username,
+          Nombre: doc.data().Nombre,
+          FechaNacimiento: doc.data().FechaNacimiento,
+          contraseña: doc.data().contraseña,
+          interesesMusicales: doc.data().interesesMusicales,
+          Fotolink: doc.data().Fotolink
+        });
       });
       return response.json(usuarios);
     })

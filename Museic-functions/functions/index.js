@@ -24,3 +24,6 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
     })
     .catch(err => console.error(err));
  });
+ exports.getUsers= functions.https.onRequest((request, response) => {
+  
+ });

@@ -85,7 +85,7 @@ app.post("/signup", (request, response) => {
   };
 
   // TODO validate data
-  db.doc('/Usuarios/${newUsuario.username}')
+  db.doc('/users/${newUsuario.username}')
     .get()
     .then((doc) => {
       if (doc.exists) {
@@ -100,8 +100,8 @@ app.post("/signup", (request, response) => {
     })
     .then((data) => {
       return data.user.getIdToken();
-    });
-  then((token) => {
+    })
+  .then((token) => {
     return response.status(201).json({ token });
   })
   .catch((err) => {

@@ -10,7 +10,7 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
    response.send("Hello from Firebase wow!");
  });
 
- exports.getUsers= functions.https.onRequest((request, response) => {
+ exports.getUsuarios= functions.https.onRequest((request, response) => {
   admin
   .firestore()
   .collection("Usuarios")
@@ -23,7 +23,4 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
       return response.json(usuarios);
     })
     .catch(err => console.error(err));
- });
- exports.getUsers= functions.https.onRequest((request, response) => {
-  
  });

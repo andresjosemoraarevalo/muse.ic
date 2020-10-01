@@ -10,7 +10,11 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
    response.send("Hello from Firebase wow!");
  });
 
+<<<<<<< Updated upstream
  exports.getUsers= functions.https.onRequest((request, response) => {
+=======
+ exports.getUsuarios= functions.https.onRequest((request, response) => {
+>>>>>>> Stashed changes
   admin
   .firestore()
   .collection("Usuarios")
@@ -24,6 +28,7 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
     })
     .catch(err => console.error(err));
  });
+<<<<<<< Updated upstream
  exports.createUsuario= functions.https.onRequest((request, response) => {
     const newUsuario = {
       body: request.body.body,
@@ -43,3 +48,7 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
           console.error(err);
       })
  });
+=======
+
+ 
+>>>>>>> Stashed changes

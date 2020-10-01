@@ -10,6 +10,7 @@ import home from "./pages/home";
 import login from "./pages/login";
 import signup from "./pages/signup";
 import artistlogin from "./pages/artistlogin";
+import intro from "./pages/intro";
 
 const theme = createMuiTheme({
   palette: {
@@ -37,6 +38,7 @@ function App() {
 					<div className="container">
 						<Switch>
 							<Route exact path="/" component={home} />
+              <Route exact path="/intro" component={intro} />
 							<Route exact path="/login" component={login} />
               <Route exact path="/artistLogin" component={artistlogin} />
 							<Route exact path="/signup" component={signup} />

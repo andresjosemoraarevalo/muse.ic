@@ -85,7 +85,7 @@ app.post("/signup", (request, response) => {
   };
 
   // TODO validate data
- HEAD
+
 
   db.doc("/Usuarios/${newUsuario.username}")
     .get()

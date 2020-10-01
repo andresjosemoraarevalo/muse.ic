@@ -30,7 +30,7 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
  exports.createUsuario= functions.https.onRequest((request, response) => {
     const newUsuario = {
       body: request.body.body,
-      userHandle: request.body.userHandle,
+      userHandle: req.body.userHandle,
       createAt: admin.firestore.Timestamp.fromDate(new Date())
 
     };

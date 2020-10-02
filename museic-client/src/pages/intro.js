@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import imagenLogin from '../images/introimage.jpg';
-import Link from 'react-router-dom/Link';
+import { Link } from 'react-router-dom';
 
 //MUI stuff
 import Grid from '@material-ui/core/Grid';
@@ -26,8 +26,15 @@ const styles = {
         justifyContent: "center"
     },
     introTitle: {
-        margin: '20px',
-        color: "#FFFFFF"
+        margin: '20px 20px 5px 20px',
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        fontFamily: "century gothic"
+    },
+    subtitle: {
+        margin: '0px 20px 5px',
+        color: "#FFFFFF",
+        fontFamily: "century gothic"
     },
     paper: {
         margin: '64px 32px',
@@ -49,15 +56,19 @@ class intro extends Component {
                         <Typography component="h2" variant="h2" className={classes.introTitle}>
                             Bienvenido a Muse.ic
                         </Typography>
-                        <Typography component="h2" variant="h5" className={classes.introTitle}>
-                            No mames que chimba de aplicacion prro
+                        <Typography component="h2" variant="h5" className={classes.subtitle}>
+                            No mames que chimba de aplicación prro.
                         </Typography>
+
                     </Grid>
                     
                     <Grid container xs={12} sm={8} md={5} className={classes.title} square>
                         <div className={classes.paper}>
-                            <Typography component="h2" variant="h5" className={classes.introTitle}>
-                                Quien sos gonorrea?
+                            <Typography component="h2" variant="h4" className={classes.introTitle}>
+                                ¡Empecemos!
+                            </Typography>
+                            <Typography component="h2" variant="h6" className={classes.subtitle}>
+                                ¿Quien eres?
                             </Typography>
                             <Grid container spacing={3}>
                                 <Grid item xs>

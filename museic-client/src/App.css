@@ -3,6 +3,7 @@ body{
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+    
 }
 .container{
   margin: 80px auto 0 auto;
@@ -11,4 +12,9 @@ body{
 .nav-container{
   margin: auto;
   
+}
+
+@font-face {
+  font-family: 'century gothic';
+  src: url(./fonts/GOTHIC.TTF) format('truetype');
 }

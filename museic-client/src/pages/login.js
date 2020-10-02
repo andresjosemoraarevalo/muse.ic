@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import imagenLogin from '../images/loginimage.jpg';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 //MUI stuff
 import Grid from '@material-ui/core/Grid';
@@ -14,7 +16,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = {
     root: {
@@ -42,7 +44,16 @@ const styles = {
         backgroundColor: "#03a9f4"
     },
     submit: {
-        margin: '24px 0px 16px'
+        margin: '24px 0px 16px',
+        position: 'relative'
+    },
+    customError: {
+        color: 'red',
+        fontSize: '0.8rem',
+        marginTop: '10px'
+    },
+    progress: {
+        position: 'absolute'
     }
 }
 
@@ -61,6 +72,27 @@ class login extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        this.setState({
+            loading: true
+        });
+        const userData = {
+            email: this.state.email,
+            password: this.state.password
+        }
+        axios.post('/loginUsuario', userData)
+            .then(res => {
+                console.log(res.data);
+                this.setState({
+                    loading: false
+                });
+                this.props.history.push('/')
+            })
+            .catch(err => {
+                this.setState({
+                    errors: err.response.data,
+                    loading: false
+                })
+            })
     }
     handleChange = (event) => {
         this.setState({
@@ -70,6 +102,8 @@ class login extends Component {
 
     render() {
         const  { classes } = this.props;
+        const { errors, loading } = this.state;
+
         return (
             <Grid container className={classes.root}>
                 <CssBaseline />
@@ -94,6 +128,8 @@ class login extends Component {
                             type="email"
                             autoComplete="email"
                             autoFocus
+                            helperText={errors.email}
+                            error={errors.email ? true : false}
                             value={this.state.email}
                             onChange={this.handleChange}
                             />
@@ -107,6 +143,8 @@ class login extends Component {
                             label="Contraseña"
                             id="password"
                             autoComplete="current-password"
+                            helperText={errors.password}
+                            error={errors.password ? true : false}
                             value={this.state.password}
                             onChange={this.handleChange}
                             />
@@ -114,24 +152,33 @@ class login extends Component {
                             control={<Checkbox value="remember" color="primary" />}
                             label="Recordarme"
                             />
+                            {errors.general && (
+                                <Typography variant="body2" className={classes.customError}>
+                                    {errors.general}
+                                </Typography>
+                            )}
                             <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            disabled={loading}
                             >
                             Ingresar
+                            {loading && (
+                                <CircularProgress size={30} className={ classes.progress}/>
+                            )}
                             </Button>
                             <Grid container>
                                 <Grid item xs>
                                     <Link href="#" variant="body2">
-                                    Olvidaste tu contraseña?
+                                    ¿Olvidaste tu contraseña?
                                     </Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link href="#" variant="body2">
-                                    {"No tienes una cuenta? Registrate aqui"}
+                                    <Link href="#" to="/signup" variant="body2">
+                                    {"¿No tienes una cuenta? Registrate aquí"}
                                     </Link>
                                 </Grid>
                             </Grid>

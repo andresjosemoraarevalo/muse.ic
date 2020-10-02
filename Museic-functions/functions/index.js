@@ -263,39 +263,22 @@ app.post("/signupArtista", (request, response) => {
     });
 });
 /*
-loginUsuario
+loginUsuario (para artista también)
 parametros: un archivo .json con los siguientes atributos:
 - email: correo electronico con el que se registra 
 - contraseña: la contraseña asociada 
+salida: .json con resultado del procedimiento respecto a las entradas y los datos de la base 
+de datos
 */
 app.post('/loginUsuario',(request, response)=>{
   const user={
     email: request.body.email,
     password: request.body.password
   };
-  var usuarioValido= false; 
   let errors={};
-  let usuarios = [];
   if(isEmpty(user.email)) errors.email= "No debe de estar vacio";
   if(isEmpty(user.password)) errors.password= "No debe de estar vacio";
-  // Aca se valida si es un usuario
-  db.collection("Usuarios")
-  .get()
-  .then((data) => {
-    
-    data.forEach((doc) => {
-      console.log("Document data:", doc.data());
-      if(doc.data().email == request.body.email){
-        usuarioValido= true;
-      };
-    });
-  });
-  if(usuarioValido === false ) {
-    errors.email= "datos incorrectos, intente de nuevo ";
-    return response.json(usuarios);
-  }
-  
-  /*if(Object.keys(errors).length>0) return response.status(400).json(errors);
+  if(Object.keys(errors).length>0) return response.status(400).json(errors);
 
   firebase.auth().signInWithEmailAndPassword(user.email,user.password)
     .then(data => {
@@ -314,7 +297,7 @@ app.post('/loginUsuario',(request, response)=>{
           return response.status(500).json({error: err.code });
       }
       
-    });*/
+    });
 });
 
 exports.api = functions.https.onRequest(app);

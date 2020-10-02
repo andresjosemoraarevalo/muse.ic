@@ -28,6 +28,7 @@ const db = admin.firestore();
  Descripción: Esta función retorna en un archivo los datos de la colección "Usuarios" 
   */
 app.get("/Usuarios", (request, response) => {
+   
   db.collection("Usuarios")
     .orderBy("username", "desc")
     .get()
@@ -42,6 +43,7 @@ app.get("/Usuarios", (request, response) => {
           contraseña: doc.data().contraseña,
           interesesMusicales: doc.data().interesesMusicales,
           Fotolink: doc.data().Fotolink,
+          email: doc.data().email
         });
       });
       return response.json(usuarios);
@@ -50,7 +52,7 @@ app.get("/Usuarios", (request, response) => {
 });
 
 /*
-CreateUsuario:
+Usuario:
 Parametros: (Post) un archivo JSON con los datos del nuevo usuario 
 Salidas: un request
 Descripción: Esta función crea un usuario a partir de los datos recibidos en el .json 
@@ -76,23 +78,44 @@ app.post("/Usuario", (request, response) => {
     });
 });
 
+/*
+isEmail:
+parametros: un string con un posible email
+salida: booleano que dice si es o no un correo electronico 
+Descripción: Esta función describe si un string es un correo usando una expresion regular
+*/
 const isEmail = (email) => {
   const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (email.match(regEx)) return true;
   else return false;
 };
+/*
+isEmpty:
+parametros: una cadena de caracteres 
+salida: booleano que dice si esta vacio o no 
+Descripción:Esta función dice si un string esta vacio o no
+*/
 const isEmpty = (string) => {
   if (string.trim() == '') return true;
   else return false;
-};
-// Ruta de inicio de sesión
-app.post("/signup", (request, response) => {
+}
+/*
+signupUsario
+parametros: un documento json con la estructura de crear usuario:
+  - correo electronico
+  - contraseña 
+  - confirmación de contraseña 
+  - nombre de usuario
+salida: mensaje .json del resultado del procedimiento respecto a las entradas y los datos de la 
+base de datos.
+*/
+app.post("/signupUsuario", (request, response) => {
   const newUsuario = {
     email: request.body.email,
     password: request.body.password,
     confirmPassword: request.body.confirmPassword,
     username: request.body.username,
-  };
+  }
 
   let errors = {}; //Inicializar el objeto error (en caso de que algún atributo esté vacio)
 
@@ -109,9 +132,9 @@ app.post("/signup", (request, response) => {
   if (isEmpty(newUsuario.username)) errors.username = 'No debe estar vacio';
 
   if (Object.keys(errors).length > 0)
-    return res.status(400).json(errors);
+    return response.status(400).json(errors);
 
-  // TODO validate data
+  // valida si el usuario ya existe en la colección "Usuarios"
 
   let token, userId;
   db.doc(`/Usuarios/${newUsuario.username}`)
@@ -150,9 +173,148 @@ app.post("/signup", (request, response) => {
       console.error(err);
       if (err.code == "auth/email-already-in-use") {
         return response.status(400).json({ email: "Email a está en uso" });
-      } else {
+      } else if (err.code == "auth/weak-password"){
+        return response.status(400).json({ password: "contraseña demasiado debil" });
+      }else {
         return response.status(500).json({ error: err.code });
       }
     });
 });
+
+/*
+signupArtista
+parametros: un documento json con la estructura de crear Artista:
+  - correo electronico
+  - contraseña 
+  - confirmación de contraseña 
+  - nombre de usuario
+salida: mensaje .json del resultado del procedimiento respecto a las entradas y los datos de la 
+base de datos.
+*/
+app.post("/signupArtista", (request, response) => {
+  const newArtista = {
+    email: request.body.email,
+    password: request.body.password,
+    confirmPassword: request.body.confirmPassword,
+    username: request.body.username,
+  }
+
+  let errors = {}; //Inicializar el objeto error (en caso de que algún atributo esté vacio)
+
+  if (isEmpty(newArtista.email)) {
+    errors.email = 'No debe estar vacio'
+  } else if (!isEmail(newArtista.email)) {
+    errors.email = 'La dirección de correo electrónico debe ser valida'
+  }
+
+  if (isEmpty(newArtista.password)) errors.password = 'No debe estar vacio';
+
+  if (newArtista.password !== newArtista.confirmPassword)
+    errors.confirmPassword = 'Las contraseñas deben ser iguales';
+  if (isEmpty(newArtista.username)) errors.username = 'No debe estar vacio';
+
+  if (Object.keys(errors).length > 0)
+    return response.status(400).json(errors);
+
+  // valida si el artista ya existe en la colección "Artistas"
+
+  let token, userId;
+  db.doc(`/Artistas/${newArtista.username}`)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        return response
+          .status(400)
+          .json({ username: "Este nombre de artista ya está en uso" });
+      } else {
+        return firebase
+          .auth()
+          .createUserWithEmailAndPassword(
+            newArtista.email,
+            newArtista.password
+          );
+      }
+    })
+    .then((data) => {
+      userId = data.user.uid;
+      return data.user.getIdToken();
+    })
+    .then((idToken) => {
+      token = idToken;
+      const userCredentials = {
+        username: newArtista.username,
+        email: newArtista.email,
+        userId,
+      };
+      return db.doc(`/Artistas/${newArtista.username}`).set(userCredentials);
+    })
+    .then(() => {
+      return response.status(201).json({ token });
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.code == "auth/email-already-in-use") {
+        return response.status(400).json({ email: "Email a está en uso" });
+      } else if (err.code == "auth/weak-password"){
+        return response.status(400).json({ password: "contraseña demasiado debil" });
+      }else {
+        return response.status(500).json({ error: err.code });
+      }
+    });
+});
+/*
+loginUsuario
+parametros: un archivo .json con los siguientes atributos:
+- email: correo electronico con el que se registra 
+- contraseña: la contraseña asociada 
+*/
+app.post('/loginUsuario',(request, response)=>{
+  const user={
+    email: request.body.email,
+    password: request.body.password
+  };
+  var usuarioValido= false; 
+  let errors={};
+  let usuarios = [];
+  if(isEmpty(user.email)) errors.email= "No debe de estar vacio";
+  if(isEmpty(user.password)) errors.password= "No debe de estar vacio";
+  // Aca se valida si es un usuario
+  db.collection("Usuarios")
+  .get()
+  .then((data) => {
+    
+    data.forEach((doc) => {
+      console.log("Document data:", doc.data());
+      if(doc.data().email == request.body.email){
+        usuarioValido= true;
+      };
+    });
+  });
+  if(usuarioValido === false ) {
+    errors.email= "datos incorrectos, intente de nuevo ";
+    return response.json(usuarios);
+  }
+  
+  /*if(Object.keys(errors).length>0) return response.status(400).json(errors);
+
+  firebase.auth().signInWithEmailAndPassword(user.email,user.password)
+    .then(data => {
+      return data.user.getIdToken();
+    })
+    .then(token => {
+        return response.json({token})
+    })
+    .catch( err => {
+      console.error(err);
+      if(err.code == 'auth/wrong-password' ){
+        return response.status(403).json({general: "Datos incorrectos, por favor intente nuevamente"});
+      } else if (err.code == 'auth/user-not-found'){
+        return response.status(403).json({general: "Datos incorrectos, por favor intente nuevamente"});
+      }else{
+          return response.status(500).json({error: err.code });
+      }
+      
+    });*/
+});
+
 exports.api = functions.https.onRequest(app);

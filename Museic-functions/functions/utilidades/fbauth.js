@@ -1,5 +1,4 @@
-const admin = require('./administrador');
-const firebase = require('firebase-admin');
+const { admin, db } = require('./administrador');
 
 module.exports = (request, response, next) => {
     let idToken;
@@ -12,17 +11,17 @@ module.exports = (request, response, next) => {
         console.error('No se encontro Token');
         return response.status(403).json({ error: 'Sin autorizacion' });
     }
-    firebase.auth().verifyIdToken(idToken)
+    admin.auth().verifyIdToken(idToken)
         .then((decodedToken) => {
-            request.usuario = decodedToken;
+            request.user = decodedToken;
             return db
                 .collection('Usuarios')
-                .where('userId', '==', request.usuario.userId)
+                .where('userId', '==', request.user.uid)
                 .limit(1)
                 .get();
         })
         .then((data) => {
-            request.usuario.username = data.docs[0].data().usuario;
+            request.user.username = data.docs[0].data().username;
             return next();
         })
         .catch((err) => {

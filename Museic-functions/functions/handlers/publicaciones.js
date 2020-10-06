@@ -1,4 +1,4 @@
-const { db } = require("../utilidades/administrador");
+const { db, admin } = require("../utilidades/administrador");
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -66,6 +66,48 @@ exports.postUsuario = (request, response) => {
     })
     .catch((err) => {
       response.status(500).json({ error: "algo salió mal" });
+      console.error(err);
+    });
+};
+
+exports.getPublicaciones = (req, res) => {
+  db.collection("Publicaciones")
+    .orderBy('postDate', 'desc')
+    .get()
+    .then((data) => {
+      let publicaciones = [];
+      data.forEach((doc) => {
+        publicaciones.push({
+          postId: doc.id,
+          postBody: doc.data().postBody,
+          postedBy: doc.data().postedBy,
+          postDate: doc.data().postDate
+        });
+      });
+      return res.json(publicaciones);
+    })
+    .catch((err) => console.error(err));
+};
+
+exports.crearPublicacion = (req, res) => {
+  if (req.body.postBody.trim() === '') {
+    return res.status(400).jsn({ postBody: 'La publicacion no debe estar vacia' });
+  }
+  const newPublicacion = {
+    postBody: req.body.postBody,
+    postedBy: req.user.username,
+    postDate: new Date().toISOString()
+  };
+
+  admin
+    .firestore()
+    .collection('Publicaciones')
+    .add(newPublicacion)
+    .then((doc) => {
+      res.json({ message: `documento ${doc.id} creado satisfactoriamente` });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: "error al crear publicación" });
       console.error(err);
     });
 };

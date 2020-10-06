@@ -8,7 +8,7 @@ firebase.initializeApp(config);
 
 const { json } = require("express");
 
-const FBauth = require("../utilidades/fbauth");
+const FBauthUsuarios = require("../utilidades/fbauthUsuarios");
 
 const {
   validarDatosdeSignup,
@@ -115,23 +115,9 @@ exports.signupArtista = (request, response) => {
     username: request.body.username,
   };
 
-  let errors = {}; //Inicializar el objeto error (en caso de que algún atributo esté vacio)
+  const { valido, errors } = validarDatosdeSignup(newArtista);
 
-  if (isEmpty(newArtista.email)) {
-    errors.email = "No debe estar vacio";
-  } else if (!isEmail(newArtista.email)) {
-    errors.email = "La dirección de correo electrónico debe ser valida";
-  }
-
-  if (isEmpty(newArtista.password)) errors.password = "No debe estar vacio";
-
-  if (newArtista.password !== newArtista.confirmPassword)
-    errors.confirmPassword = "Las contraseñas deben ser iguales";
-  if (isEmpty(newArtista.username)) errors.username = "No debe estar vacio";
-
-  if (Object.keys(errors).length > 0) return response.status(400).json(errors);
-
-  // valida si el artista ya existe en la colección "Artistas"
+  if (!valido) return response.status(400).json(errors);
 
   const imagenInicial = 'foto_perfil_basica.jpg';
 
@@ -232,8 +218,8 @@ exports.loginUsuario = (request, response) => {
 //-----------------------------------------------------------------------------
 /*
 subirFotoPerfilUsuario
-parametros:  
-salida: 
+parametros: imagen png o jpeg a cambiar.
+salida: json con estado de aceptación o error
 */
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -276,9 +262,10 @@ exports.subirFotoPerfilUsuario = (request, response) => {
       })
       .then(() => {
         const urlImagen = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${nombreArchivoImagen}?alt=media`;
+        console.log(urlImagen);
         return db
-          .doc(`/Usuarios/${request.userId.username}`)
-          .update({ Fotolink: urlImagen });
+          .doc(`/Usuarios/${request.user.username}`)
+          .update({ Fotolink : urlImagen});
       })
       .then(() => {
         return response.json({ message: 'Imagen cargada correctamente' });
@@ -290,3 +277,67 @@ exports.subirFotoPerfilUsuario = (request, response) => {
   });
   busboy.end(request.rawBody);
 };
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+/*
+subirFotoPerfilArtista
+parametros: imagen png o jpeg a cambiar.
+salida: json con estado de aceptación o error
+*/
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+exports.subirFotoPerfilArtista = (request, response) => {
+  const BusBoy = require("busboy");
+  const path = require("path");
+  const os = require("os");
+  const fs = require("fs");
+
+  const busboy = new BusBoy({ headers: request.headers });
+
+  let nombreArchivoImagen;
+  let imagenACargar = {};
+
+  busboy.on('file',(nombreCampo, archivo, nombreArchivo, codificación, mimetype) => {
+      console.log(nombreCampo);
+      console.log(nombreArchivo);
+      console.log(mimetype);
+      if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
+        return response
+          .status(400)
+          .json({ error: "Archivo con formato incorrecto cargado" });
+      }
+      const extensionImagen = nombreArchivo.split(".")[nombreArchivo.split(".").length - 1];
+      nombreArchivoImagen = `${Math.round( Math.random() * 10000000000000 )}.${extensionImagen}`;
+      const direccionArchivo = path.join(os.tmpdir(), nombreArchivoImagen);
+      imagenACargar = { direccionArchivo, mimetype };
+
+      archivo.pipe(fs.createWriteStream(direccionArchivo));
+    }
+  );
+  busboy.on('finish', () => {
+    admin.storage().bucket().upload(imagenACargar.direccionArchivo, {
+        resumable: false,
+        metadata: {
+          metadata: {
+            contentType: imagenACargar.mimetype,
+          },
+        },
+      })
+      .then(() => {
+        const urlImagen = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${nombreArchivoImagen}?alt=media`;
+        console.log(urlImagen);
+        return db
+          .doc(`/Artistas/${request.user.username}`)
+          .update({ Fotolink : urlImagen});
+      })
+      .then(() => {
+        return response.json({ message: 'Imagen cargada correctamente' });
+      })
+      .catch((err) => {
+        console.error(err);
+        return response.status(500).json({ error: err.code });
+      });
+  });
+  busboy.end(request.rawBody);
+};
+

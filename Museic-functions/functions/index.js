@@ -5,8 +5,9 @@ const app = require("express")();
 
 const { getUsuarios , postUsuario, getPublicaciones, crearPublicacion } = require('./handlers/publicaciones');
 const { signupUsuario, loginUsuario, signupArtista, 
-        subirFotoPerfilUsuario} = require('./handlers/usuarios');
-const FBAuth = require("./utilidades/fbauth");
+        subirFotoPerfilUsuario, subirFotoPerfilArtista} = require('./handlers/usuarios');
+const FBAuthUsuarios = require("./utilidades/fbauthUsuarios");
+const FBAuthArtistas = require("./utilidades/fbauthArtistas");
 const { admin } = require("./utilidades/administrador");
 
 // // Create and Deploy Your First Cloud Functions
@@ -19,14 +20,15 @@ const { admin } = require("./utilidades/administrador");
 app.get("/publicaciones", getUsuarios);
 app.post("/publicaciones", postUsuario);
 app.get("/getPublicaciones", getPublicaciones);
-app.post("/crearPublicacion",FBAuth, crearPublicacion);
+app.post("/crearPublicacion",FBAuthUsuarios, FBAuthArtistas, crearPublicacion);
 //funciones trasladadas a usuarios.js
 //funciones users
 
 app.post("/signupUsuario", signupUsuario);
 app.post("/loginUsuario", loginUsuario);
 app.post("/signupArtista", signupArtista);
-app.post("/usuario/FotoPerfil", FBAuth, subirFotoPerfilUsuario);
+app.post("/usuario/FotoPerfil", FBAuthUsuarios, subirFotoPerfilUsuario);
+app.post("/artista/FotoPerfil", FBAuthArtistas, subirFotoPerfilArtista);
 
 
 

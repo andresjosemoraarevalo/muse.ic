@@ -13,6 +13,7 @@ const FBauthUsuarios = require("../utilidades/fbauthUsuarios");
 const {
   validarDatosdeSignup,
   validarDatosdeLogin,
+  reduceUserDetails
 } = require("../utilidades/validadores");
 
 
@@ -341,3 +342,39 @@ exports.subirFotoPerfilArtista = (request, response) => {
   busboy.end(request.rawBody);
 };
 
+//addUserDetails
+exports.addUserDetails = (req, res) => {
+  let userDetails = reduceUserDetails(req.body);
+
+  db.doc(`/Usuarios/${req.user.username}`).update(userDetails)
+    .then(() => {
+      return res.json({ message: 'Detalles añadidos satisfactoriamente'});
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({error: err.code});
+    });
+};
+
+//getUsuarioAutenticado
+exports.getUsuarioAutenticado = (req, res) => {
+  let userData = {};
+  db.doc(`/Usuarios/${req.user.username}`).get()
+    .then(doc => {
+      if(doc.exists){
+        userData.credentials = doc.data();
+        return db.collection('seguidos').where('username', '==', req.user.username).get()
+      }
+    })
+    .then(data => {
+      userData.seguidos = [];
+      data.forEach(doc => {
+        userData.seguidos.push(doc.data());
+      }); 
+      return res.json(userData);
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    })
+}

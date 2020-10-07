@@ -59,3 +59,14 @@ exports.validarDatosdeLogin = (datos) => {
         valido : Object.keys(errors).length === 0 ? true : false 
     }
 }
+
+exports.reduceUserDetails = (data) => {
+    let userDetails = {};
+    if(!isEmpty(data.nombre.trim())) userDetails.nombre = data.nombre;
+    if(!isEmpty(data.bio.trim())) userDetails.bio = data.bio;
+    let gustos = {};
+    gustos = data.gustosMusicales;
+    userDetails.gustosMusicales = gustos;
+
+    return userDetails;
+}

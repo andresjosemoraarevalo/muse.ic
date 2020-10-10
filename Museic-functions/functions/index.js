@@ -7,6 +7,8 @@ const {
   postUsuario,
   getPublicaciones,
   crearPublicacion,
+  getPublicacion,
+  comentarPublicacion,
 } = require("./handlers/publicaciones");
 const {
   signupUsuario,
@@ -31,7 +33,12 @@ const { admin } = require("./utilidades/administrador");
 app.get("/publicaciones", getUsuarios);
 app.post("/publicaciones", postUsuario);
 app.get("/getPublicaciones", getPublicaciones);
-app.post("/crearPublicacion", FBAuthUsuarios, FBAuthArtistas, crearPublicacion);
+app.post("/crearPublicacion", FBAuthUsuarios, crearPublicacion);
+app.get("/publicaciones/:postId", getPublicacion);
+//TODO: delete publicacion
+//TODO: like publicacion
+//TODO: unlike publicacion
+app.post("/publicaciones/:postId/comentar", FBAuthUsuarios, comentarPublicacion)
 //funciones trasladadas a usuarios.js
 //funciones users
 

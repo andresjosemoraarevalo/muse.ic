@@ -72,7 +72,7 @@ exports.postUsuario = (request, response) => {
 
 exports.getPublicaciones = (req, res) => {
   db.collection("Publicaciones")
-    .orderBy('postDate', 'desc')
+    .orderBy("postDate", "desc")
     .get()
     .then((data) => {
       let publicaciones = [];
@@ -81,27 +81,31 @@ exports.getPublicaciones = (req, res) => {
           postId: doc.id,
           postBody: doc.data().postBody,
           postedBy: doc.data().postedBy,
-          postDate: doc.data().postDate
+          postDate: doc.data().postDate,
         });
       });
       return res.json(publicaciones);
     })
     .catch((err) => console.error(err));
 };
-
+//hacer una publicacion
 exports.crearPublicacion = (req, res) => {
-  if (req.body.postBody.trim() === '') {
-    return res.status(400).jsn({ postBody: 'La publicacion no debe estar vacia' });
+  if (req.body.postBody.trim() === "") {
+    return res
+      .status(400)
+      .jsn({ postBody: "La publicacion no debe estar vacia" });
   }
   const newPublicacion = {
     postBody: req.body.postBody,
     postedBy: req.user.username,
-    postDate: new Date().toISOString()
+    nombre: req.user.nombre,
+    Fotolink: req.user.Fotolink,
+    postDate: new Date().toISOString(),
   };
 
   admin
     .firestore()
-    .collection('Publicaciones')
+    .collection("Publicaciones")
     .add(newPublicacion)
     .then((doc) => {
       res.json({ message: `documento ${doc.id} creado satisfactoriamente` });
@@ -110,4 +114,60 @@ exports.crearPublicacion = (req, res) => {
       res.status(500).json({ error: "error al crear publicación" });
       console.error(err);
     });
+};
+//get una publicacion
+exports.getPublicacion = (req, res) => {
+  let publicacionData = {};
+  db.doc(`/Publicaciones/${req.params.postId}`)
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        return res.status(404).json({ error: "Publicacion no encontrada" });
+      }
+      publicacionData = doc.data();
+      publicacionData.postId = doc.id;
+      return db
+        .collection("Comentarios")
+        .orderBy('postDate', 'desc')
+        .where("postId", "==", req.params.postId)
+        .get();
+    })
+    .then((data) => {
+      publicacionData.comentarios = [];
+      data.forEach((doc) => {
+        publicacionData.comentarios.push(doc.data());
+      });
+      return res.json(publicacionData);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
+};
+//comentar en una publicacion
+exports.comentarPublicacion = (req, res) => {
+  if(req.body.body.trim() === '') return res.status(400).json({ error: 'El comentario no debe estar vacio' });
+
+  const newComentario = {
+    body: req.body.body,
+    postDate: new Date().toISOString(),
+    postId: req.params.postId,
+    username: req.user.username,
+    nombre: req.user.nombre,
+    Fotolink: req.user.Fotolink
+  };
+  db.doc(`/Publicaciones/${req.params.postId}`).get()
+    .then(doc => {
+      if(!doc.exists){
+        return res.status(404).json({ error: 'Publicacion no encontrada '});
+      }
+      return db.collection('Comentarios').add(newComentario);
+    })
+    .then(() => {
+      res.json(newComentario);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: 'Algo salio mal :(' });
+    })
 };

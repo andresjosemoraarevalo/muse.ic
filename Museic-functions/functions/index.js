@@ -9,6 +9,9 @@ const {
   crearPublicacion,
   getPublicacion,
   comentarPublicacion,
+  likePublicacion,
+  unlikePublicacion,
+  deletePublicacion
 } = require("./handlers/publicaciones");
 const {
   signupUsuario,
@@ -18,6 +21,8 @@ const {
   getUsuarioAutenticado,
   subirFotoPerfilUsuario,
   subirFotoPerfilArtista,
+  followUsuario,
+  unfollowUsuario
 } = require("./handlers/usuarios");
 const FBAuthUsuarios = require("./utilidades/fbauthUsuarios");
 const FBAuthArtistas = require("./utilidades/fbauthArtistas");
@@ -35,10 +40,10 @@ app.post("/publicaciones", postUsuario);
 app.get("/getPublicaciones", getPublicaciones);
 app.post("/crearPublicacion", FBAuthUsuarios, crearPublicacion);
 app.get("/publicaciones/:postId", getPublicacion);
-//TODO: delete publicacion
-//TODO: like publicacion
-//TODO: unlike publicacion
-app.post("/publicaciones/:postId/comentar", FBAuthUsuarios, comentarPublicacion)
+app.delete("/publicaciones/:postId", FBAuthUsuarios, deletePublicacion);
+app.get("/publicaciones/:postId/like", FBAuthUsuarios, likePublicacion);
+app.get("/publicaciones/:postId/unlike", FBAuthUsuarios, unlikePublicacion);
+app.post("/publicaciones/:postId/comentar", FBAuthUsuarios, comentarPublicacion);
 //funciones trasladadas a usuarios.js
 //funciones users
 
@@ -49,5 +54,7 @@ app.post("/usuario/FotoPerfil", FBAuthUsuarios, subirFotoPerfilUsuario);
 app.post("/artista/FotoPerfil", FBAuthArtistas, subirFotoPerfilArtista);
 app.post("/usuarioDetails", FBAuthUsuarios, addUserDetails);
 app.get("/Usuario", FBAuthUsuarios, getUsuarioAutenticado);
+app.get("/usuario/:username/follow", FBAuthUsuarios, followUsuario);
+app.get("/usuario/:username/unfollow", FBAuthUsuarios, unfollowUsuario);
 
 exports.api = functions.https.onRequest(app);

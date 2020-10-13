@@ -57,6 +57,14 @@ const styles ={
 }
 
 class ProfileUser extends Component {
+    
+    handleImageChange = (event) => {
+    const image = event.target.files[0];
+    const formData = new FormData();
+    formData.append('image', image, image.name);
+    this.props.uploadImage(formData);
+  };
+    
     render() {
         const {
             classes, 
@@ -77,6 +85,12 @@ class ProfileUser extends Component {
                                              </div>
                                              <div className="image-wrapper">
                                              <img src={Fotolink} alt="profile" className="profile-image" />
+                                             <input
+                                                type="file"
+                                                id="imageInput"
+                                                hidden="hidden"
+                                                onChange={this.handleImageChange}
+                                              />
                                              </div>
                                      </div>
                                                   

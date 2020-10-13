@@ -12,9 +12,11 @@ import Grid from '@material-ui/core/Grid';
 //Iconos
 import LinkIcon from '@material-ui/icons/Link'; 
 import CalendarToday from '@material-ui/icons/CalendarToday'; 
-
+import Backspace from '@material-ui/icons/Backspace';
 //Redux
 import { connect } from 'react-redux';
+import {logoutUser, uploadImage } from '../redux/actions/userActions';
+import { IconButton } from '@material-ui/core';
 
 const styles ={
     Fotolink : {
@@ -68,8 +70,16 @@ class ProfileUser extends Component {
     const formData = new FormData();
     formData.append('image', image, image.name);
     this.props.uploadImage(formData);
-  };
-    
+    };
+    handleEditPicture = () => {
+        const fileInput = document.getElementById('imageInput');
+        fileInput.click();
+    };
+    handleLogout = () => {
+        this.props.logoutUser();
+
+    }
+
     render() {
         const {
             classes, 
@@ -140,6 +150,14 @@ class ProfileUser extends Component {
                         <span>Fecha de nacimiento {dayjs(FechaNacimiento).format('DD MMM YYYY')}</span>
                         </div>
                     </Grid>
+                    <Tooltip title="Logout" placemente="top">
+                        <IconButton onClick={this.handleLogout}>
+                            <Backspace color="primary">
+
+                            </Backspace>
+                        </IconButton>
+                    </Tooltip>
+
                 </div>
         ) : (
             <Paper className={classes.paper}>
@@ -165,9 +183,13 @@ const mapStateToProps = (state) => ({
     user: state.user
 });
 
+const mapActionToProps = {logoutUser, uploadImage};
+
 ProfileUser.propTypes = {
     user: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired
-}
+    classes: PropTypes.object.isRequired,
+    uploadImage: PropTypes.func.isRequired,
+    logoutUser: PropTypes.func.isRequired
+};
 
 export default connect(mapStateToProps)(withStyles(styles)(ProfileUser))

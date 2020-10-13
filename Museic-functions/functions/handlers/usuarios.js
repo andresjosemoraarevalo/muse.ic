@@ -13,8 +13,10 @@ const FBauthUsuarios = require("../utilidades/fbauthUsuarios");
 const {
   validarDatosdeSignup,
   validarDatosdeLogin,
-  reduceUserDetails,
+  reduceUserDetails
 } = require("../utilidades/validadores");
+
+
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -43,7 +45,7 @@ exports.signupUsuario = (request, response) => {
 
   if (!valido) return response.status(400).json(errors);
 
-  const imagenInicial = "foto_perfil_basica.jpg";
+  const imagenInicial = 'foto_perfil_basica.jpg';
 
   let token, userId;
   db.doc(`/Usuarios/${newUsuario.username}`)
@@ -118,7 +120,7 @@ exports.signupArtista = (request, response) => {
 
   if (!valido) return response.status(400).json(errors);
 
-  const imagenInicial = "foto_perfil_basica.jpg";
+  const imagenInicial = 'foto_perfil_basica.jpg';
 
   let token, userId;
   db.doc(`/Artistas/${newArtista.username}`)
@@ -233,9 +235,7 @@ exports.subirFotoPerfilUsuario = (request, response) => {
   let nombreArchivoImagen;
   let imagenACargar = {};
 
-  busboy.on(
-    "file",
-    (nombreCampo, archivo, nombreArchivo, codificación, mimetype) => {
+  busboy.on('file',(nombreCampo, archivo, nombreArchivo, codificación, mimetype) => {
       console.log(nombreCampo);
       console.log(nombreArchivo);
       console.log(mimetype);
@@ -244,23 +244,16 @@ exports.subirFotoPerfilUsuario = (request, response) => {
           .status(400)
           .json({ error: "Archivo con formato incorrecto cargado" });
       }
-      const extensionImagen = nombreArchivo.split(".")[
-        nombreArchivo.split(".").length - 1
-      ];
-      nombreArchivoImagen = `${Math.round(
-        Math.random() * 10000000000000
-      )}.${extensionImagen}`;
+      const extensionImagen = nombreArchivo.split(".")[nombreArchivo.split(".").length - 1];
+      nombreArchivoImagen = `${Math.round( Math.random() * 10000000000000 )}.${extensionImagen}`;
       const direccionArchivo = path.join(os.tmpdir(), nombreArchivoImagen);
       imagenACargar = { direccionArchivo, mimetype };
 
       archivo.pipe(fs.createWriteStream(direccionArchivo));
     }
   );
-  busboy.on("finish", () => {
-    admin
-      .storage()
-      .bucket()
-      .upload(imagenACargar.direccionArchivo, {
+  busboy.on('finish', () => {
+    admin.storage().bucket().upload(imagenACargar.direccionArchivo, {
         resumable: false,
         metadata: {
           metadata: {
@@ -273,10 +266,10 @@ exports.subirFotoPerfilUsuario = (request, response) => {
         console.log(urlImagen);
         return db
           .doc(`/Usuarios/${request.user.username}`)
-          .update({ Fotolink: urlImagen });
+          .update({ Fotolink : urlImagen});
       })
       .then(() => {
-        return response.json({ message: "Imagen cargada correctamente" });
+        return response.json({ message: 'Imagen cargada correctamente' });
       })
       .catch((err) => {
         console.error(err);
@@ -305,9 +298,7 @@ exports.subirFotoPerfilArtista = (request, response) => {
   let nombreArchivoImagen;
   let imagenACargar = {};
 
-  busboy.on(
-    "file",
-    (nombreCampo, archivo, nombreArchivo, codificación, mimetype) => {
+  busboy.on('file',(nombreCampo, archivo, nombreArchivo, codificación, mimetype) => {
       console.log(nombreCampo);
       console.log(nombreArchivo);
       console.log(mimetype);
@@ -316,23 +307,16 @@ exports.subirFotoPerfilArtista = (request, response) => {
           .status(400)
           .json({ error: "Archivo con formato incorrecto cargado" });
       }
-      const extensionImagen = nombreArchivo.split(".")[
-        nombreArchivo.split(".").length - 1
-      ];
-      nombreArchivoImagen = `${Math.round(
-        Math.random() * 10000000000000
-      )}.${extensionImagen}`;
+      const extensionImagen = nombreArchivo.split(".")[nombreArchivo.split(".").length - 1];
+      nombreArchivoImagen = `${Math.round( Math.random() * 10000000000000 )}.${extensionImagen}`;
       const direccionArchivo = path.join(os.tmpdir(), nombreArchivoImagen);
       imagenACargar = { direccionArchivo, mimetype };
 
       archivo.pipe(fs.createWriteStream(direccionArchivo));
     }
   );
-  busboy.on("finish", () => {
-    admin
-      .storage()
-      .bucket()
-      .upload(imagenACargar.direccionArchivo, {
+  busboy.on('finish', () => {
+    admin.storage().bucket().upload(imagenACargar.direccionArchivo, {
         resumable: false,
         metadata: {
           metadata: {
@@ -345,10 +329,10 @@ exports.subirFotoPerfilArtista = (request, response) => {
         console.log(urlImagen);
         return db
           .doc(`/Artistas/${request.user.username}`)
-          .update({ Fotolink: urlImagen });
+          .update({ Fotolink : urlImagen});
       })
       .then(() => {
-        return response.json({ message: "Imagen cargada correctamente" });
+        return response.json({ message: 'Imagen cargada correctamente' });
       })
       .catch((err) => {
         console.error(err);
@@ -362,154 +346,35 @@ exports.subirFotoPerfilArtista = (request, response) => {
 exports.addUserDetails = (req, res) => {
   let userDetails = reduceUserDetails(req.body);
 
-  db.doc(`/Usuarios/${req.user.username}`)
-    .update(userDetails)
+  db.doc(`/Usuarios/${req.user.username}`).update(userDetails)
     .then(() => {
-      return res.json({ message: "Detalles añadidos satisfactoriamente" });
+      return res.json({ message: 'Detalles añadidos satisfactoriamente'});
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
-      return res.status(500).json({ error: err.code });
+      return res.status(500).json({error: err.code});
     });
 };
 
 //getUsuarioAutenticado
 exports.getUsuarioAutenticado = (req, res) => {
   let userData = {};
-  db.doc(`/Usuarios/${req.user.username}`)
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
+  db.doc(`/Usuarios/${req.user.username}`).get()
+    .then(doc => {
+      if(doc.exists){
         userData.credentials = doc.data();
-        return db
-          .collection("Likes")
-          .where("username", "==", req.user.username)
-          .get();
+        return db.collection('seguidos').where('username', '==', req.user.username).get()
       }
     })
-    .then((data) => {
+    .then(data => {
       userData.seguidos = [];
-      data.forEach((doc) => {
+      data.forEach(doc => {
         userData.seguidos.push(doc.data());
-      });
+      }); 
       return res.json(userData);
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
       return res.status(500).json({ error: err.code });
-    });
-};
-
-//follow un usuario
-exports.followUsuario = (req, res) => {
-  const followDocument = db
-    .collection("Seguidos")
-    .where("username", "==", req.user.username)
-    .where("follows", "==", req.params.username)
-    .limit(1);
-
-  db.doc(`/Usuarios/${req.user.username}`)
-    .get()
-    .then((doc) => {
-      if (!doc.exists) {
-        return res.status(404).json({ error: "Usuario no encontrad0 " });
-      }
-      return doc.ref.update({ seguidos: doc.data().seguidos + 1 });
-    });
-  
-  const userDocument = db.doc(`/Usuarios/${req.params.username}`);
-
-  let userData;
-
-  userDocument
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        userData = doc.data();
-        userData.username = doc.id;
-        return followDocument.get();
-      } else {
-        return res.status(404).json({ error: "Usuario no encontrado" });
-      }
     })
-    .then((data) => {
-      if (data.empty) {
-        return db
-          .collection("Seguidos")
-          .add({
-            follows: req.params.username,
-            username: req.user.username,
-          })
-          .then(() => {
-            userData.seguidores++;
-            return userDocument.update({ seguidores: userData.seguidores });
-          })
-          .then(() => {
-            return res.json(userData);
-          });
-      } else {
-        return res.status(400).json({ error: "Ya sigues a este usuario" });
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({ error: err.code });
-    });
-};
-
-//unfollow un usuario
-exports.unfollowUsuario = (req, res) => {
-  const followDocument = db
-    .collection("Seguidos")
-    .where("username", "==", req.user.username)
-    .where("follows", "==", req.params.username)
-    .limit(1);
-
-  db.doc(`/Usuarios/${req.user.username}`)
-    .get()
-    .then((doc) => {
-      if (!doc.exists) {
-        return res.status(404).json({ error: "Usuario no encontrad0 " });
-      }
-      return doc.ref.update({ seguidos: doc.data().seguidos - 1 });
-    });
-
-  const camilix = db.doc(`/Usuarios/${req.params.username}`);
-
-  let userData;
-
-  camilix
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        userData = doc.data();
-        userData.username = doc.id;
-        return followDocument.get();
-      } else {
-        return res.status(404).json({ error: "Usuario no encontrado" });
-      }
-    })
-    .then((data) => {
-      if (data.empty) {
-        return res
-          .status(400)
-          .json({ errror: "No sigues este usuario" });
-        
-      } else {
-        return db
-          .doc(`/Seguidos/${data.docs[0].id}`).delete()
-          .then(() => {
-            userData.seguidores--;
-            return camilix.update({ seguidores: userData.seguidores });
-          })
-          .then(() => {
-            res.json(userData);
-
-          });
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({ error: err.code });
-    });
-};
+}

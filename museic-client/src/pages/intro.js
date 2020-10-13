@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 
 const styles = {
     root: {
-        height: '100vh',
+        //height: '100vh',
         backgroundImage: "url(" + imagenLogin + ")",
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',

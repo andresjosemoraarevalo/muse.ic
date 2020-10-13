@@ -77,7 +77,6 @@ class ProfileUser extends Component {
     };
     handleLogout = () => {
         this.props.logoutUser();
-
     }
 
     render() {
@@ -192,4 +191,4 @@ ProfileUser.propTypes = {
     logoutUser: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps)(withStyles(styles)(ProfileUser))
+export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(ProfileUser))

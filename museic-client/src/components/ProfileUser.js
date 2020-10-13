@@ -10,64 +10,51 @@ import MuiLink from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 //Iconos
-import LocationOn from '@material-ui/icons/LocationOn'; 
 import LinkIcon from '@material-ui/icons/Link'; 
 import CalendarToday from '@material-ui/icons/CalendarToday'; 
 
 //Redux
 import { connect } from 'react-redux';
 
-const styles = (theme) => ({
-    paper: {
-      padding: 20
+const styles ={
+    Fotolink : {
+        height: '100vh',
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center"
     },
-    profile: {
-      '& .image-wrapper': {
-        textAlign: 'center',
-        position: 'relative',
-        '& button': {
-        position: 'absolute',
-        top: '80%',
-        left: '70%'
-      }
-
-      },
-      '& .profile-image': {
-        order: 1,
-        width: 200,
-        height: 200,
-        objectFit: 'cover',
-        maxWidth: '100%',
-        borderRadius: '50%'
-      },
-      '& .profile-details': {
-        order: 2,
-        minwidth :12,
-        textAlign: 'center',
-        '& span, svg': {
-          verticalAlign: 'middle'
-        },
-        '& a': {
-          color: '#00bcd4'
-        }
-      },
-      '& hr': {
-        border: 'none',
-        margin: '0 0 10px 0'
-      },
-      '& svg.button': {
-        '&:hover': {
-          cursor: 'pointer'
-        }
-      }
+    username : {
+        height: '100vh',
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center"
     },
-    buttons: {
-      textAlign: 'center',
-      '& a': {
-        margin: '20px 10px'
-      }
-    }
-  });
+    FechaNacimiento : {
+        height: '100vh',
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center"
+    },
+    seguidos : {
+        height: '100vh',
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center"
+    },
+    seguidores : {
+        height: '100vh',
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center"
+    },
+    bio : {
+        height: '100vh',
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center"
+    },
+    
+}
 
 class ProfileUser extends Component {
     render() {
@@ -83,37 +70,58 @@ class ProfileUser extends Component {
 
         let profileMarkup = !loading ? (
             authenticated ? (
-            <Paper className = {classes.paper}>
-                <div className={classes.profile}>
-                    <div className="profile-image">
-                        <img src={Fotolink} alt="profile"/>
-                    </div>
-                    <hr/>
-                    <div className="profile-details">
-                    <hr/>
-                    <MuiLink component={Link} to={`/Usuario/${username}`} color="primary" variant="h5">  
-                        @{username}
-                    </MuiLink>
-                    <hr/>
-                        <span>{seguidores && <Typography variant="body2">{seguidores}</Typography>} seguidores      </span>
-                        <span>{seguidos && <Typography variant="body2">{seguidos}</Typography>} seguidos </span>
-                    <hr/>
-                        {bio && <Typography variant="body2">{bio}</Typography>}
-                    <hr/>
+                             <div>
+                                 <Grid container xs={false} sm={4} md={7} className = {classes.paper}>
+                                     <div className={classes.paper}>
+                                             <div className={classes.profile}>
+                                             </div>
+                                             <div className="image-wrapper">
+                                             <img src={Fotolink} alt="profile" className="profile-image" />
+                                             </div>
+                                     </div>
+                                                  
+                                     <Grid container spacing={3}>
+                                         <Grid item xs>
+                                         <MuiLink component={Link} to={`/Usuario/${username}`} color="primary" variant="h5">
+                                                 @{username}
+                                         </MuiLink>
+                                         </Grid>
+                             
+                                         <Grid container spacing={3}>
+                                             
+                                             <span>
+                                                {seguidores && <Typography variant="body2">{seguidores}</Typography>}seguidores
+                                             </span>
+                                                     
+                                             <Grid container spacing={3}>
+                                             
+                                                 <span>
+                                                    {seguidos && <Typography variant="body2">{seguidos}</Typography>} seguidos
+                                                </span>
+                                                 <Grid container spacing={3}>
+                                                     {bio && <Typography variant="body2">{bio}</Typography>}
+                                                 </Grid>
+                                             </Grid>
+                                         </Grid>
+                                     </Grid>
+                                 </Grid>
                      {website && (
                         <Fragment>
                         <LinkIcon color="primary"/>
                         <a href={website} target="_blank" rel="noopener noreferrer">
                             {' '}{website}
                         </a>
-                        <hr/>
                         </Fragment>
                     )}
-                    <CalendarToday color="primary" />{' '}
-                    <span>Fecha de nacimiento {dayjs(FechaNacimiento).format('DD MMM YYYY')}</span>
-                    </div>
+                            
+                    <Grid container xs={12} sm={8} md={5} className="profile-details"square>
+                        <div className={classes.paper}>
+                                
+                        <CalendarToday color="primary" />{' '}
+                        <span>Fecha de nacimiento {dayjs(FechaNacimiento).format('DD MMM YYYY')}</span>
+                        </div>
+                    </Grid>
                 </div>
-            </Paper>
         ) : (
             <Paper className={classes.paper}>
                 <Typography variant="body2" align="center">

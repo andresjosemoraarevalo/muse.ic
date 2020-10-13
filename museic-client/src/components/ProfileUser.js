@@ -53,7 +53,12 @@ const styles ={
         flexDirection: "column",
         justifyContent: "center"
     },
-    
+    button:{
+        textAlign: 'center',
+            '& a': {
+                 margin: '20px 10px'
+    },
+    }     
 }
 
 class ProfileUser extends Component {

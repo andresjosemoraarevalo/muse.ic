@@ -7,4 +7,13 @@ export const LOADING_USER = 'LOADING_USER';
 export const SET_ERRORS = 'SET_ERRORS';
 export const LOADING_UI = 'LOADING_UI';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
-//date reducer types
+export const LOADING_DATA = 'LOADING_DATA';
+export const STOP_LOADING_UI = 'STOP_LOADING_UI';
+// Data reducer types
+export const SET_PUBLICACIONES = 'SET_PUBLICACIONES';
+export const SET_PUBLICACION = 'SET_PUBLICACION';
+export const LIKE_PUBLICACION = 'LIKE_PUBLICACION';
+export const UNLIKE_PUBLICACION = 'UNLIKE_PUBLICACION';
+export const DELETE_PUBLICACION = 'DELETE_PUBLICACION';
+export const POST_PUBLICACION = 'POST_PUBLICACION';
+export const SUBMIT_COMMENT = 'SUBMIT_COMMENT';

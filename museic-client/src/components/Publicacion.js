@@ -34,8 +34,12 @@ const useStyles = makeStyles((theme) => ({
 
 class Publicacion extends Component{
     render(){
+<<<<<<< Updated upstream
         dayjs.extend(relativeTime)
         const{ classes, publicacion : { postBody, postedBy, postDate, comentarios, likes, Fotolink} } = this.props
+=======
+        const{ classes, publicacion: { postBody, postedBy, postDate} } = this.props
+>>>>>>> Stashed changes
     return(
         
         <Card className={classes.card}>

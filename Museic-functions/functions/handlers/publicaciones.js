@@ -82,6 +82,10 @@ exports.getPublicaciones = (req, res) => {
           postBody: doc.data().postBody,
           postedBy: doc.data().postedBy,
           postDate: doc.data().postDate,
+          comentarios: doc.data().comentarios,
+          likes: doc.data().likes,
+          Fotolink: doc.data().Fotolink,
+          nombre: doc.data().nombre
         });
       });
       return res.json(publicaciones);

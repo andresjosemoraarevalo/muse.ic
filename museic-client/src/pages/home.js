@@ -30,20 +30,25 @@ class home extends Component {
     }
     render(){
         let recentPublicacionesMarkup = this.state.publicaciones ? (
-            this.state.publicaciones.map((publicacion) => <Publicacion publicacion={publicacion}/>)
+            this.state.publicaciones.map((publicacion) => <Publicacion key={publicacion.postId} publicacion={publicacion}/>)
         ) : (
             <p>Loading...</p>
         );
         const {classes} = this.props;
         return (
             <Grid container className={classes.root} spacing={3} alignItems="center">
-                <Grid item sm={11} xs={12}>
+                <Grid item xs={8}>
                     <p>Crear Publicacion</p>
                     <Paper>Crear</Paper>
                 </Grid>
-                <Grid item sm={11} xs={12}>
+                <Grid item xs={4}>
+                    Chat...
+                </Grid>
+                <Grid item xs={8}>
                     {recentPublicacionesMarkup}
                 </Grid>
+                
+                
             </Grid>
         );
     }

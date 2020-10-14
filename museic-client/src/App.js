@@ -37,7 +37,9 @@ const theme = createMuiTheme({
   },
   typography: {
     fontFamily: "Helvetica",
+    useNextVariants: true
   },
+  
 });
 
 const token = localStorage.FBIdToken;

@@ -1,16 +1,54 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import Grid from '@material-ui/core/Grid'
+import {withStyles} from '@material-ui/core';
+import PropTypes from 'prop-types';
+import Paper from '@material-ui/core/Paper';
+import axios from 'axios';
 
-class home extends Component {
-    
-    render() {
+import Publicacion from '../components/Publicacion';
+
+const styles = {
+    root: {
+        margin: '64px 32px'
         
-        
-        return (
-            <div className="container">
-                <h1>Pagina principal</h1>
-            </div>
-        )
     }
 }
 
-export default home
+class home extends Component {
+    state = {
+        publicaciones: null
+    }
+    componentDidMount(){
+        axios.get('/getPublicaciones')
+         .then(res=>{
+             console.log(res.data)
+             this.setState({
+                 publicaciones: res.data
+             })
+         })
+         .catch(err => console.log(err));
+    }
+    render(){
+        let recentPublicacionesMarkup = this.state.publicaciones ? (
+            this.state.publicaciones.map((publicacion) => <Publicacion publicacion={publicacion}/>)
+        ) : (
+            <p>Loading...</p>
+        );
+        const {classes} = this.props;
+        return (
+            <Grid container className={classes.root} spacing={3} alignItems="center">
+                <Grid item sm={11} xs={12}>
+                    <p>Crear Publicacion</p>
+                    <Paper>Crear</Paper>
+                </Grid>
+                <Grid item sm={11} xs={12}>
+                    {recentPublicacionesMarkup}
+                </Grid>
+            </Grid>
+        );
+    }
+}
+home.propTypes = {
+    classes: PropTypes.object.isRequired
+}
+export default withStyles(styles)(home);

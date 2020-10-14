@@ -1,8 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import Scream from '../components/scream/Scream';
-import StaticProfile from '../components/profile/StaticProfile';
+import React, { Component } from 'react'
+import ProfileUser from '../components/ProfileUser';
 import Grid from '@material-ui/core/Grid';
 
+class user extends Component {
+    render() {
+        return (
+            
+        )
+    }
+}
 
+export default user

@@ -30,13 +30,18 @@ class home extends Component {
     }
     render(){
         let recentPublicacionesMarkup = this.state.publicaciones ? (
+<<<<<<< Updated upstream
             this.state.publicaciones.map((publicacion) => <Publicacion key={publicacion.postId} publicacion={publicacion}/>)
+=======
+            this.state.publicaciones.map((publicacion) => <Publicacion publicacion={publicacion}/>)
+>>>>>>> Stashed changes
         ) : (
             <p>Loading...</p>
         );
         const {classes} = this.props;
         return (
             <Grid container className={classes.root} spacing={3} alignItems="center">
+<<<<<<< Updated upstream
                 <Grid item xs={8}>
                     <p>Crear Publicacion</p>
                     <Paper>Crear</Paper>
@@ -49,6 +54,15 @@ class home extends Component {
                 </Grid>
                 
                 
+=======
+                <Grid item sm={11} xs={12}>
+                    <p>Crear Publicacion</p>
+                    <Paper>Crear</Paper>
+                </Grid>
+                <Grid item sm={11} xs={12}>
+                    {recentPublicacionesMarkup}
+                </Grid>
+>>>>>>> Stashed changes
             </Grid>
         );
     }

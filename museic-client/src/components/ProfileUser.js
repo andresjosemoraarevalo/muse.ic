@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import EditarDetalles from '../components/EditarDetalles';
 //MUI
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -11,7 +11,6 @@ import MuiLink from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import MyButton from '../util/MyButton';
 
 //Iconos
@@ -25,6 +24,9 @@ import {logoutUser, uploadImage } from '../redux/actions/userActions';
 import { IconButton } from '@material-ui/core';
 
 const styles ={
+    paper: {
+        padding: 20
+    },
     Fotolink : {
         height: '100vh',
         display: "flex",
@@ -78,12 +80,14 @@ class ProfileUser extends Component {
     const image = event.target.files[0];
     const formData = new FormData();
     formData.append('image', image, image.name);
-    this.props.uploadImage(formData);
-    };
+    this.props.uploadImage(formData); 
+    }
+
     handleEditPicture = () => {
         const fileInput = document.getElementById('imageInput');
         fileInput.click();
-    };
+    }
+
     handleLogout = () => {
         this.props.logoutUser();
     }
@@ -129,39 +133,39 @@ class ProfileUser extends Component {
                     <MuiLink component={Link} to={`/Usuario/${username}`} color="primary" variant="h5">
                                     @{username}
                                 </MuiLink>
-                                <hr/>
-                                    <span>{seguidores && <Typography variant="body2">{seguidores}</Typography>} seguidores      </span>
-                                    <span>{seguidos && <Typography variant="body2">{seguidos}</Typography>} seguidos </span>
-                                <hr/>
+                                <hr></hr>  
+                                    <span>    {seguidores && <Typography variant="body2">{seguidores}</Typography>} seguidores        </span>
+                                    <span>  {seguidos && <Typography variant="body2">{seguidos}</Typography>} seguidos </span>
+                                <hr></hr>  
                                     {bio && <Typography variant="body2">{bio}</Typography>}
-                                <hr/>
+                                <hr></hr>  
                                  {website && (
                                     <Fragment>
                                     <LinkIcon color="primary"/>
                                     <a href={website} target="_blank" rel="noopener noreferrer">
                                         {' '}{website}
                                     </a>
-                                    <hr/>
                                     </Fragment>
                                 )}
                                 <CalendarToday color="primary" />{' '}
-                                <span>Fecha de nacimiento {dayjs(FechaNacimiento).format('DD MMM YYYY')}</span>
-                                        
+                                <span>       {dayjs(FechaNacimiento).format('DD MMM YYYY')}</span>
+                                <hr></hr>       
                                 <Tooltip title="Logout" placemente="top">
-                                <IconButton onClick={this.handleLogout}>
+                                <IconButton onClick={this.handleLogout}> 
                                 <Backspace color="primary">
-
-                            </Backspace>
+                            </Backspace>  Logout
                         </IconButton>
+                        
                     </Tooltip>
+                    <EditarDetalles />
                     </Grid>
+                    
                   </Grid>
-                </div>
+                </div> 
         ) : (
             <Paper className={classes.paper}>
                 <Typography variant="body2" align="center">
-                    No se encontro un perfil asociado, porfavor reingrese
-                </Typography>
+                
                 <div className={classes.buttons}>
                     <Button variant="contained" color="primary" component={Link} to="/login">
                         Login
@@ -170,8 +174,9 @@ class ProfileUser extends Component {
                         Signup
                     </Button>
                 </div>
+                </Typography>
             </Paper>
-        )) : (<p>loading..</p>)
+        )) : ( <div>Cargando..</div>)
 
         return profileMarkup;    
     }
@@ -184,10 +189,10 @@ const mapStateToProps = (state) => ({
 const mapActionToProps = {logoutUser, uploadImage};
 
 ProfileUser.propTypes = {
+    logoutUser: PropTypes.func.isRequired,
+    uploadImage: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    uploadImage: PropTypes.func.isRequired,
-    logoutUser: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(ProfileUser))

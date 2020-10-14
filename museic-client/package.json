@@ -41,5 +41,8 @@
     ]
   },
   "proxy": "https://us-central1-muse-ic.cloudfunctions.net/api",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "style-loader": "^2.0.0"
+  }
 }

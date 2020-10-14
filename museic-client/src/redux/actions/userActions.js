@@ -47,12 +47,21 @@ export const logoutUser = () => (dispatch) => {
 export const uploadImage = (formData) => (dispatch) => {
   dispatch({ type: LOADING_USER });
   axios
-    .post('/user/image', formData)
+    .post('/Usuario/image', formData)
     .then(() => {
       dispatch(getUserData());
     })
     .catch((err) => console.log(err));
 };
+
+export const editUserDetails = (userDetails) => (dispatch) => {
+  dispatch({ type: LOADING_USER });
+  axios.post('Usuario',userDetails)
+    .then(() =>{
+      dispatch(getUserData());
+    })
+    .catch((err) => console.log(err));
+}
 
 export const getUserData = () => (dispatch) => {
   dispatch({ type: LOADING_USER });

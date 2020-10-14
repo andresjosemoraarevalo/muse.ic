@@ -130,7 +130,7 @@ class ProfileUser extends Component {
                      </div>
                     </Grid>
                     <Grid item xs={6}>
-                    <MuiLink component={Link} to={`/Usuario/${username}`} color="primary" variant="h5">
+                    <MuiLink component={Link} to={`/user`} color="primary" variant="h5">
                                     @{username}
                                 </MuiLink>
                                 <hr></hr>  

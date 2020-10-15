@@ -78,6 +78,8 @@ class intro extends Component {
                                         color="primary"
                                         fullWidth
                                         component={Link}
+                                        buttonStyle={{ borderRadius: 25 }}
+                                        style={{ borderRadius: 25 }}
                                         to="/login"
                                         >
                                         Usuario
@@ -90,6 +92,8 @@ class intro extends Component {
                                         variant="contained"
                                         color="primary"
                                         component={Link}
+                                        buttonStyle={{ borderRadius: 25 }}
+                                        style={{ borderRadius: 25 }}
                                         to="/artistlogin"
                                         >
                                         Artista

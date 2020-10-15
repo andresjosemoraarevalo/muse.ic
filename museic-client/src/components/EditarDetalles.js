@@ -56,7 +56,7 @@ export class EditarDetalles extends Component {
         const { classes } = this.props;
         return (
               <Fragment>
-                  <Tooltip title="Edit details" placement="top">
+                  <Tooltip title="Editar bio" placement="top">
                     <IconButton onClick={this.handleOpen} className={classes.button}>
                         <EditIcon color="primary">
 

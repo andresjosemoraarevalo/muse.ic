@@ -43,10 +43,30 @@ export const logoutUser = () => (dispatch) => {
   dispatch({ type: SET_UNAUTHENTICATED });
 };
 
+
+export const uploadImage = (formData) => (dispatch) => {
+  dispatch({ type: LOADING_USER });
+  axios
+    .post('/usuario/FotoPerfil', formData)
+    .then(() => {
+      dispatch(getUserData());
+    })
+    .catch((err) => console.log(err));
+};
+
+export const editUserDetails = (userDetails) => (dispatch) => {
+  dispatch({ type: LOADING_USER });
+  axios.post('/usuarioDetails',userDetails)
+    .then(() =>{
+      dispatch(getUserData());
+    })
+    .catch((err) => console.log(err));
+}
+
 export const getUserData = () => (dispatch) => {
   dispatch({ type: LOADING_USER });
   axios
-    .get("/Usuario")
+    .get("/usuario")
     .then((res) => {
       dispatch({
         type: SET_USER,
@@ -61,3 +81,5 @@ const setAuthorizationHeader = (token) => {
   localStorage.setItem("FBIdToken", FBIdToken);
   axios.defaults.headers.common["Authorization"] = FBIdToken;
 };
+
+

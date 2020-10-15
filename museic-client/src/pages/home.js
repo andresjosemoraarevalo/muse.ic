@@ -19,59 +19,6 @@ const styles = {
 };
 
 class home extends Component {
-<<<<<<< Updated upstream
-    state = {
-        publicaciones: null
-    }
-    componentDidMount(){
-        axios.get('/getPublicaciones')
-         .then(res=>{
-             console.log(res.data)
-             this.setState({
-                 publicaciones: res.data
-             })
-         })
-         .catch(err => console.log(err));
-    }
-    render(){
-        let recentPublicacionesMarkup = this.state.publicaciones ? (
-<<<<<<< Updated upstream
-            this.state.publicaciones.map((publicacion) => <Publicacion key={publicacion.postId} publicacion={publicacion}/>)
-=======
-            this.state.publicaciones.map((publicacion) => <Publicacion publicacion={publicacion}/>)
->>>>>>> Stashed changes
-        ) : (
-            <p>Loading...</p>
-        );
-        const {classes} = this.props;
-        return (
-            <Grid container className={classes.root} spacing={3} alignItems="center">
-<<<<<<< Updated upstream
-                <Grid item xs={8}>
-                    <p>Crear Publicacion</p>
-                    <Paper>Crear</Paper>
-                </Grid>
-                <Grid item xs={4}>
-                    Chat...
-                </Grid>
-                <Grid item xs={8}>
-                    {recentPublicacionesMarkup}
-                </Grid>
-                
-                
-=======
-                <Grid item sm={11} xs={12}>
-                    <p>Crear Publicacion</p>
-                    <Paper>Crear</Paper>
-                </Grid>
-                <Grid item sm={11} xs={12}>
-                    {recentPublicacionesMarkup}
-                </Grid>
->>>>>>> Stashed changes
-            </Grid>
-        );
-    }
-=======
   componentDidMount() {
     this.props.getPublicaciones();
   }
@@ -102,7 +49,6 @@ class home extends Component {
       </Grid>
     );
   }
->>>>>>> Stashed changes
 }
 
 const mapStateToProps = (state) => ({

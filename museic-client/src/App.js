@@ -19,6 +19,7 @@ import signup from "./pages/signup";
 import artistlogin from "./pages/artistlogin";
 import intro from "./pages/intro";
 import user from "./pages/user";
+import axios from 'axios';
 
 const theme = createMuiTheme({
   palette: {
@@ -75,11 +76,10 @@ function App() {
                   path="/login"
                   component={login}
                 />
-                <AuthRoute
+                <Route
                   exact
-                  path="/user"
+                  path="/usuarios/:username"
                   component={user}
-                  authenticated={authenticated}
                 />
                 <AuthRoute
                   exact

@@ -11,7 +11,9 @@ class Navbar extends Component {
     render() {
         const {authenticated} = this.props
         return (
+          
             <AppBar>
+              { authenticated && (
                 <Toolbar className="nav-container">
                     { authenticated ? (
                         <Fragment>
@@ -27,7 +29,10 @@ class Navbar extends Component {
                         </Fragment>
                     )}
                     </Toolbar>
+                    )}
             </AppBar>
+          
+            
         );
     }
 }

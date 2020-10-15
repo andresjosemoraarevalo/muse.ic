@@ -66,7 +66,7 @@ export const editUserDetails = (userDetails) => (dispatch) => {
 export const getUserData = () => (dispatch) => {
   dispatch({ type: LOADING_USER });
   axios
-    .get("/usuario")
+    .get("/Usuario")
     .then((res) => {
       dispatch({
         type: SET_USER,

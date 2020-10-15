@@ -16,6 +16,9 @@ import { connect } from "react-redux";
 import { postPublicacion, clearErrors } from "../redux/actions/dataActions";
 
 const styles = {
+  root: {
+    marginTop: 15
+  },
   submitButton: {
     position: "relative",
     marginTop: 20,
@@ -70,7 +73,10 @@ class PostPublicacion extends Component {
       UI: { loading },
     } = this.props;
     return (
-      <Fragment>
+      <div container className={classes.root}>
+        
+         
+      <Fragment className={classes.root}>
         <Button
           fullWidth
           variant="contained"
@@ -130,6 +136,7 @@ class PostPublicacion extends Component {
           </DialogContent>
         </Dialog>
       </Fragment>
+      </div>
     );
   }
 }

@@ -14,6 +14,7 @@ const {
   validarDatosdeSignup,
   validarDatosdeLogin,
   reduceUserDetails,
+  soloDetails,
 } = require("../utilidades/validadores");
 
 //-----------------------------------------------------------------------------
@@ -37,6 +38,8 @@ exports.signupUsuario = (request, response) => {
     password: request.body.password,
     confirmPassword: request.body.confirmPassword,
     username: request.body.username,
+    seguidores: 0,
+    seguidos: 0
   };
 
   const { valido, errors } = validarDatosdeSignup(newUsuario);
@@ -73,6 +76,8 @@ exports.signupUsuario = (request, response) => {
         email: newUsuario.email,
         Fotolink: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imagenInicial}?alt=media`,
         userId,
+        seguidores: newUsuario.seguidores,
+        seguidos: newUsuario.seguidos
       };
       return db.doc(`/Usuarios/${newUsuario.username}`).set(userCredentials);
     })
@@ -222,68 +227,61 @@ salida: json con estado de aceptación o error
 */
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-exports.subirFotoPerfilUsuario = (request, response) => {
+exports.subirFotoPerfilUsuario = (req, res) => {
   const BusBoy = require("busboy");
   const path = require("path");
   const os = require("os");
   const fs = require("fs");
 
-  const busboy = new BusBoy({ headers: request.headers });
+  const busboy = new BusBoy({ headers: req.headers });
 
-  let nombreArchivoImagen;
-  let imagenACargar = {};
+  let imageToBeUploaded = {};
+  let imageFileName;
+  // String for image token
+  
 
-  busboy.on(
-    "file",
-    (nombreCampo, archivo, nombreArchivo, codificación, mimetype) => {
-      console.log(nombreCampo);
-      console.log(nombreArchivo);
-      console.log(mimetype);
-      if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
-        return response
-          .status(400)
-          .json({ error: "Archivo con formato incorrecto cargado" });
-      }
-      const extensionImagen = nombreArchivo.split(".")[
-        nombreArchivo.split(".").length - 1
-      ];
-      nombreArchivoImagen = `${Math.round(
-        Math.random() * 10000000000000
-      )}.${extensionImagen}`;
-      const direccionArchivo = path.join(os.tmpdir(), nombreArchivoImagen);
-      imagenACargar = { direccionArchivo, mimetype };
-
-      archivo.pipe(fs.createWriteStream(direccionArchivo));
+  busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
+    console.log(fieldname, file, filename, encoding, mimetype);
+    if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
+      return res.status(400).json({ error: "Wrong file type submitted" });
     }
-  );
+    // my.image.png => ['my', 'image', 'png']
+    const imageExtension = filename.split(".")[filename.split(".").length - 1];
+    // 32756238461724837.png
+    imageFileName = `${Math.round(
+      Math.random() * 1000000000000
+    ).toString()}.${imageExtension}`;
+    const filepath = path.join(os.tmpdir(), imageFileName);
+    imageToBeUploaded = { filepath, mimetype };
+    file.pipe(fs.createWriteStream(filepath));
+  });
   busboy.on("finish", () => {
     admin
       .storage()
       .bucket()
-      .upload(imagenACargar.direccionArchivo, {
+      .upload(imageToBeUploaded.filepath, {
         resumable: false,
         metadata: {
           metadata: {
-            contentType: imagenACargar.mimetype,
+            contentType: imageToBeUploaded.mimetype,
+            //Generate token to be appended to imageUrl
           },
         },
       })
       .then(() => {
-        const urlImagen = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${nombreArchivoImagen}?alt=media`;
-        console.log(urlImagen);
-        return db
-          .doc(`/Usuarios/${request.user.username}`)
-          .update({ Fotolink: urlImagen });
+        // Append token to url
+        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+        return db.doc(`/Usuarios/${req.user.username}`).update({ Fotolink: imageUrl });
       })
       .then(() => {
-        return response.json({ message: "Imagen cargada correctamente" });
+        return res.json({ message: "image uploaded successfully" });
       })
       .catch((err) => {
         console.error(err);
-        return response.status(500).json({ error: err.code });
+        return res.status(500).json({ error: "something went wrong" });
       });
   });
-  busboy.end(request.rawBody);
+  busboy.end(req.rawBody);
 };
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -360,7 +358,7 @@ exports.subirFotoPerfilArtista = (request, response) => {
 
 //addUserDetails
 exports.addUserDetails = (req, res) => {
-  let userDetails = reduceUserDetails(req.body);
+  let userDetails = soloDetails(req.body);
 
   db.doc(`/Usuarios/${req.user.username}`)
     .update(userDetails)

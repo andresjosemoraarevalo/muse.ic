@@ -74,6 +74,7 @@ export class EditarDetalles extends Component {
                     <DialogContent>
                         <form>
                             <TextField
+                                variant="outlined"
                                 name="bio"
                                 type="text"
                                 label="Bio"

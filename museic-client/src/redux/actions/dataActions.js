@@ -84,6 +84,23 @@ export const postPublicacion = (newPublicacion) => (dispatch) => {
       .catch((err) => console.log(err));
   };
 
+  export const getUserData = (username) => (dispatch) => {
+    dispatch({ type: LOADING_DATA });
+    axios.get(`/usuario/${username}`)
+      .then((res) => {
+        dispatch({
+          type: SET_PUBLICACIONES,
+          payload: res.data.publicaciones
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: SET_PUBLICACIONES,
+          payload: null
+        })
+      });
+  };
+
   export const clearErrors = () => (dispatch) => {
     dispatch({ type: CLEAR_ERRORS });
   };

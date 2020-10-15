@@ -4,10 +4,11 @@ import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import Publicacion from "../components/Publicacion";
 import PostPublicacion from '../components/PostPublicacion';
+import Profile from '../components/Profile';
 
 import { connect } from "react-redux";
 import { getPublicaciones } from "../redux/actions/dataActions";
-import Button from "@material-ui/core/Button";
+//import Button from "@material-ui/core/Button";
 
 const styles = {
   root: {
@@ -38,6 +39,7 @@ class home extends Component {
           
         </Grid>
         <Grid item sm={4}>
+            <Profile />
             <PostPublicacion />
         </Grid>
         <Grid item sm={6} >

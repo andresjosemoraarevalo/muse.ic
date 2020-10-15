@@ -19,6 +19,7 @@ import signup from "./pages/signup";
 import artistlogin from "./pages/artistlogin";
 import intro from "./pages/intro";
 import user from "./pages/user";
+import ProfileUser from "./components/ProfileUser";
 
 const theme = createMuiTheme({
   palette: {
@@ -50,7 +51,6 @@ if (token) {
     window.location.href = "/intro";
   } else {
     store.dispatch({ type: SET_AUTHENTICATED });
-    axios.defaults.headers.common['Authorization'] = token;
     store.dispatch(getUserData());
   }
 }
@@ -64,6 +64,12 @@ function App() {
               <div >
               <Switch>
                 <Route exact path="/" component={home} />
+                <Route
+                  exact
+                  path="/user"
+                  component={ProfileUser}
+                 // authenticated={authenticated}
+                />
                 <AuthRoute
                   exact
                   path="/intro"
@@ -75,12 +81,7 @@ function App() {
                   path="/login"
                   component={login}
                 />
-                <AuthRoute
-                  exact
-                  path="/user"
-                  component={user}
-                  authenticated={authenticated}
-                />
+                
                 <AuthRoute
                   exact
                   path="/artistLogin"

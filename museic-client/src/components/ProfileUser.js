@@ -27,6 +27,9 @@ const styles ={
     paper: {
         padding: 20
     },
+    root: {
+        marginTop: "80px",
+    },
     Fotolink : {
         height: '100vh',
         display: "flex",
@@ -64,6 +67,7 @@ const styles ={
         justifyContent: "center"
     },
     button:{
+        marginTop: "80px",
         textAlign: 'center',
             '& a': {
                  margin: '2210px 170px'
@@ -106,7 +110,7 @@ class ProfileUser extends Component {
         let profileMarkup = !loading ? (
             authenticated ? (
             <div className={classes.root}>
-                  <Grid container spacing={2}>
+                  <Grid container spacing={8}>
                     <Grid item xs={6}>
                     <div className={classes.paper}>
                     <div className={classes.profile}>
@@ -192,8 +196,9 @@ class ProfileUser extends Component {
                   </Grid>
                 </div> 
         ) : (
+            <div className={classes.root}>
             <Paper className={classes.paper}>
-                <Typography variant="body2" align="center" textSize="20">
+                <Typography variant="body2" align="center" textSize="20" >
                     Cerro sesión
                 <div className={classes.buttons}>
                     <Button variant="contained" color="primary" component={Link} to="/login">
@@ -205,6 +210,7 @@ class ProfileUser extends Component {
                 </div>
                 </Typography>
             </Paper>
+            </div>
         )) : ( <div>Cargando..</div>)
 
         return profileMarkup;    

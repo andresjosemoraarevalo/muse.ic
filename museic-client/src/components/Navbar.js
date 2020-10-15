@@ -7,7 +7,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 
-
 class Navbar extends Component {
     render() {
         const {authenticated} = this.props

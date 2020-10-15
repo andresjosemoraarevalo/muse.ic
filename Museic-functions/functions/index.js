@@ -22,7 +22,8 @@ const {
   subirFotoPerfilUsuario,
   subirFotoPerfilArtista,
   followUsuario,
-  unfollowUsuario
+  unfollowUsuario,
+  getUserDetails
 } = require("./handlers/usuarios");
 const FBAuthUsuarios = require("./utilidades/fbauthUsuarios");
 const FBAuthArtistas = require("./utilidades/fbauthArtistas");
@@ -54,6 +55,7 @@ app.post("/usuario/FotoPerfil", FBAuthUsuarios, subirFotoPerfilUsuario);
 app.post("/artista/FotoPerfil", FBAuthArtistas, subirFotoPerfilArtista);
 app.post("/usuarioDetails", FBAuthUsuarios, addUserDetails);
 app.get("/Usuario", FBAuthUsuarios, getUsuarioAutenticado);
+app.get("/usuario/:username", getUserDetails);
 app.get("/usuario/:username/follow", FBAuthUsuarios, followUsuario);
 app.get("/usuario/:username/unfollow", FBAuthUsuarios, unfollowUsuario);
 

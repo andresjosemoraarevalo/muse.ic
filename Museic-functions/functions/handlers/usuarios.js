@@ -372,6 +372,44 @@ exports.addUserDetails = (req, res) => {
       return res.status(500).json({ error: err.code });
     });
 };
+//get detalles de cualquier usuario
+exports.getUserDetails = (req, res) => {
+  let userData = {};
+  db.doc(`/Usuarios/${req.params.username}`)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        userData.user = doc.data();
+        return db
+          .collection("Publicaciones")
+          .where("postedBy", "==", req.params.username)
+          .orderBy("postDate", "desc")
+          .get();
+      } else {
+        return res.status(404).json({ error: "Usuario no encontrado" });
+      }
+    })
+    .then((data) => {
+      userData.publicaciones = [];
+      data.forEach((doc) => {
+        userData.publicaciones.push({
+          postBody: doc.data().postBody,
+          postDate: doc.data().postDate,
+          username: doc.data().username,
+          Fotolink: doc.data().Fotolink,
+          nombre: doc.data().nombre,
+          likes: doc.data().likes,
+          comentarios: doc.data().comentarios,
+          postId: doc.id,
+        });
+      });
+      return res.json(userData);
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
+};
 
 //getUsuarioAutenticado
 exports.getUsuarioAutenticado = (req, res) => {
@@ -388,9 +426,9 @@ exports.getUsuarioAutenticado = (req, res) => {
       }
     })
     .then((data) => {
-      userData.seguidos = [];
+      userData.likes = [];
       data.forEach((doc) => {
-        userData.seguidos.push(doc.data());
+        userData.likes.push(doc.data());
       });
       return res.json(userData);
     })

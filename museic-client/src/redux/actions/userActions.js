@@ -47,7 +47,7 @@ export const logoutUser = () => (dispatch) => {
 export const uploadImage = (formData) => (dispatch) => {
   dispatch({ type: LOADING_USER });
   axios
-    .post('/Usuario/image', formData)
+    .post('/usuario/FotoPerfil', formData)
     .then(() => {
       dispatch(getUserData());
     })
@@ -56,7 +56,7 @@ export const uploadImage = (formData) => (dispatch) => {
 
 export const editUserDetails = (userDetails) => (dispatch) => {
   dispatch({ type: LOADING_USER });
-  axios.post('Usuario',userDetails)
+  axios.post('/usuarioDetails',userDetails)
     .then(() =>{
       dispatch(getUserData());
     })
@@ -66,7 +66,7 @@ export const editUserDetails = (userDetails) => (dispatch) => {
 export const getUserData = () => (dispatch) => {
   dispatch({ type: LOADING_USER });
   axios
-    .get("/Usuario")
+    .get("/usuario")
     .then((res) => {
       dispatch({
         type: SET_USER,

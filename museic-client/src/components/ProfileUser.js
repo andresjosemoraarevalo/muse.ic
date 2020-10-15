@@ -97,7 +97,7 @@ class ProfileUser extends Component {
             classes, 
             user: {
                 credentials: {
-                username, FechaNacimiento, seguidos, seguidores, Fotolink, bio, website},
+                username, fechaNacimiento, seguidos, seguidores, Fotolink, bio, website},
                 loading,
                 authenticated
             }
@@ -167,7 +167,7 @@ class ProfileUser extends Component {
                                 </div>  
                                 <CalendarToday color="primary" />{' '}
                                 <span>
-                                      {dayjs(FechaNacimiento).format('DD MMM YYYY')}</span>  
+                                      {dayjs(fechaNacimiento).format('DD MMM YYYY')}</span>  
                                 <div>
                                         
                                 </div>   

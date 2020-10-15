@@ -130,45 +130,74 @@ class ProfileUser extends Component {
                      </div>
                     </Grid>
                     <Grid item xs={6}>
+                    <div>
+                                        
+                    
+                    
+                    </div>
                     <MuiLink component={Link} to={`/user`} color="primary" variant="h5">
                                     @{username}
+                                    <div>
+
+                                    </div>
+                                    
                                 </MuiLink>
-                                <hr></hr>  
+                                    <hr/>
                                     <span>    {seguidores && <Typography variant="body2">{seguidores}</Typography>} seguidores        </span>
-                                    <span>  {seguidos && <Typography variant="body2">{seguidos}</Typography>} seguidos </span>
-                                <hr></hr>  
-                                    {bio && <Typography variant="body2">{bio}</Typography>}
-                                <hr></hr>  
+                                    <span>  {seguidos && <Typography variant="body2">{seguidos}</Typography>} seguidos 
+                                    
+                                    </span>
+                                                            
                                  {website && (
                                     <Fragment>
                                     <LinkIcon color="primary"/>
                                     <a href={website} target="_blank" rel="noopener noreferrer">
                                         {' '}{website}
                                     </a>
+                                    <div>
+                                        
+                                    </div>
                                     </Fragment>
                                 )}
+                                <div>
+                                        
+                                </div>
+                                <div>
+                                        
+                                </div>  
                                 <CalendarToday color="primary" />{' '}
-                                <span>       {dayjs(FechaNacimiento).format('DD MMM YYYY')}</span>
-                                <hr></hr>       
+                                <span>
+                                      {dayjs(FechaNacimiento).format('DD MMM YYYY')}</span>  
+                                <div>
+                                        
+                                </div>   
+                                {bio && <Typography variant="body2">{bio} <EditarDetalles /></Typography>}
+                                <hr/>
+                                <div>
+
+
+
+                                </div> 
                                 <Tooltip title="Logout" placemente="top">
+                        
                                 <IconButton onClick={this.handleLogout}> 
-                                <Backspace color="primary">
-                            </Backspace>  Logout
+                                <Backspace color="primary" >
+                            </Backspace> Logout
                         </IconButton>
                         
                     </Tooltip>
-                    <EditarDetalles />
+                    
                     </Grid>
                     
                   </Grid>
                 </div> 
         ) : (
             <Paper className={classes.paper}>
-                <Typography variant="body2" align="center">
-                
+                <Typography variant="body2" align="center" textSize="20">
+                    Cerro sesión
                 <div className={classes.buttons}>
                     <Button variant="contained" color="primary" component={Link} to="/login">
-                        Login
+                        Login 
                     </Button>
                     <Button variant="contained" color="secondary" component={Link} to="/signup">
                         Signup

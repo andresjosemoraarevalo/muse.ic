@@ -4,7 +4,7 @@ class home extends Component {
     render() {
         return (
             <div>
-                Home por terminar
+                Home pendiente
             </div>
         )
     }

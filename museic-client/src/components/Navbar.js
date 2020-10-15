@@ -6,6 +6,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
+import ProfileUser from '../components/ProfileUser'
 
 class Navbar extends Component {
     render() {
@@ -18,7 +19,7 @@ class Navbar extends Component {
                     { authenticated ? (
                         <Fragment>
                             <Button color="inherit" component={Link} to="/">Home</Button>
-                            <Button color="inherit" component={Link} to="/user">User</Button>
+                            <Button color="inherit" component={Link} to="/user">Perfil</Button>
                         </Fragment>
                     ):(
                         <Fragment>

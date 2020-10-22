@@ -1,12 +1,17 @@
 import React, { Component , Fragment} from 'react'
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import MyButton from "../util/MyButton";
 //MUI stuff
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import ProfileUser from '../components/ProfileUser'
+import ProfileUser from '../components/ProfileUser';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PersonIcon from '@material-ui/icons/Person';
+import AlbumIcon from '@material-ui/icons/Album';
+import Tooltip from '@material-ui/core/Tooltip';
 
 class Navbar extends Component {
     render() {
@@ -18,8 +23,19 @@ class Navbar extends Component {
                 <Toolbar className="nav-container">
                     { authenticated ? (
                         <Fragment>
-                            <Button color="inherit" component={Link} to="/">Home</Button>
-                            <Button color="inherit" component={Link} to="/user">Perfil</Button>
+                            <Link to="/">
+                                <MyButton tip="Home">
+                                    <AlbumIcon style={{fill: "white"}}/>
+                                </MyButton>
+                            </Link>
+                            <Link to="/user">
+                                <MyButton tip="Perfil">
+                                    <PersonIcon style={{fill: "white"}}/>
+                                </MyButton>
+                            </Link>
+                            <MyButton tip="Logout" onClick={this.handleLogout}>
+                                <ExitToAppIcon style={{fill: "white"}} />
+                            </MyButton>
                         </Fragment>
                     ):(
                         <Fragment>

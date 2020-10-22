@@ -9,7 +9,9 @@ import {
     CLEAR_ERRORS,
     LOADING_UI,
     STOP_LOADING_UI,
-    SUBMIT_COMMENT
+    SUBMIT_COMMENT,
+    UNFOLLOW_USER,
+    FOLLOW_USER
   } from '../types';
 import axios from 'axios';
 
@@ -29,6 +31,28 @@ export const getPublicaciones = () => (dispatch) => {
         payload: []
       })
     });
+};
+
+export const followProfile = (username) => (dispatch) => {
+  axios.get(`/usuario/${username}/follow`)
+    .then(res => {
+      dispatch({
+        type: FOLLOW_USER,
+        payload: res.data
+      })
+    })
+    .catch(err => console.log(err));
+};
+
+export const unfollowProfile = (username) => (dispatch) => {
+  axios.get(`/usuario/${username}/unfollow`)
+    .then(res => {
+      dispatch({
+        type: UNFOLLOW_USER,
+        payload: res.data
+      })
+    })
+    .catch(err => console.log(err));
 };
 
 //like publicacion

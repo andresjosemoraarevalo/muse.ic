@@ -428,6 +428,29 @@ exports.getUsuarioAutenticado = (req, res) => {
       data.forEach((doc) => {
         userData.likes.push(doc.data());
       });
+      return db
+          .collection("Seguidos")
+          .where("username", "==", req.user.username)
+          .get();
+      
+    })
+    .then((data) => {
+      userData.seguidos = [];
+      data.forEach((doc) => {
+        userData.seguidos.push(doc.data());
+      });
+      return db
+        .collection("Publicaciones")
+        .where("postedBy", "==", req.user.username)
+        .orderBy("postDate", "desc")
+        .get();
+      
+    })
+    .then((data) => {
+      userData.publicaciones = [];
+      data.forEach((doc) => {
+        userData.publicaciones.push(doc.data());
+      });
       return res.json(userData);
     })
     .catch((err) => {

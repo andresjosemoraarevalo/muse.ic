@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import MuiLink from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
 import LocationOn from "@material-ui/icons/LocationOn";
 import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
@@ -94,6 +95,7 @@ class Profile extends Component {
           bio,
           seguidos,
           seguidores,
+          gustos,
         },
         loading,
         authenticated,
@@ -132,6 +134,21 @@ class Profile extends Component {
               </MuiLink>
               <hr />
               {bio && <Typography variant="body2">{bio}</Typography>}
+              {gustos && (
+                <div>
+                  {gustos.map((gusto) => (
+                    <Box
+                      component="div"
+                      display="inline"
+                      p={1}
+                      m={1}
+                      bgcolor="background.paper"
+                    >
+                      {gusto}
+                    </Box>
+                  ))}
+                </div>
+              )}
               <hr />
               <hr />
               <span>
@@ -170,7 +187,7 @@ class Profile extends Component {
               component={Link}
               to="/login"
             >
-              Login
+              Ingresar
             </Button>
             <Button
               variant="contained"
@@ -178,7 +195,7 @@ class Profile extends Component {
               component={Link}
               to="/signup"
             >
-              Signup
+              Registrarse
             </Button>
           </div>
         </Paper>
@@ -206,5 +223,5 @@ Profile.propTypes = {
 
 export default connect(
   mapStateToProps,
-  mapActionsToProps
+  mapActionsToProps 
 )(withStyles(styles)(Profile));

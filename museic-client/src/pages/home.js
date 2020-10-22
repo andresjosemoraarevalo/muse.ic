@@ -34,18 +34,18 @@ class home extends Component {
     );
     const { classes } = this.props;
     return (
-      <Grid container className={classes.root} spacing={3}>
-          <Grid item sm={1}>
+      <Grid container className={classes.root} spacing={2}>
+          <Grid item sm={2}>
           
-        </Grid>
-        <Grid item sm={4}>
+          </Grid>
+        <Grid item sm={3}>
             <Profile />
             <PostPublicacion />
         </Grid>
-        <Grid item sm={6} >
+        <Grid item sm={5} >
           {recentPublicacionesMarkup}
         </Grid>
-        <Grid item sm={1}>
+        <Grid item sm={2}>
           
         </Grid>
       </Grid>

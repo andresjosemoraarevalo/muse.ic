@@ -5,7 +5,9 @@ import {
     LOADING_DATA,
     DELETE_PUBLICACION,
     POST_PUBLICACION,
-    SET_PUBLICACION
+    SET_PUBLICACION,
+    FOLLOW_USER,
+    UNFOLLOW_USER
   } from '../types';
   
   const initialState = {
@@ -42,6 +44,13 @@ import {
       case DELETE_PUBLICACION:
         let index2 = state.publicaciones.findIndex((publicacion) => publicacion.postId === action.payload);
         state.publicaciones.splice(index2, 1);
+        return {
+          ...state
+        };
+      case FOLLOW_USER:
+      case UNFOLLOW_USER:
+        let indexU = state.seguidos.findIndex((seguido) => seguido.follows === action.payload.username);
+        state.seguidos[indexU] = action.payload;
         return {
           ...state
         };

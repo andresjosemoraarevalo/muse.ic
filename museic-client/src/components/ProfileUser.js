@@ -4,6 +4,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import EditarDetalles from "../components/EditarDetalles";
+import Publicacion from "../components/Publicacion";
 //MUI
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -12,6 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Tooltip from "@material-ui/core/Tooltip";
 import MyButton from "../util/MyButton";
+import Box from "@material-ui/core/Box";
 
 //Iconos
 import LinkIcon from "@material-ui/icons/Link";
@@ -22,62 +24,19 @@ import EditIcon from "@material-ui/icons/Edit";
 import { connect } from "react-redux";
 import { logoutUser, uploadImage } from "../redux/actions/userActions";
 import { IconButton } from "@material-ui/core";
+import { getUserData } from '../redux/actions/dataActions';
 
 const styles = {
+  root: {
+    padding: '80px 300px 0px',
+  },
   paper: {
     padding: 20,
-  },
-  Fotolink: {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  username: {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  FechaNacimiento: {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  seguidos: {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  seguidores: {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  bio: {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  button: {
-    textAlign: "center",
-    "& a": {
-      margin: "2210px 170px",
-    },
   },
   profile: {
     "& .image-wrapper": {
       textAlign: "center",
       position: "relative",
-      "& button": {
-        position: "absolute",
-        top: "80%",
-        left: "70%",
-      },
     },
     "& .profile-image": {
       width: 200,
@@ -97,12 +56,7 @@ const styles = {
     },
     "& hr": {
       border: "none",
-      margin: "0 0 10px 0",
-    },
-    "& svg.button": {
-      "&:hover": {
-        cursor: "pointer",
-      },
+      margin: "0 0 0 0",
     },
   },
   imagen: {
@@ -112,6 +66,27 @@ const styles = {
     maxWidth: "100%",
     borderRadius: "50%",
   },
+  box: {
+    backgroundColor: "#800080",
+    color: "#FFFFFF",
+    marginRight: 10
+  },
+  boxDiv: {
+    marginTop: 15,
+    marginBottom: 15,
+  },
+  seguidos: {
+    marginTop: 15,
+    marginBottom: 10,
+    fontWeigth: 500
+  },
+  bio: {
+    marginBottom: 15
+  },
+  boton: {
+    margin: '8px',
+    textTransform: "none"
+  }
 };
 
 class ProfileUser extends Component {
@@ -143,19 +118,26 @@ class ProfileUser extends Component {
           Fotolink,
           bio,
           website,
+          gustos
         },
         loading,
         authenticated,
+        publicaciones
       },
     } = this.props;
-
+    const publicacionesMarkup = loading ? (
+      <p> </p>
+    ) : publicaciones === null ? (
+        <p>Sin publicaciones</p>
+    ) : (
+        publicaciones.map((publicacion) => <Publicacion key={publicacion.postId} publicacion={publicacion}/>)
+    )
     let profileMarkup = !loading ? (
       authenticated ? (
-        <div className={classes.root}>
+        <div container className={classes.root}>
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <div className={classes.paper}>
-                <div className={classes.profile}></div>
                 <div className="image-wrapper">
                   <img
                     src={Fotolink}
@@ -180,33 +162,41 @@ class ProfileUser extends Component {
                 </div>
               </div>
             </Grid>
-            <Grid item xs={6}>
-              <div></div>
-              <MuiLink
-                component={Link}
-                to={`/user`}
-                color="primary"
-                variant="h5"
-              >
-                @{username}
-                <div></div>
-              </MuiLink>
-              <hr />
-              <span>
-                {" "}
-                {seguidores && (
-                  <Typography variant="body2">{seguidores}</Typography>
-                )}{" "}
-                seguidores{" "}
-              </span>
-              <span>
-                {" "}
-                {seguidos && (
-                  <Typography variant="body2">{seguidos}</Typography>
-                )}{" "}
-                seguidos
-              </span>
-              <div></div>
+            <Grid item xs={8}>
+              <div className={classes.paper}>
+              <Grid container spacing={2}>
+                <Grid item >
+                  <Typography color="primary" variant="h4">
+                    {username}
+                  </Typography>
+                </Grid>
+                <Grid item >
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    //onClick={this.followProfile}
+                    buttonStyle={{ borderRadius: 5 }}
+                    style={{ borderRadius: 5 }}
+                    className={classes.boton}
+                  >
+                    Editar perfil
+                  </Button>
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={6}>
+                <Grid item >
+                  <Typography variant="body1" className={classes.seguidos}>
+                    {seguidores}{" Seguidores"}
+                  </Typography>
+                </Grid>
+                <Grid item >
+                  <Typography variant="body1" className={classes.seguidos}>
+                    {seguidos}{" Seguidos"}
+                  </Typography>
+                </Grid>
+              </Grid>
               {website && (
                 <Fragment>
                   <LinkIcon color="primary" />
@@ -217,25 +207,43 @@ class ProfileUser extends Component {
                   <div container></div>
                 </Fragment>
               )}
-              <div></div>
-              <div></div>
-              <CalendarToday color="primary" />{" "}
-              <span>{dayjs(fechaNacimiento).format("DD MMM YYYY")}</span>
-              <div></div>
               {bio && (
-                <Typography variant="body2">
+                <Typography variant="body1" className={classes.bio}>
                   {bio} <EditarDetalles />
                 </Typography>
               )}
-              <hr />
-              <div></div>
-              <Tooltip title="Logout" placemente="top">
-                <IconButton onClick={this.handleLogout}>
-                  <Backspace color="primary"></Backspace> Logout
-                </IconButton>
-              </Tooltip>
+              <Grid container spacing={1}>
+                <Grid item>
+                  <CalendarToday color="primary" />{" "}
+                </Grid>
+                <Grid item>
+                  <Typography variant="body1">{dayjs(fechaNacimiento).format("DD MMM YYYY")}</Typography>
+                </Grid>
+              </Grid>
+              {gustos && (
+                <Grid container className={classes.boxDiv}>
+                  {gustos.map((gusto) => (
+                    <Box
+                      component="div"
+                      display="inline"
+                      borderRadius={8}
+                      p={1}
+                      color="primary"
+                      className={classes.box}
+                    >
+                      {gusto}
+                    </Box>
+                  ))}
+                </Grid>
+              )}
+              
+              </div>
             </Grid>
           </Grid>
+          <div>
+            {publicacionesMarkup}
+          </div>
+
         </div>
       ) : (
         <Paper className={classes.paper}>
@@ -272,15 +280,18 @@ class ProfileUser extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  data: state.data
 });
 
-const mapActionToProps = { logoutUser, uploadImage };
+const mapActionToProps = { logoutUser, uploadImage, getUserData };
 
 ProfileUser.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   uploadImage: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
+  getUserData: PropTypes.func.isRequired
 };
 
 export default connect(

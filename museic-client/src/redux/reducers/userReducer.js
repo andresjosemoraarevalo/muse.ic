@@ -12,6 +12,8 @@ const initialState = {
   loading: false,
   credentials: {},
   likes: [],
+  seguidos: [],
+  publicaciones: [],
 };
 
 export default function (state = initialState, action) {
@@ -27,7 +29,7 @@ export default function (state = initialState, action) {
       return {
         authenticated: true,
         loading: false,
-        ...action.payload,
+        ...action.payload
       };
     case LOADING_USER:
       return {

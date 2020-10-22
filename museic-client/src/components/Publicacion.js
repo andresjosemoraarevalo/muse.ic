@@ -101,7 +101,17 @@ class Publicacion extends Component {
         <CardHeader
           avatar={<Avatar alt={postedBy} src={Fotolink}></Avatar>}
           title={
-            <Typography
+            postedBy === username ? (
+              <Typography
+              variant="h6"
+              color="primary"
+              component={Link}
+              to={'/user'}
+            >
+              {postedBy}
+            </Typography>
+            ) : (
+              <Typography
               variant="h6"
               color="primary"
               component={Link}
@@ -109,6 +119,8 @@ class Publicacion extends Component {
             >
               {postedBy}
             </Typography>
+            )
+            
           }
           action={
             deleteButton

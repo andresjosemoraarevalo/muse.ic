@@ -102,7 +102,6 @@ exports.crearPublicacion = (req, res) => {
   const newPublicacion = {
     postBody: req.body.postBody,
     postedBy: req.user.username,
-    nombre: req.user.nombre,
     Fotolink: req.user.Fotolink,
     postDate: new Date().toISOString(),
     likes: 0,

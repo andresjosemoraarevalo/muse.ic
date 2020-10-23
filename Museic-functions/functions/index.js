@@ -28,6 +28,7 @@ const {
 const FBAuthUsuarios = require("./utilidades/fbauthUsuarios");
 const FBAuthArtistas = require("./utilidades/fbauthArtistas");
 const { admin } = require("./utilidades/administrador");
+const {db}=require('./utilidades/administrador');
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -60,3 +61,84 @@ app.get("/usuario/:username/follow", FBAuthUsuarios, followUsuario);
 app.get("/usuario/:username/unfollow", FBAuthUsuarios, unfollowUsuario);
 
 exports.api = functions.https.onRequest(app);
+/*
+Función: CreateNotifcacionOnLike
+Descripción: Crea una notificación al usuario de una publicación en el momento que se le de like 
+a su publicación.
+Datos de entrada:  snapshot 
+Datos de salida: Un doc en la colección de "Notificaciones" 
+*/
+exports.createNotificacionOnLike=functions.region('us-central1').firestore.document('Likes/{id}')
+  .onCreate((snapshot)=>{
+    db.doc(`/Publicaciones/${snapshot.data().postId}`).get()
+    .then(doc => {
+      if(doc.exists){
+        return db.doc(`/Notificaciones/${snapshot.id}`).set({
+          createdAt: new Date().toISOString(),
+          destinatario: doc.data().postedBy,
+          remitente: snapshot.data().username,
+          type: 'like',
+          read: false,
+          postId: doc.id
+
+        });
+      }
+    })
+    .then(()=> {
+      return;
+    })
+    .catch((err) =>{
+      console.error(err);
+      return; 
+    });
+  });
+
+  /*
+Función: eliminarNotifcacionOnUnLike
+Descripción: elimina  una notificación al usuario de una publicación en el momento que se
+quita un like a su publicación.
+Datos de entrada:  snapshot 
+Datos de salida: nada
+*/
+exports.eliminarNotificacionOnUnLike= functions.region('us-central1').firestore.document('Likes/{id}')
+.onDelete((snapshot)=>{
+  db.doc(`/Notificaciones/${snapshot.id}`)
+  .delete()
+  .then(()=> {
+    return;
+  })
+  .catch(err => {
+    console.error(err);
+    return;
+  });
+});
+/*
+Función: CreateNotifcacionOnComentario
+Descripción: Crea una notificación al usuario de una publicación en el momento que otro usuario haga un comentario 
+a su publicación.
+Datos de entrada:  snapshot 
+Datos de salida: Un doc en la colección de "Notificaciones" 
+*/
+exports.createNotificacionOnComentario= functions.region('us-central1').firestore.document('Comentarios/{id}')
+.onCreate((snapshot)=>{
+  db.doc(`/Publicaciones/${snapshot.data().postId}`).get()
+  .then(doc => {
+    if(doc.exists){
+      return db.doc(`/Notificaciones/${snapshot.id}`).set({
+        createdAt: new Date().toISOString(),
+        destinatario: doc.data().postedBy,
+        remitente: snapshot.data().username,
+        type: 'Comentario',
+        read: false,
+        postId: doc.id
+      });
+    }
+  })
+  .then(()=> {
+    return;
+  })
+  .catch((err) =>{
+    console.error(err);
+    return; 
+  });
+});

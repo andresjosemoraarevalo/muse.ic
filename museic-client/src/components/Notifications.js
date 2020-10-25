@@ -83,7 +83,7 @@ class Notifications extends Component {
             })
           ) : (
             <MenuItem onClick={this.handleClose}>
-              Aún no tienen ninguna notificación
+              Aún no tiene ninguna notificación
             </MenuItem>
           );
         return (

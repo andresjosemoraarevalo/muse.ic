@@ -10,6 +10,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { connect } from 'react-redux';
 import { getUserData } from '../redux/actions/dataActions';
+import { SET_PUBLICACIONES } from '../redux/types';
 
 const styles = {
     root: {
@@ -22,12 +23,15 @@ const styles = {
 
 class user extends Component {
     state = {
-        profile: null
+        profile: null,
+        postIdParam: null
     }
     componentDidMount(){
         const username = this.props.match.params.username;
         const postId = this.props.match.params.postId;
         
+        if (postId) this.setState({postIdParam: postId})
+
         this.props.getUserData(username);
         axios.get(`/usuario/${username}`)
             .then(res => {
@@ -39,13 +43,20 @@ class user extends Component {
     }
     render() {
         const { publicaciones, loading } = this.props.data;
+        const { postIdParam } = this.state;
         const publicacionesMarkup = loading ? (
             <p> </p>
         ) : publicaciones === null ? (
             <p>Sin publicaciones</p>
-        ) : (
+        ) : !postIdParam ? (
             publicaciones.map((publicacion) => <Publicacion key={publicacion.postId} publicacion={publicacion}/>)
-        )
+        ) : (
+            publicaciones.map(publicacion => {
+                if(publicacion.postId !== postIdParam)
+                    return <Publicacion key={publicacion.postId} publicacion={publicacion}/>
+            })
+        );
+
         const { classes } = this.props;
         return (
                 <div container className={classes.root}>

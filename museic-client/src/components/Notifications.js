@@ -24,16 +24,16 @@ class Notifications extends Component {
     };
     handleOpen = (event) => {
         this.setState({anchorEl: event.target });
-    }
+    };
     handleClose = () => {
         this.setState({ anchorEl: null });
-    }
+    };
     onMenuOpened = () => {
-         let unreadNotificationsIds = this.props.notifications
-         .filter(not => !not.read)
-         .map(not => not.notificationId);
+        let unreadNotificationsIds = this.props.notifications
+          .filter((not) => not.read === false )
+          .map((not) => not.notificationId);
         this.props.markNotificationsRead(unreadNotificationsIds);
-    }
+    };
     render(){
         const notifications = this .props.notifications;
         const anchorEl = this.state.anchorEl;
@@ -83,7 +83,7 @@ class Notifications extends Component {
             })
           ) : (
             <MenuItem onClick={this.handleClose}>
-              You have no notifications yet
+              Aún no tiene ninguna notificación
             </MenuItem>
           );
         return (
@@ -100,9 +100,9 @@ class Notifications extends Component {
                 anchorEl = {anchorEl}
                  open = {Boolean (anchorEl )}
                  onClose = {this.handleClose}
-                 onEntered = {thi.onMenuOpened}
+                 onEntered = {this.onMenuOpened}
                  >
-                     {notificationsMarkup}
+                    {notificationsMarkup}
                  </Menu>
 
             </Fragment >
@@ -111,13 +111,13 @@ class Notifications extends Component {
 
 }
 
-Notifications.PropTypes = {
+Notifications.propTypes = {
     markNotificationsRead: PropTypes.func.isRequired,
-    notifications: PropTypes.object.isRequired
-}
+    notifications: PropTypes.array.isRequired
+};
 
 const mapStateToProps = state => ({
     notifications: state.user.notifications
-})
+});
 
-export default conect ( mapStateToProps, {markNotificationsRead}) (Notifications);
+export default connect ( mapStateToProps, {markNotificationsRead}) (Notifications);

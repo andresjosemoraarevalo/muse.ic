@@ -2,6 +2,7 @@ import React, { Component , Fragment} from 'react'
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MyButton from "../util/MyButton";
+import Notifications from './Notifications';
 //MUI stuff
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -28,6 +29,7 @@ class Navbar extends Component {
                                     <AlbumIcon style={{fill: "white"}}/>
                                 </MyButton>
                             </Link>
+                            <Notifications />
                             <Link to="/user">
                                 <MyButton tip="Perfil">
                                     <PersonIcon style={{fill: "white"}}/>

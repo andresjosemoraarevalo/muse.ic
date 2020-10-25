@@ -26,6 +26,8 @@ class user extends Component {
     }
     componentDidMount(){
         const username = this.props.match.params.username;
+        const postId = this.props.match.params.postId;
+        
         this.props.getUserData(username);
         axios.get(`/usuario/${username}`)
             .then(res => {

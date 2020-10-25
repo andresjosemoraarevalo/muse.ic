@@ -88,6 +88,11 @@ function App() {
                   path="/usuarios/:username"
                   component={user}
                 />
+                <Route
+                  exact
+                  path="/usuarios/:username/publicacion/:postId"
+                  component={user}
+                />
                 <AuthRoute
                   exact
                   path="/artistLogin"

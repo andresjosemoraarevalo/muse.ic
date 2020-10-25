@@ -6,6 +6,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
 import MyButton from "../util/MyButton";
 import DeletePublicacion from './DeletePublicacion';
+import LikeButton from './LikeButtom';
 
 //MUI stuff
 import Card from "@material-ui/core/Card";
@@ -14,14 +15,10 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
 import ChatIcon from "@material-ui/icons/ChatBubbleOutline";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+
 //redux
 import { connect } from "react-redux";
-import {
-  likePublicacion,
-  unlikePublicacion,
-} from "../redux/actions/dataActions";
+
 
 const styles = {
   card: {
@@ -40,22 +37,7 @@ const styles = {
 };
 
 class Publicacion extends Component {
-  likedPublicacion = () => {
-    if (
-      this.props.user.likes &&
-      this.props.user.likes.find(
-        (like) => like.postId === this.props.publicacion.postId
-      )
-    )
-      return true;
-    else return false;
-  };
-  likePublicacion = () => {
-    this.props.likePublicacion(this.props.publicacion.postId);
-  };
-  unlikePublicacion = () => {
-    this.props.unlikePublicacion(this.props.publicacion.postId);
-  };
+  
   render() {
     dayjs.extend(relativeTime);
     const {
@@ -76,23 +58,7 @@ class Publicacion extends Component {
           }
       }
     } = this.props;
-    const likeButton = !authenticated ? (
-        <MyButton tip="Like">
-            <Link to="/login">
-                <FavoriteBorder color="primary"/>
-            </Link>
-        </MyButton>
-    ) : (
-        this.likedPublicacion() ? (
-            <MyButton tip="Undo like" onClick={this.unlikePublicacion}>
-                <FavoriteIcon color="primary"/>
-            </MyButton>
-        ) : (
-            <MyButton tip="Like" onClick={this.likePublicacion}>
-                <FavoriteBorder color="primary"/>
-            </MyButton>
-        )
-    );
+    
     const deleteButton = authenticated && postedBy === username ? (
         <DeletePublicacion postId={postId}/>
     ) : null
@@ -137,7 +103,7 @@ class Publicacion extends Component {
           <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
             {postBody}
           </Typography>
-          {likeButton}
+          <LikeButton postId = {postId}/>
           <span>{likes} Likes</span>
           <MyButton tip="Comentarios">
             <ChatIcon color="primary" />
@@ -161,12 +127,8 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-const mapActionsToProps = {
-  likePublicacion,
-  unlikePublicacion,
-};
+
 
 export default connect(
-  mapStateToProps,
-  mapActionsToProps
+  mapStateToProps
 )(withStyles(styles)(Publicacion));

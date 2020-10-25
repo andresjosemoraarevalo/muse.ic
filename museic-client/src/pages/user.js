@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import ProfileUser from '../components/ProfileUser';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Publicacion from "../components/Publicacion";

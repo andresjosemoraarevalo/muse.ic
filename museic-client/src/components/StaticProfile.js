@@ -2,12 +2,9 @@ import React, { Fragment, Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
 import dayjs from "dayjs";
-import EditarDetalles from "./EditarDetalles";
 import { connect } from "react-redux";
 
-import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
-import MuiLink from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -90,6 +87,14 @@ class StaticProfile extends Component {
       return true;
     else return false;
   };
+  followProfile = () => {
+    this.props.followProfile(this.props.profile.username);
+    this.props.profile.seguidores++;
+  };
+  unfollowProfile = () => {
+    this.props.unfollowProfile(this.props.profile.username);
+    this.props.profile.seguidores--;
+  }
   render() {
   const {
     classes,
@@ -110,7 +115,7 @@ class StaticProfile extends Component {
       variant="outlined"
       color="primary"
       size="small"
-      //onClick={this.unfollowProfile}
+      onClick={this.unfollowProfile}
       buttonStyle={{ borderRadius: 5 }}
       style={{ borderRadius: 5 }}
       className={classes.boton}
@@ -122,7 +127,7 @@ class StaticProfile extends Component {
       variant="contained"
       color="primary"
       size="small"
-      //onClick={this.followProfile}
+      onClick={this.followProfile}
       buttonStyle={{ borderRadius: 5 }}
       style={{ borderRadius: 5 }}
       className={classes.boton}

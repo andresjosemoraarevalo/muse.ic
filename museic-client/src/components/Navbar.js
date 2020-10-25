@@ -7,11 +7,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import ProfileUser from '../components/ProfileUser';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
 import AlbumIcon from '@material-ui/icons/Album';
-import Tooltip from '@material-ui/core/Tooltip';
+
 
 class Navbar extends Component {
     render() {

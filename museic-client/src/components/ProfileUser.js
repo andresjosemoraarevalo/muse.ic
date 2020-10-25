@@ -8,22 +8,18 @@ import Publicacion from "../components/Publicacion";
 //MUI
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import MuiLink from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import Tooltip from "@material-ui/core/Tooltip";
 import MyButton from "../util/MyButton";
 import Box from "@material-ui/core/Box";
 
 //Iconos
 import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
-import Backspace from "@material-ui/icons/Backspace";
 import EditIcon from "@material-ui/icons/Edit";
 //Redux
 import { connect } from "react-redux";
 import { logoutUser, uploadImage } from "../redux/actions/userActions";
-import { IconButton } from "@material-ui/core";
 import { getUserData } from '../redux/actions/dataActions';
 
 const styles = {

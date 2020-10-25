@@ -13,6 +13,7 @@ import {
   const initialState = {
     publicaciones: [],
     publicacion: {},
+    seguidos: [],
     loading: false
   };
   

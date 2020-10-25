@@ -5,7 +5,9 @@ import {
   LOADING_USER,
   LIKE_PUBLICACION,
   UNLIKE_PUBLICACION,
-  MARK_NOTIFICATIONS_READ,
+  FOLLOW_USER,
+  UNFOLLOW_USER,
+  MARK_NOTIFICATIONS_READ
 } from "../types";
 
 const initialState = {
@@ -60,6 +62,24 @@ export default function (state = initialState, action) {
         return {
           ...state
         }
+    case FOLLOW_USER:
+      return {
+        ...state,
+        seguidos: [
+          ...state.seguidos,
+          {
+            username: state.credentials.username,
+            follows: action.payload.username,
+          },
+        ],
+      };
+    case UNFOLLOW_USER:
+      return {
+        ...state,
+        seguidos: state.seguidos.filter(
+          (seguido) => seguido.follows !== action.payload.username
+        ),
+      };
     default:
       return state;
   }

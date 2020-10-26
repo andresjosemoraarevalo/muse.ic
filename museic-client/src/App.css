@@ -20,3 +20,25 @@ a{
   font-family: 'century gothic';
   src: url(./fonts/GOTHIC.TTF) format('truetype');
 }
+
+
+/*holix*/
+
+
+#homePublicaciones{
+  margin: 0 auto;
+  width:800px;
+  position:absolute;
+  bottom:20px;
+  top:150px;
+  overflow:auto
+}
+
+#homePerfil{
+  margin: 0 auto;
+  width:400px;
+  position:absolute;
+  bottom:20px;
+  top:120px;
+  overflow:auto
+}

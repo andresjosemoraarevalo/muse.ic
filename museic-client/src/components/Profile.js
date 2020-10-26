@@ -22,7 +22,7 @@ import { logoutUser, uploadImage } from "../redux/actions/userActions";
 
 const styles = {
   paper: {
-    padding: 20,
+    padding: 10,
   },
   profile: {
     "& .image-wrapper": {
@@ -35,10 +35,10 @@ const styles = {
       },
     },
     "& .profile-image": {
-      width: 200,
-      height: 200,
+      width: 100,
+      height: 100,
       objectFit: "cover",
-      maxWidth: "100%",
+      maxWidth: "80%",
       borderRadius: "50%",
     },
     "& .profile-details": {
@@ -102,7 +102,6 @@ class Profile extends Component {
 
     let profileMarkup = !loading ? (
       authenticated ? (
-        <Paper className={classes.paper}>
           <div className={classes.profile}>
             <div className="image-wrapper">
               <img src={Fotolink} alt="profile" className="profile-image" />
@@ -112,13 +111,6 @@ class Profile extends Component {
                 hidden="hidden"
                 onChange={this.handleImageChange}
               />
-              <MyButton
-                tip="Edit profile picture"
-                onClick={this.handleEditPicture}
-                btnClassName="button"
-              >
-                <EditIcon color="primary" />
-              </MyButton>
             </div>
             <hr />
             <div className="profile-details">
@@ -126,7 +118,7 @@ class Profile extends Component {
                 component={Link}
                 to={`/usuarios/${username}`}
                 color="primary"
-                variant="h5"
+                variant="h6"
               >
                 @{username}
               </MuiLink>
@@ -149,30 +141,13 @@ class Profile extends Component {
               )}
               <hr />
               <hr />
-              <span>
-                {" "}
-                {seguidores && (
-                  <Typography variant="body2">{seguidores}</Typography>
-                )}{" "}
-                seguidores{" "}
-              </span>
-              <span>
-                {" "}
-                {seguidos && (
-                  <Typography variant="body2">{seguidos}</Typography>
-                )}{" "}
-                seguidos
-              </span>
               <div></div>
-              <CalendarToday color="primary" />{" "}
-              <span>Joined {dayjs(fechaNacimiento).format("MMM YYYY")}</span>
             </div>
             <MyButton tip="Logout" onClick={this.handleLogout}>
               <KeyboardReturn color="primary" />
             </MyButton>
             <EditDetails />
           </div>
-        </Paper>
       ) : (
         <Paper className={classes.paper}>
           <Typography variant="body2" align="center">

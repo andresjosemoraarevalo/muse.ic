@@ -1,15 +1,17 @@
-import React, { Component } from "react";
+import React, { Component , Fragment} from "react";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import Publicacion from "../components/Publicacion";
 import PostPublicacion from '../components/PostPublicacion';
 import Profile from '../components/Profile';
-
+import Menu from '../components/menu';
 import { connect } from "react-redux";
 import { getPublicaciones } from "../redux/actions/dataActions";
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
 //import Button from "@material-ui/core/Button";
-
+ // <Menu />
 const styles = {
   root: {
     marginTop: "80px",
@@ -34,16 +36,37 @@ class home extends Component {
     );
     const { classes } = this.props;
     return (
-      <Grid container className={classes.root} spacing={2}>
-          <Grid item sm={2}>
+      <Grid container className={classes.root} spacing={3}>
+          <Grid item sm={0}>
           
           </Grid>
         <Grid item sm={3}>
+        <div id="homePerfil" >
             <Profile />
+            <Menu/>
             <PostPublicacion />
+         </div>   
         </Grid>
-        <Grid item sm={5} >
-          {recentPublicacionesMarkup}
+        <Grid item sm={7} >
+        <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon style={{fill: "black"},{ fontSize: 20 }} />
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+            />
+            </div>
+          </div>
+        <div id="homePublicaciones" >
+        {recentPublicacionesMarkup}
+          </div>
+        </Grid>
+        <Grid item sm={10} >
+             
+          
         </Grid>
         <Grid item sm={2}>
           

@@ -408,7 +408,6 @@ exports.getUserDetails = (req, res) => {
       return res.status(500).json({ error: err.code });
     });
 };
-
 //getUsuarioAutenticado
 exports.getUsuarioAutenticado = (req, res) => {
   let userData = {};
@@ -427,6 +426,19 @@ exports.getUsuarioAutenticado = (req, res) => {
       userData.likes = [];
       data.forEach((doc) => {
         userData.likes.push(doc.data());
+      });
+      return db
+          .collection("Notificaciones")
+          .where('destinatario', "==", req.user.username)
+          .orderBy("createdAt","desc")
+          
+          .get();
+      
+    })
+    .then((data)=> {
+      userData.notificaciones=[];
+      data.forEach((doc)=> {
+        userData.notificaciones.push(doc.data());
       });
       return db
           .collection("Seguidos")
@@ -572,3 +584,22 @@ exports.unfollowUsuario = (req, res) => {
       res.status(500).json({ error: err.code });
     });
 };
+
+// marcar notificacion leida 
+
+exports.marcarNotificacionLeida =(req, res)=>{
+  let batch = db.batch();
+  req.body.forEach(notificationId => {
+    const notification = db.doc(`/Notificaciones/${notificationId}`);
+    batch.update(notification, {read:true});
+  });
+  batch.commit()
+  .then(()=>{
+    return res.json({message: 'Notificacion marcada leida'});
+
+  }).catch(err =>{
+    console.error(err);
+    return res.status(500).json({error: err.code});
+  });
+
+}

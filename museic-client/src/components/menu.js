@@ -19,6 +19,10 @@ import People from '@material-ui/icons/People';
 import MusicNote from '@material-ui/icons/MusicNote';
 import SendIcon from '@material-ui/icons/Send';
 
+//redux 
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import MuiLink from "@material-ui/core/Link"
 const styles = {
     paper: {
       padding: 20,
@@ -32,25 +36,30 @@ const styles = {
   };
 class Menu extends Component {
   render(){
-    const {classes,       
-        loading,
-        authenticated,
+    const {
+        classes, user:{
+            credentials: {
+                username,    
+            },
+            loading,
+            authenticated,
+        },    
+        
+        
         } = this.props;
         let menu = !loading ? (
             authenticated ?  (    <Paper className={classes.paper}>
         
                 <MenuList>
-                      <MenuItem>
-                         <MyButton tip="Perfil">
+                      <MenuItem component={Link}
+                            to={'/user'}>
+
+                         <MyButton>
                              <PersonIcon style={{fill: "secondary"}}/>
                          </MyButton>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
+                         <Typography variant="inherit">
+                            Perfil
+                        </Typography>
                       </MenuItem>
                       <MenuItem>
                         <MyButton tip="Perfil">
@@ -87,36 +96,6 @@ class Menu extends Component {
             ):(
                 <Paper className={classes.paper}>
                     <MenuList>
-                    <MenuItem>
-                        <MyButton tip="Perfil">
-                            <PersonIcon style={{fill: "secondary"}}/>
-                        </MyButton>
-                        <Typography variant="inherit">Perfil</Typography>     
-                    </MenuItem>
-                    <MenuItem>
-                        <MyButton tip="Perfil">
-                            <SendIcon style={{fill: "secondary"}} />
-                        </MyButton>
-                            <Typography variant="inherit">Mensajes</Typography>     
-                        </MenuItem>
-                        <MenuItem>
-                        <MyButton tip="Perfil">
-                            <Notifications style={{fill: "secondary"}} />
-                        </MyButton>
-                            <Typography variant="inherit">Notificaciones</Typography>     
-                        </MenuItem>
-                        <MenuItem>
-                            <MyButton tip="Perfil">
-                                <People style={{fill: "secondary"}} />
-                            </MyButton>
-                                <Typography variant="inherit">Grupos de interes</Typography>     
-                        </MenuItem>
-                        <MenuItem>
-                            <MyButton tip="Perfil">
-                                <MusicNote  style={{fill: "secondary"}} />
-                            </MyButton>
-                                <Typography variant="inherit">Eventos</Typography>     
-                        </MenuItem>
                         <MenuItem>
                         <MyButton tip="Perfil">
                             <HelpOutline style={{fill: "secondary"}} />
@@ -133,11 +112,17 @@ class Menu extends Component {
   }    
 }
 
+const mapStateToProps = (state) => ({
+    user: state.user,
+  });
   
-  
+ 
   Menu.propTypes = {
     user: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
   };
 
-export default ((withStyles(styles))(Menu));
+  export default connect(
+    mapStateToProps
+  )(withStyles(styles)(Menu));
+  

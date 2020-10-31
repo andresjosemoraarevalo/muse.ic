@@ -16,6 +16,8 @@ const {
 const {
   signupUsuario,
   loginUsuario,
+  loginArtista,
+  ObtenerUserName,
   signupArtista,
   addUserDetails,
   getUsuarioAutenticado,
@@ -52,7 +54,9 @@ app.post("/publicaciones/:postId/comentar", FBAuthUsuarios, comentarPublicacion)
 
 app.post("/signupUsuario", signupUsuario);
 app.post("/loginUsuario", loginUsuario);
+app.post("/loginArtista", loginArtista);
 app.post("/signupArtista", signupArtista);
+app.post("/ObtenerUsername", ObtenerUserName);
 app.post("/usuario/FotoPerfil", FBAuthUsuarios, subirFotoPerfilUsuario);
 app.post("/artista/FotoPerfil", FBAuthArtistas, subirFotoPerfilArtista);
 app.post("/usuarioDetails", FBAuthUsuarios, addUserDetails);

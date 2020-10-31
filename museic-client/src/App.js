@@ -21,6 +21,7 @@ import artistlogin from "./pages/artistlogin";
 import intro from "./pages/intro";
 import user from "./pages/user";
 import ProfileUser from "./components/ProfileUser";
+import Menu from "./components/menu";
 
 const theme = createMuiTheme({
   palette: {

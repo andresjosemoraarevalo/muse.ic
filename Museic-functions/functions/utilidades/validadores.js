@@ -1,3 +1,5 @@
+const {db } = require("./administrador");
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 /*
@@ -59,6 +61,7 @@ exports.validarDatosdeLogin = (datos) => {
         valido : Object.keys(errors).length === 0 ? true : false 
     }
 }
+
 
 exports.reduceUserDetails = (data) => {
     let userDetails = {};

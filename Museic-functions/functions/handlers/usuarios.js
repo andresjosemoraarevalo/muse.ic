@@ -218,6 +218,73 @@ exports.loginUsuario = (request, response) => {
       }
     });
 };
+
+exports.ObtenerUserName= (request, response) =>{
+  var userData = {};
+  db.collection("Artistas")
+    .where("email", "==", request.body.email)
+    .get()
+    .then((data)=>{
+          data.forEach((doc) => {
+            userData.username =doc.data().username;
+          });
+          return response.json(userData);
+    });
+
+}
+
+exports.loginArtista = (request, response) => {
+  const user = {
+    email: request.body.email,
+    password: request.body.password,
+  };
+  const { valido, errors } = validarDatosdeLogin(user);
+  if (!valido) return response.status(400).json(errors);
+  var userData = {};
+  db.collection("Artistas")
+  .where("email", "==", request.body.email)
+  .get()
+  .then((data)=>{
+        data.forEach((doc) => {
+          userData.username =doc.data().username;
+        });
+  })
+  .catch((err) => {
+    console.error(err);
+    return res.status(500).json({ error: err.code });
+  });
+  if(Object.entries(userData).length == 0){
+    return response.json(userData);
+    //return response
+  //.status(403)
+  //.json({ general: "Datos incorrectos, por favor intente nuevamente" });  
+  }
+  
+  firebase
+  .auth()
+  .signInWithEmailAndPassword(user.email, user.password)
+  .then((data) => {
+    return data.user.getIdToken();
+  })
+  .then((token) => {
+    return response.json({ token });
+  })
+  .catch((err) => {
+    console.error(err);
+    if (err.code == "auth/wrong-password") {
+      return response
+        .status(403)
+        .json({ general: "Datos incorrectos, por favor intente nuevamente" });
+    } else if (err.code == "auth/user-not-found") {
+      return response
+        .status(403)
+        .json({ general: "Datos incorrectos, por favor intente nuevamente" });
+    } else {
+      return response.status(500).json({ error: err.code });
+    }
+  });
+
+};
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 /*

@@ -12,8 +12,14 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
 import AlbumIcon from '@material-ui/icons/Album';
 
+import { logoutUser } from "../redux/actions/userActions";
+
+
 
 class Navbar extends Component {
+    handleLogout = () => {
+        this.props.logoutUser();
+      };
     render() {
         const {authenticated} = this.props
         return (
@@ -34,9 +40,14 @@ class Navbar extends Component {
                                     <PersonIcon style={{fill: "white"}}/>
                                 </MyButton>
                             </Link>
+                            <Link to ="/intro">
                             <MyButton tip="Logout" onClick={this.handleLogout}>
                                 <ExitToAppIcon style={{fill: "white"}} />
                             </MyButton>
+                            </Link>
+                            
+                            
+                            
                         </Fragment>
                     ):(
                         <Fragment>
@@ -56,11 +67,14 @@ class Navbar extends Component {
 }
 
 Navbar.propTypes = {
+    logoutUser: PropTypes.func.isRequired,
     authenticated: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = state => ({
     authenticated: state.user.authenticated
 })
+const mapActionsToProps = { logoutUser };
 
-export default connect(mapStateToProps)(Navbar);
+
+export default connect(mapStateToProps,mapActionsToProps )(Navbar);

@@ -29,23 +29,23 @@ class Notifications extends Component {
         this.setState({ anchorEl: null });
     };
     onMenuOpened = () => {
-        let unreadNotificationsIds = this.props.notifications
+        let unreadNotificationsIds = this.props.notificaciones
           .filter((not) => not.read === false )
           .map((not) => not.notificationId);
         this.props.markNotificationsRead(unreadNotificationsIds);
     };
     render(){
-        const notifications = this .props.notifications;
+        const notificaciones = this .props.notificaciones;
         const anchorEl = this.state.anchorEl;
 
         dayjs.extend(relativeTime);
 
 
         let notificationsIcon;
-        if (notifications && notifications.length > 0){
-            notifications.filter(not => not.read === false ).length > 0 
+        if (notificaciones && notificaciones.length > 0){
+            notificaciones.filter(not => not.read === false ).length > 0 
             ? notificationsIcon = (
-                <Badge badgeContent={notifications.filter(not => not.read === false ).length}
+                <Badge badgeContent={notificaciones.filter(not => not.read === false ).length}
                     color = "secondary">
                     <NotificationsIcon/>
                 </Badge>
@@ -56,8 +56,8 @@ class Notifications extends Component {
             notificationsIcon = <NotificationsIcon/>
         }
         let notificationsMarkup =
-            notifications && notifications.length > 0 ? (
-                notifications.map(not => {
+            notificaciones && notificaciones.length > 0 ? (
+                notificaciones.map(not => {
                     const verb = not.type === 'like' ? 'liked' : 'commmented on';
                     const time = dayjs(not.createdAt).fromNow();
                     const iconColor = not.read ? 'primary' : 'secondary';
@@ -74,9 +74,9 @@ class Notifications extends Component {
                     component={Link}
                     color="default"
                     variant="body1"
-                    to={`/users/${not.recipient}/scream/${not.screamId}`}
+                    to={`/usuarios/${not.destinatario}/publicacion/${not.postId}`}
                   >
-                    {not.sender} {verb} your scream {time}
+                    {not.remitente} {verb} Tu Publicacion {time}
                   </Typography>
                 </MenuItem>
               );
@@ -88,7 +88,7 @@ class Notifications extends Component {
           );
         return (
             <Fragment>
-                <Tooltip placement = "top" title = "Notifications">
+                <Tooltip placement = "top" title = "Notificaciones">
                     <IconButton aria-owns={anchorEl ? ' simple-menu' : undefined  }
                     aria-haspopup = "true"
                     onClick = {this.handleOpen}
@@ -113,11 +113,11 @@ class Notifications extends Component {
 
 Notifications.propTypes = {
     markNotificationsRead: PropTypes.func.isRequired,
-    notifications: PropTypes.array.isRequired
+    notificaciones: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
-    notifications: state.user.notifications
+    notificaciones: state.user.notificaciones
 });
 
 export default connect ( mapStateToProps, {markNotificationsRead}) (Notifications);

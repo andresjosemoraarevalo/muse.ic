@@ -77,7 +77,7 @@ export const getUserData = () => (dispatch) => {
 };
 
 export const markNotificationsRead = (notificationIds) => dispatch => {
-  axios.post('/notifications', notificationIds)
+  axios.post('/Notificaciones', notificationIds)
   .then(res => {
     dispatch ({
       type: MARK_NOTIFICATIONS_READ

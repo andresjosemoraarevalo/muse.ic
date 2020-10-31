@@ -26,19 +26,19 @@ a{
 
 
 #homePublicaciones{
-  margin: 0 auto;
-  width:800px;
-  position:absolute;
-  bottom:20px;
-  top:150px;
-  overflow:auto
+  /*margin: 0 auto;*/
+  width: auto;
+  position: absolute;
+  bottom: 20px;
+  top: 150px;
+  overflow: auto
 }
 
 #homePerfil{
-  margin: 0 auto;
-  width:400px;
-  position:absolute;
-  bottom:20px;
-  top:120px;
-  overflow:auto
+  /*margin: 0 auto;*/
+  width:320px;
+  position: absolute;
+  bottom: 20px;
+  top: 70px;
+  overflow: auto
 }

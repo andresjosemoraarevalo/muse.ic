@@ -1,21 +1,15 @@
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import dayjs from "dayjs";
-import EditDetails from "./EditarDetalles";
-import MyButton from "../util/MyButton";
 //import ProfileSkeleton from '../../util/ProfileSkeleton';
 
 //MUI stuff
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import MuiLink from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import CalendarToday from "@material-ui/icons/CalendarToday";
-import EditIcon from "@material-ui/icons/Edit";
-import KeyboardReturn from "@material-ui/icons/KeyboardReturn";
+import Grid from "@material-ui/core/Grid";
+import Avatar from "@material-ui/core/Avatar";
 
 import { connect } from "react-redux";
 import { logoutUser, uploadImage } from "../redux/actions/userActions";
@@ -25,47 +19,9 @@ const styles = {
     padding: 10,
   },
   profile: {
-    "& .image-wrapper": {
-      textAlign: "center",
-      position: "relative",
-      "& button": {
-        position: "absolute",
-        top: "80%",
-        left: "70%",
-      },
-    },
-    "& .profile-image": {
-      width: 100,
-      height: 100,
-      objectFit: "cover",
-      maxWidth: "80%",
-      borderRadius: "50%",
-    },
-    "& .profile-details": {
-      textAlign: "center",
-      "& span, svg": {
-        verticalAlign: "middle",
-      },
-      "& a": {
-        color: "#00bcd4",
-      },
-    },
-    "& hr": {
-      border: "none",
-      margin: "0 0 10px 0",
-    },
-    "& svg.button": {
-      "&:hover": {
-        cursor: "pointer",
-      },
-    },
+    margin: 20
   },
-  buttons: {
-    textAlign: "center",
-    "& a": {
-      margin: "20px 10px",
-    },
-  },
+  
 };
 
 class Profile extends Component {
@@ -88,12 +44,8 @@ class Profile extends Component {
       user: {
         credentials: {
           username,
-          fechaNacimiento,
           Fotolink,
-          bio,
-          seguidos,
-          seguidores,
-          gustos,
+          
         },
         loading,
         authenticated,
@@ -103,50 +55,21 @@ class Profile extends Component {
     let profileMarkup = !loading ? (
       authenticated ? (
           <div className={classes.profile}>
-            <div className="image-wrapper">
-              <img src={Fotolink} alt="profile" className="profile-image" />
-              <input
-                type="file"
-                id="imageInput"
-                hidden="hidden"
-                onChange={this.handleImageChange}
-              />
-            </div>
-            <hr />
-            <div className="profile-details">
-              <MuiLink
-                component={Link}
-                to={`/usuarios/${username}`}
+            <Grid container>
+              <Grid item sm={4}>
+              <Avatar alt={username} src={Fotolink}></Avatar>
+              </Grid>
+              <Grid item sm={8}>
+                <Typography
+                variant="h5"
                 color="primary"
-                variant="h6"
+                component={Link}
+                to={'/user'}
               >
-                @{username}
-              </MuiLink>
-              <hr />
-              {bio && <Typography variant="body2">{bio}</Typography>}
-              {gustos && (
-                <div>
-                  {gustos.map((gusto) => (
-                    <Box
-                      component="div"
-                      display="inline"
-                      p={1}
-                      m={1}
-                      bgcolor="background.paper"
-                    >
-                      {gusto}
-                    </Box>
-                  ))}
-                </div>
-              )}
-              <hr />
-              <hr />
-              <div></div>
-            </div>
-            <MyButton tip="Logout" onClick={this.handleLogout}>
-              <KeyboardReturn color="primary" />
-            </MyButton>
-            <EditDetails />
+                {username}
+              </Typography>
+              </Grid>
+            </Grid>
           </div>
       ) : (
         <Paper className={classes.paper}>

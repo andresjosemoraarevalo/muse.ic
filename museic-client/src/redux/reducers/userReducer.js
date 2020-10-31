@@ -17,6 +17,7 @@ const initialState = {
   likes: [],
   seguidos: [],
   publicaciones: [],
+  notificaciones: [],
 };
 
 export default function (state = initialState, action) {
@@ -58,10 +59,10 @@ export default function (state = initialState, action) {
         ),
       };
     case MARK_NOTIFICATIONS_READ:
-        state.notifications.array.forEach(not => not.read = true );
+        state.notificaciones.array.forEach(not => not.read = true );
         return {
           ...state
-        }
+        };
     case FOLLOW_USER:
       return {
         ...state,

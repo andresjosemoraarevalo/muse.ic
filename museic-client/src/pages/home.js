@@ -37,9 +37,9 @@ class home extends Component {
     const { classes } = this.props;
     return (
       <Grid container className={classes.root} spacing={3}>
-          <Grid item sm={0}>
-          
-          </Grid>
+        <Grid item sm={1}>
+
+        </Grid>
         <Grid item sm={3}>
         <div id="homePerfil" >
             <Profile />
@@ -47,7 +47,7 @@ class home extends Component {
             <PostPublicacion />
          </div>   
         </Grid>
-        <Grid item sm={7} >
+        <Grid item sm={4} >
         <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon style={{fill: "black"},{ fontSize: 20 }} />
@@ -64,13 +64,13 @@ class home extends Component {
         {recentPublicacionesMarkup}
           </div>
         </Grid>
-        <Grid item sm={10} >
-             
-          
+        <Grid item sm={3}>
+              <p>recomendaciones...</p>
         </Grid>
-        <Grid item sm={2}>
-          
+        <Grid item sm={1}>
+
         </Grid>
+
       </Grid>
     );
   }

@@ -436,9 +436,17 @@ exports.getUsuarioAutenticado = (req, res) => {
       
     })
     .then((data)=> {
-      userData.notificaciones=[];
+      userData.notificaciones = [];
       data.forEach((doc)=> {
-        userData.notificaciones.push(doc.data());
+        userData.notificaciones.push({
+          destinatario: doc.data().destinatario,
+          remitente: doc.data().remitente,
+          createdAt: doc.data().createdAt,
+          postId: doc.data().postId,
+          type: doc.data().type,
+          read: doc.data().read,
+          notificationId: doc.id,
+        });
       });
       return db
           .collection("Seguidos")

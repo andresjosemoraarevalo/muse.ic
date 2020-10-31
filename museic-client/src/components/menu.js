@@ -1,6 +1,5 @@
 //import React from 'react';
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 //MUI stuff
@@ -8,7 +7,6 @@ import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 
 
@@ -19,16 +17,7 @@ import Notifications from '@material-ui/icons/Notifications';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import People from '@material-ui/icons/People';
 import MusicNote from '@material-ui/icons/MusicNote';
-import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
-
-
-
-const useStyles = makeStyles({
-  root: {
-    width: 230,
-  },
-});
 
 const styles = {
     paper: {
@@ -143,9 +132,7 @@ class Menu extends Component {
             return menu;       
   }    
 }
-const mapStateToProps = (state) => ({
-    user: state.user,
-  });
+
   
   
   Menu.propTypes = {

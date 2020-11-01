@@ -15,6 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
 import ChatIcon from "@material-ui/icons/ChatBubbleOutline";
+import RepostIcon from '@material-ui/icons/Sync';
 
 //redux
 import { connect } from "react-redux";
@@ -49,7 +50,9 @@ class Publicacion extends Component {
         comentarios,
         likes,
         Fotolink,
-        postId
+        postId,
+        reposteado,
+        reposteados
       },
       user: {
           authenticated,
@@ -109,6 +112,10 @@ class Publicacion extends Component {
             <ChatIcon color="primary" />
           </MyButton>
           <span>{comentarios} Comentarios</span>
+          <MyButton tip="Repostear">
+            <RepostIcon color="primary" />
+          </MyButton>
+          <span>{reposteados} Reposteados </span>
         </CardContent>
       </Card>
     );

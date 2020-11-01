@@ -7,7 +7,8 @@ import {
   UNLIKE_PUBLICACION,
   FOLLOW_USER,
   UNFOLLOW_USER,
-  MARK_NOTIFICATIONS_READ
+  MARK_NOTIFICATIONS_READ,
+  REPOST_PUBLICACION
 } from "../types";
 
 const initialState = {
@@ -17,6 +18,7 @@ const initialState = {
   likes: [],
   seguidos: [],
   publicaciones: [],
+  reposteados: [],
 };
 
 export default function (state = initialState, action) {
@@ -80,6 +82,15 @@ export default function (state = initialState, action) {
           (seguido) => seguido.follows !== action.payload.username
         ),
       };
+      
+      case REPOST_PUBLICACION:
+        return {
+          ...state,
+          reposteados: state.reposteados.filter(
+            //NO se que poner aqui si no hay back D:
+            //(reposteado) => 
+          )
+        }
     default:
       return state;
   }

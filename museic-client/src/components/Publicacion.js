@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import MyButton from "../util/MyButton";
 import DeletePublicacion from './DeletePublicacion';
 import LikeButton from './LikeButtom';
+import RepostPublicacion from './RepostPublicacion'
 
 //MUI stuff
 import Card from "@material-ui/core/Card";
@@ -112,10 +113,12 @@ class Publicacion extends Component {
             <ChatIcon color="primary" />
           </MyButton>
           <span>{comentarios} Comentarios</span>
+          
           <MyButton tip="Repostear">
-            <RepostIcon color="primary" />
-          </MyButton>
-          <span>{reposteados} Reposteados </span>
+            <RepostIcon color="primary"/>
+            < RepostPublicacion postId = {postId}/>
+        </MyButton>
+        <span>Repostear</span>
         </CardContent>
       </Card>
     );

@@ -1,5 +1,6 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED, LOADING_USER, MARK_NOTIFICATIONS_READ, REPOST_PUBLICATION } from "../types";
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED, LOADING_USER, MARK_NOTIFICATIONS_READ, REPOST_PUBLICACION } from "../types";
 import axios from "axios";
+import { clearErrors} from "../actions/dataActions"; 
 
 export const loginUser = (userData, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
@@ -93,4 +94,24 @@ const setAuthorizationHeader = (token) => {
   axios.defaults.headers.common["Authorization"] = FBIdToken;
 };
 
+
+  // Repost a publicacion
+  export const repostPublicacion = (postId) => (dispatch) => {
+    dispatch.repostPublicacion(`/publicaciones/${postId}`)
+    axios
+        .post('/repostearPublicacion', postId)
+      .then((res) => {
+        dispatch({
+          type: REPOST_PUBLICACION,
+          payload: res.data
+        });
+        dispatch(clearErrors());
+      })
+      .catch((err) => {
+        dispatch({
+          type: SET_ERRORS,
+          payload: err.response.data
+        });
+      }); 
+  };
 

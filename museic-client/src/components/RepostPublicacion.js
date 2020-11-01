@@ -10,10 +10,12 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import CloseIcon from "@material-ui/icons/Close";
 import TextField from "@material-ui/core/TextField";
+import RepostIcon from '@material-ui/icons/Sync';
 
 //Reduc stuff
 import { connect } from "react-redux";
-import { postPublicacion, clearErrors } from "../redux/actions/dataActions";
+import { repostPublicacion} from "../redux/actions/userActions";
+import { clearErrors} from "../redux/actions/dataActions"; 
 
 const styles = {
   root: {
@@ -36,7 +38,7 @@ const styles = {
   },
 };
 
-class PostPublicacion extends Component {
+class RepostPublicacion extends Component {
   state = {
     open: false,
     postBody: "",
@@ -72,22 +74,11 @@ class PostPublicacion extends Component {
       classes,
       UI: { loading },
     } = this.props;
-    return (
-      <div container className={classes.root}>
-        
-         
-      <Fragment className={classes.root}>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          buttonStyle={{ borderRadius: 25 }}
-          style={{ borderRadius: 25 }}
-          onClick={this.handleOpen}
-          startIcon={<PostAddIcon />}
-        >
 
-        </Button>
+    return (
+        
+        <Fragment className={classes.root}>
+
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -99,7 +90,7 @@ class PostPublicacion extends Component {
             onClick={this.handleClose}
             tipClassName={classes.closeButton}
           >
-            <CloseIcon />
+            <CloseIcon/>
           </MyButton>
           <DialogTitle>Crea una nueva publicacion</DialogTitle>
           <DialogContent>
@@ -136,13 +127,12 @@ class PostPublicacion extends Component {
           </DialogContent>
         </Dialog>
       </Fragment>
-      </div>
     );
   }
 }
 
-PostPublicacion.propTypes = {
-  postPublicacion: PropTypes.func.isRequired,
+RepostPublicacion.propTypes = {
+  repostPublicacion: PropTypes.func.isRequired,
   clearErrors: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired,
 };
@@ -151,6 +141,6 @@ const mapStateToProps = (state) => ({
   UI: state.UI,
 });
 
-export default connect(mapStateToProps, { postPublicacion, clearErrors })(
-  withStyles(styles)(PostPublicacion)
+export default connect(mapStateToProps, { repostPublicacion, clearErrors })(
+  withStyles(styles)(RepostPublicacion)
 );

@@ -12,7 +12,7 @@ import {
     SUBMIT_COMMENT,
     UNFOLLOW_USER,
     FOLLOW_USER,
-    REPOST_PUBLICACION
+    
   } from '../types';
 import axios from 'axios';
 
@@ -129,23 +129,3 @@ export const postPublicacion = (newPublicacion) => (dispatch) => {
   export const clearErrors = () => (dispatch) => {
     dispatch({ type: CLEAR_ERRORS });
   };
-
-  // Repost a publicacion
-export const repostPublicacion = (newPublicacion) => (dispatch) => {
-  dispatch({ type: LOADING_UI });
-  axios
-    .post('/crearPublicacion', newPublicacion)
-    .then((res) => {
-      dispatch({
-        type: REPOST_PUBLICACION,
-        payload: res.data
-      });
-      dispatch(clearErrors());
-    })
-    .catch((err) => {
-      dispatch({
-        type: SET_ERRORS,
-        payload: err.response.data
-      });
-    }); 
-};

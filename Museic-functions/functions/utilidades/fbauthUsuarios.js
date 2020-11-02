@@ -23,7 +23,7 @@ module.exports = (request, response, next) => {
         .then((data) => {
             request.user.username = data.docs[0].data().username;
             request.user.Fotolink = data.docs[0].data().Fotolink;
-            request.user.nombre = data.docs[0].data().nombre;
+            //request.user.nombre = data.docs[0].data().nombre;
             return next();
         })
         .catch((err) => {

@@ -39,7 +39,8 @@ class Menu extends Component {
     const {
         classes, user:{
             credentials: {
-                username,    
+                username,
+                artista,    
             },
             loading,
             authenticated,
@@ -48,20 +49,21 @@ class Menu extends Component {
         
         } = this.props;
         let menu = !loading ? (
-            authenticated ?  (    <Paper className={classes.paper}>
-        
-                <MenuList>
-                      <MenuItem component={Link}
-                            to={'/user'}>
+            authenticated ?  (   
 
-                         <MyButton>
-                             <PersonIcon style={{fill: "secondary"}}/>
-                         </MyButton>
-                         <Typography variant="inherit">
+                artista ? (
+                    <Paper className={classes.paper}>
+                <MenuList>
+                    <MenuItem component={Link}
+                            to={'/user'}>
+                        <MyButton>
+                            <PersonIcon style={{fill: "secondary"}}/>
+                        </MyButton>
+                        <Typography variant="inherit">
                             Perfil
                         </Typography>
-                      </MenuItem>
-                      <MenuItem>
+                    </MenuItem>
+                    <MenuItem>
                         <MyButton tip="Perfil">
                             <SendIcon style={{fill: "secondary"}} />
                         </MyButton>
@@ -72,12 +74,6 @@ class Menu extends Component {
                             <Notifications style={{fill: "secondary"}} />
                         </MyButton>
                             <Typography variant="inherit">Notificaciones</Typography>     
-                        </MenuItem>
-                        <MenuItem>
-                            <MyButton tip="Perfil">
-                                <People style={{fill: "secondary"}} />
-                            </MyButton>
-                                <Typography variant="inherit">Grupos de interes</Typography>     
                         </MenuItem>
                         <MenuItem>
                             <MyButton tip="Perfil">
@@ -93,6 +89,51 @@ class Menu extends Component {
                         </MenuItem>
                 </MenuList>
                 </Paper>
+                ):(
+                    <Paper className={classes.paper}>
+                    <MenuList>
+                        <MenuItem component={Link}
+                                to={'/user'}>
+                            <MyButton>
+                                <PersonIcon style={{fill: "secondary"}}/>
+                            </MyButton>
+                            <Typography variant="inherit">
+                                Perfil
+                            </Typography>
+                        </MenuItem>
+                        <MenuItem>
+                            <MyButton tip="Perfil">
+                                <SendIcon style={{fill: "secondary"}} />
+                            </MyButton>
+                                <Typography variant="inherit">Mensajes</Typography>     
+                            </MenuItem>
+                            <MenuItem>
+                            <MyButton tip="Perfil">
+                                <Notifications style={{fill: "secondary"}} />
+                            </MyButton>
+                                <Typography variant="inherit">Notificaciones</Typography>     
+                            </MenuItem>
+                            <MenuItem>
+                                <MyButton tip="Perfil">
+                                    <People style={{fill: "secondary"}} />
+                                </MyButton>
+                                    <Typography variant="inherit">Grupos de interes</Typography>     
+                            </MenuItem>
+                            <MenuItem>
+                                <MyButton tip="Perfil">
+                                    <MusicNote  style={{fill: "secondary"}} />
+                                </MyButton>
+                                    <Typography variant="inherit">Eventos</Typography>     
+                            </MenuItem>
+                            <MenuItem>
+                            <MyButton tip="Perfil">
+                                <HelpOutline style={{fill: "secondary"}} />
+                            </MyButton>
+                                <Typography variant="inherit">Ayuda</Typography>     
+                            </MenuItem>
+                    </MenuList>
+                    </Paper>
+                )
             ):(
                 <Paper className={classes.paper}>
                     <MenuList>

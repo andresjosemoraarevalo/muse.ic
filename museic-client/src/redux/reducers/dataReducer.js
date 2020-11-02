@@ -5,12 +5,14 @@ import {
     LOADING_DATA,
     DELETE_PUBLICACION,
     POST_PUBLICACION,
+    POST_EVENTO,
     SET_PUBLICACION,
     FOLLOW_USER,
     UNFOLLOW_USER
   } from '../types';
   
   const initialState = {
+    eventos:[],
     publicaciones: [],
     publicacion: {},
     seguidos: [],
@@ -37,6 +39,12 @@ import {
         return {
           ...state
         };
+        case POST_EVENTO:
+          return {
+            ...state,
+            eventos: [action.payload, ...state.eventos]
+          };
+
       case POST_PUBLICACION:
         return {
           ...state,

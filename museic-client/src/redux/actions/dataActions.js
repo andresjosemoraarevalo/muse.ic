@@ -6,6 +6,7 @@ import {
     DELETE_PUBLICACION,
     SET_ERRORS,
     POST_PUBLICACION,
+    POST_EVENTO,
     CLEAR_ERRORS,
     LOADING_UI,
     STOP_LOADING_UI,
@@ -78,6 +79,25 @@ export const unlikePublicacion = (postId) => (dispatch) => {
       })
     })
     .catch(err => console.log(err));
+};
+// post a evento 
+export const postEvento = (newEvento) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .post('/crearEvento', newEvento)
+    .then((res) => {
+      dispatch({
+        type: POST_EVENTO,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data
+      });
+    }); 
 };
 
 // Post a publicacion

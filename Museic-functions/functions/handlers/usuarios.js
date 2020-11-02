@@ -527,6 +527,16 @@ exports.getUsuarioAutenticado = (req, res) => {
         userData.seguidos.push(doc.data());
       });
       return db
+      .collection("seguidos")
+      .where("follows","==",req.user.username)
+      .get();
+    })
+    .then((data) => {
+      userData.seguidores=[];
+      data.forEach((doc)=> {
+        userData.seguidores.push(doc.data());
+      });
+      return db
         .collection("Publicaciones")
         .where("postedBy", "==", req.user.username)
         .orderBy("postDate", "desc")

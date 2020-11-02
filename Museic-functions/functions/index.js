@@ -11,7 +11,9 @@ const {
   comentarPublicacion,
   likePublicacion,
   unlikePublicacion,
-  deletePublicacion
+  deletePublicacion,
+  crearEvento,
+  getEventos
 } = require("./handlers/publicaciones");
 const {
   signupUsuario,
@@ -49,6 +51,11 @@ app.delete("/publicaciones/:postId", FBAuthUsuarios, deletePublicacion);
 app.get("/publicaciones/:postId/like", FBAuthUsuarios, likePublicacion);
 app.get("/publicaciones/:postId/unlike", FBAuthUsuarios, unlikePublicacion);
 app.post("/publicaciones/:postId/comentar", FBAuthUsuarios, comentarPublicacion);
+//Artistas 
+
+app.post("/crearEvento", FBAuthUsuarios,crearEvento);
+app.get("/getEventos",getEventos);
+app.post("/crearPublicacionA", FBAuthUsuarios, crearPublicacion);
 //funciones trasladadas a usuarios.js
 //funciones users
 

@@ -15,6 +15,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+import { connect } from 'react-redux';
+import { loginUser } from '../redux/actions/userActions';
 
 const styles = {
     root: {
@@ -54,14 +58,22 @@ class artistlogin extends Component {
         this.state = {
             email: '',
             password: '',
-            loading: false,
             errors: {}
         }
     }
-
-    handleSubmit = (event) => {
+    componentWillReceiveProps(nextProps){
+        if(nextProps.UI.errors){
+          this.setState({errors: nextProps.UI.errors });
+        }
+      }
+      handleSubmit = (event) => {
         event.preventDefault();
-    }
+        const userData = {
+          email: this.state.email,
+          password: this.state.password,
+        };
+        this.props.loginUser(userData, this.props.history);
+      };
     handleChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value
@@ -69,7 +81,8 @@ class artistlogin extends Component {
     }
 
     render() {
-        const  { classes } = this.props;
+        const  { classes , UI:{loading}} = this.props;
+        const {errors}=this.state;
         return (
             <Grid container className={classes.root}>
                 <CssBaseline />
@@ -82,7 +95,9 @@ class artistlogin extends Component {
                         <Typography component="h1" variant="h5">
                             Iniciar Sesión como Artista
                         </Typography>
-                        <form className={classes.form} noValidate onSubmit={this.handleSubmit}>
+                        <form className={classes.form} 
+                        noValidate 
+                        onSubmit={this.handleSubmit}>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -114,6 +129,11 @@ class artistlogin extends Component {
                             control={<Checkbox value="remember" color="primary" />}
                             label="Recordarme"
                             />
+                            {errors.general && (
+                                <Typography variant="body2" className={classes.customError}>
+                                    {errors.general}
+                                </Typography>
+                                )}
                             <Button
                             type="submit"
                             fullWidth
@@ -122,6 +142,9 @@ class artistlogin extends Component {
                             className={classes.submit}
                             >
                             Ingresar
+                            {loading && (
+                                <CircularProgress size={30} className={classes.progress} />
+                             )}                            
                             </Button>
                             <Grid container>
                                 <Grid item xs>
@@ -144,7 +167,17 @@ class artistlogin extends Component {
 }
 
 artistlogin.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    loginUser: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
+    UI: PropTypes.object.isRequired
 }
-
-export default withStyles(styles)(artistlogin);
+const mapStateToProps = (state) => ({
+    user: state.user,
+    UI: state.UI
+  });
+  
+  const mapActionsToProps = {
+    loginUser
+  }
+export default connect(mapStateToProps, mapActionsToProps) (withStyles(styles)(artistlogin));

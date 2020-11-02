@@ -14,6 +14,7 @@ import { logoutUser, getUserData } from './redux/actions/userActions';
 import Navbar from "./components/Navbar";
 import AuthRoute from "./util/AuthRoute.js";
 //Pages
+
 import home from "./pages/home";
 import login from "./pages/login";
 import signup from "./pages/signup";
@@ -21,7 +22,6 @@ import artistlogin from "./pages/artistlogin";
 import intro from "./pages/intro";
 import user from "./pages/user";
 import ProfileUser from "./components/ProfileUser";
-import Menu from "./components/menu";
 
 const theme = createMuiTheme({
   palette: {

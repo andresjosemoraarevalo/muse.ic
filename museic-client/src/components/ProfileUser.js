@@ -12,11 +12,16 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import MyButton from "../util/MyButton";
 import Box from "@material-ui/core/Box";
-
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { DialogContent } from "@material-ui/core";
 //Iconos
 import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
 import EditIcon from "@material-ui/icons/Edit";
+import CloseIcon from "@material-ui/icons/Close";
 //Redux
 import { connect } from "react-redux";
 import { logoutUser, uploadImage } from "../redux/actions/userActions";
@@ -82,10 +87,19 @@ const styles = {
   boton: {
     margin: '8px',
     textTransform: "none"
-  }
+  },
+  closeButton: {
+    position: "absolute",
+    left: "91%",
+    top: "6%",
+  },
 };
 
 class ProfileUser extends Component {
+  state = {
+    openSeguidos: false,
+    openSeguidores: false
+  };
   handleImageChange = (event) => {
     const image = event.target.files[0];
     const formData = new FormData();
@@ -100,6 +114,16 @@ class ProfileUser extends Component {
 
   handleLogout = () => {
     this.props.logoutUser();
+  };
+
+  handleOpenSeguidos = () => {
+    this.setState({ openSeguidos: true });
+  };
+  handleOpenSeguidores = () => {
+    this.setState({ openSeguidores: true });
+  };
+  handleClose = () => {
+    this.setState({ openSeguidos: false, openSeguidores: false });
   };
 
   render() {
@@ -118,9 +142,23 @@ class ProfileUser extends Component {
         },
         loading,
         authenticated,
-        publicaciones
+        publicaciones,
+        
       },
+      user
     } = this.props;
+
+    const seguidosMarkup = user.seguidos !== null ? (
+      user.seguidos.map((seguido) => <MenuItem>{seguido.follows}</MenuItem>)
+    ) : (
+      <p>No tiene usuarios seguidos</p>
+    );
+    const seguidoresMarkup = user.seguidores !== null ? (
+      user.seguidores.map((seguidor) => <MenuItem>{seguidor.username}</MenuItem>)
+    ) : (
+      <p>No tiene usuarios seguidores</p>
+    );
+
     const publicacionesMarkup = loading ? (
       <p> </p>
     ) : publicaciones === null ? (
@@ -183,14 +221,56 @@ class ProfileUser extends Component {
 
               <Grid container spacing={6}>
                 <Grid item >
-                  <Typography variant="body1" className={classes.seguidos}>
-                    {seguidores}{" Seguidores"}
-                  </Typography>
+                  <Link href="#" onClick={this.handleOpenSeguidores} color="inherit">
+                    <Typography variant="body1" className={classes.seguidos}>
+                      {seguidores}{" Seguidores"}
+                    </Typography>
+                  </Link>
+                  <Dialog
+                  open={this.state.openSeguidores}
+                  onClose={this.handleClose}
+                  fullWidth
+                  maxWidth="sm">
+                    <MyButton
+                      tip="Cerrar"
+                      onClick={this.handleClose}
+                      tipClassName={classes.closeButton}
+                    >
+                      <CloseIcon />
+                    </MyButton>
+                    <DialogTitle>Lista de Seguidores</DialogTitle>
+                    <DialogContent>
+                      <MenuList>
+                        {seguidoresMarkup}
+                      </MenuList>
+                    </DialogContent>
+                  </Dialog>
                 </Grid>
                 <Grid item >
-                  <Typography variant="body1" className={classes.seguidos}>
-                    {seguidos}{" Seguidos"}
-                  </Typography>
+                  <Link onClick={this.handleOpenSeguidos} color="inherit" underline="always">
+                    <Typography variant="body1" className={classes.seguidos}>
+                      {seguidos}{" Seguidos"}
+                    </Typography>
+                  </Link>
+                  <Dialog
+                  open={this.state.openSeguidos}
+                  onClose={this.handleClose}
+                  fullWidth
+                  maxWidth="sm">
+                    <MyButton
+                      tip="Cerrar"
+                      onClick={this.handleClose}
+                      tipClassName={classes.closeButton}
+                    >
+                      <CloseIcon />
+                    </MyButton>
+                    <DialogTitle>Lista de Seguidos</DialogTitle>
+                    <DialogContent>
+                      <MenuList>
+                        {seguidosMarkup}
+                      </MenuList>
+                    </DialogContent>
+                  </Dialog>
                 </Grid>
               </Grid>
               {website && (

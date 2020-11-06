@@ -16,6 +16,7 @@ const initialState = {
   credentials: {},
   likes: [],
   seguidos: [],
+  seguidores: [],
   publicaciones: [],
   notificaciones: [],
 };

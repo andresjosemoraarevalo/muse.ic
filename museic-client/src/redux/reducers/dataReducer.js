@@ -16,6 +16,7 @@ import {
     publicaciones: [],
     publicacion: {},
     seguidos: [],
+    seguidores: [],
     loading: false
   };
   

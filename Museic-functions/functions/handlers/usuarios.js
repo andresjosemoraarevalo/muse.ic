@@ -240,25 +240,23 @@ exports.loginArtista = (request, response) => {
   };
   const { valido, errors } = validarDatosdeLogin(user);
   if (!valido) return response.status(400).json(errors);
-  var userData = {};
+  /*var userData = {};
   db.collection("Artistas")
-  .where("email", "==", request.body.email)
-  .get()
-  .then((data)=>{
-        data.forEach((doc) => {
-          userData.username =doc.data().username;
-        });
-  })
-  .catch((err) => {
-    console.error(err);
-    return res.status(500).json({ error: err.code });
-  });
-  if(Object.entries(userData).length == 0){
+    .where("email", "==", request.body.email)
+    .get()
+    .then((data)=>{
+          data.forEach((doc) => {
+            userData.username =doc.data().username;
+          });
+          return response.json(userData);
+    });
+
+  if(userData.username != request.body.email){
     return response.json(userData);
     //return response
   //.status(403)
   //.json({ general: "Datos incorrectos, por favor intente nuevamente" });  
-  }
+  }*/
   
   firebase
   .auth()
@@ -541,7 +539,6 @@ exports.getUsuarioAutenticado = (req, res) => {
         .where("postedBy", "==", req.user.username)
         .orderBy("postDate", "desc")
         .get();
-      
     })
     .then((data) => {
       userData.publicaciones = [];

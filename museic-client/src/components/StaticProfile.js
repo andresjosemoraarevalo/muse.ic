@@ -166,6 +166,7 @@ class StaticProfile extends Component {
           </Grid>
           <Grid container spacing={6}>
             <Grid item >
+              
             <Typography variant="body1" className={classes.seguidos}>
                 {seguidores}{" Seguidores"}
               </Typography>

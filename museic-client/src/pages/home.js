@@ -2,12 +2,14 @@ import React, { Component , Fragment} from "react";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
+import Typography from "@material-ui/core/Typography";
 import Publicacion from "../components/Publicacion";
+import Evento from "../components/Evento";
 import PostPublicacion from '../components/PostPublicacion';
 import Profile from '../components/Profile';
 import Menu from '../components/menu';
 import { connect } from "react-redux";
-import { getPublicaciones } from "../redux/actions/dataActions";
+import { getPublicaciones, getEventos } from "../redux/actions/dataActions";
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import PostEvento from '../components/PostEvento';
@@ -26,6 +28,7 @@ const styles = {
 class home extends Component {
   componentDidMount() {
     this.props.getPublicaciones();
+    this.props.getEventos();
   }
   render() {
     const { 
@@ -36,13 +39,20 @@ class home extends Component {
           loading,
           authenticated
       }
-       
+     // 
        
     } = this.props;
-    const {publicaciones}= this.props.data;
+    const {publicaciones,eventos}= this.props.data;
     let recentPublicacionesMarkup = !loading ? (
       publicaciones.map((publicacion) => (
         <Publicacion key={publicacion.postId} publicacion={publicacion} />
+      ))
+    ) : (
+      <p>Loading...</p>
+    );
+    let recentEventosMarkup = !loading ? (
+      eventos.map((evento) => (
+        <Evento key={evento.postId} evento={evento} />
       ))
     ) : (
       <p>Loading...</p>
@@ -81,7 +91,15 @@ class home extends Component {
             </div>
           </Grid>
           <Grid item sm={3}>
-                <p>recomendaciones...</p>
+            <Typography
+              variant="h5"
+              color="primary"
+            >
+              Eventos
+            </Typography>
+            <div id="homePublicaciones">
+              {recentEventosMarkup}
+            </div>
           </Grid>
           <Grid item sm={1}>
           </Grid>
@@ -115,7 +133,15 @@ class home extends Component {
             </div>
           </Grid>
           <Grid item sm={3}>
-                <p>recomendaciones...</p>
+          <Typography
+            variant="h5"
+            color="primary"
+          >
+            Eventos
+          </Typography>
+          <div id="homePublicaciones">
+            {recentEventosMarkup}
+          </div>
           </Grid>
           <Grid item sm={1}>
           </Grid>
@@ -141,8 +167,9 @@ home.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   getPublicaciones: PropTypes.func.isRequired,
+  getEventos: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
 };
-export default connect(mapStateToProps, { getPublicaciones })(
+export default connect(mapStateToProps, { getPublicaciones, getEventos })(
   withStyles(styles)(home)
 );

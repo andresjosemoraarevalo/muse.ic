@@ -7,6 +7,7 @@ import {
     POST_PUBLICACION,
     POST_EVENTO,
     SET_PUBLICACION,
+    SET_EVENTOS,
     FOLLOW_USER,
     UNFOLLOW_USER
   } from '../types';
@@ -33,6 +34,12 @@ import {
           publicaciones: action.payload,
           loading: false
         };
+      case SET_EVENTOS:
+          return {
+            ...state,
+            eventos: action.payload,
+            loading: false
+          };
       case LIKE_PUBLICACION:
       case UNLIKE_PUBLICACION:
         let index = state.publicaciones.findIndex((publicacion) => publicacion.postId === action.payload.postId);

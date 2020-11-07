@@ -1,5 +1,6 @@
 import {
     SET_PUBLICACIONES,
+    SET_EVENTOS,
     LOADING_DATA,
     LIKE_PUBLICACION,
     UNLIKE_PUBLICACION,
@@ -29,6 +30,24 @@ export const getPublicaciones = () => (dispatch) => {
     .catch(err => {
       dispatch({
         type: SET_PUBLICACIONES,
+        payload: []
+      })
+    });
+};
+
+//get todas los eventos
+export const getEventos = () => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios.get('/getEventos')
+    .then(res => {
+      dispatch({
+        type: SET_EVENTOS,
+        payload: res.data
+      })
+    })
+    .catch(err => {
+      dispatch({
+        type: SET_EVENTOS,
         payload: []
       })
     });

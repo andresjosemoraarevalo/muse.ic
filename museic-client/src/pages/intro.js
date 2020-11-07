@@ -57,7 +57,7 @@ class intro extends Component {
                             Bienvenido a Muse.ic
                         </Typography>
                         <Typography component="h2" variant="h5" className={classes.subtitle}>
-                            No mames que chimba de aplicación prro.
+                            Descubre un nuevo mundo musical :0
                         </Typography>
 
                     </Grid>

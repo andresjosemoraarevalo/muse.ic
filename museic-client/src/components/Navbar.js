@@ -1,22 +1,53 @@
 import React, { Component , Fragment} from 'react'
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import MyButton from "../util/MyButton";
+import Notifications from './Notifications';
 //MUI stuff
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PersonIcon from '@material-ui/icons/Person';
+import AlbumIcon from '@material-ui/icons/Album';
+
+import { logoutUser } from "../redux/actions/userActions";
+
+
 
 class Navbar extends Component {
+    handleLogout = () => {
+        this.props.logoutUser();
+      };
     render() {
         const {authenticated} = this.props
         return (
+          
             <AppBar>
+              { authenticated && (
                 <Toolbar className="nav-container">
                     { authenticated ? (
                         <Fragment>
-                            <Button color="inherit" component={Link} to="/">Home</Button>
-                            <Button color="inherit" component={Link} to="/user">User</Button>
+                            <Link to="/">
+                                <MyButton tip="Home">
+                                    <AlbumIcon style={{fill: "white"}}/>
+                                </MyButton>
+                            </Link>
+                            <Notifications />
+                            <Link to="/user">
+                                <MyButton tip="Perfil">
+                                    <PersonIcon style={{fill: "white"}}/>
+                                </MyButton>
+                            </Link>
+                            <Link to ="/intro">
+                            <MyButton tip="Logout" onClick={this.handleLogout}>
+                                <ExitToAppIcon style={{fill: "white"}} />
+                            </MyButton>
+                            </Link>
+                            
+                            
+                            
                         </Fragment>
                     ):(
                         <Fragment>
@@ -27,17 +58,23 @@ class Navbar extends Component {
                         </Fragment>
                     )}
                     </Toolbar>
+                    )}
             </AppBar>
+          
+            
         );
     }
 }
 
 Navbar.propTypes = {
+    logoutUser: PropTypes.func.isRequired,
     authenticated: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = state => ({
     authenticated: state.user.authenticated
 })
+const mapActionsToProps = { logoutUser };
 
-export default connect(mapStateToProps)(Navbar);
+
+export default connect(mapStateToProps,mapActionsToProps )(Navbar);

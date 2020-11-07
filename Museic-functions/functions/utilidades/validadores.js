@@ -1,3 +1,5 @@
+const {db } = require("./administrador");
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 /*
@@ -60,6 +62,7 @@ exports.validarDatosdeLogin = (datos) => {
     }
 }
 
+
 exports.reduceUserDetails = (data) => {
     let userDetails = {};
     if(!isEmpty(data.nombre.trim())) userDetails.nombre = data.nombre;
@@ -68,5 +71,11 @@ exports.reduceUserDetails = (data) => {
     gustos = data.gustosMusicales;
     userDetails.gustosMusicales = gustos;
 
+    return userDetails;
+}
+
+exports.soloDetails = (data) => {
+    let userDetails = {};
+    if(!isEmpty(data.bio.trim())) userDetails.bio = data.bio;
     return userDetails;
 }

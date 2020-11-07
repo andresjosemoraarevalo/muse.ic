@@ -14,6 +14,7 @@ const {
   validarDatosdeSignup,
   validarDatosdeLogin,
   reduceUserDetails,
+  soloDetails,
 } = require("../utilidades/validadores");
 
 //-----------------------------------------------------------------------------
@@ -37,6 +38,8 @@ exports.signupUsuario = (request, response) => {
     password: request.body.password,
     confirmPassword: request.body.confirmPassword,
     username: request.body.username,
+    seguidores: 0,
+    seguidos: 0
   };
 
   const { valido, errors } = validarDatosdeSignup(newUsuario);
@@ -73,6 +76,8 @@ exports.signupUsuario = (request, response) => {
         email: newUsuario.email,
         Fotolink: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imagenInicial}?alt=media`,
         userId,
+        seguidores: newUsuario.seguidores,
+        seguidos: newUsuario.seguidos
       };
       return db.doc(`/Usuarios/${newUsuario.username}`).set(userCredentials);
     })
@@ -213,6 +218,71 @@ exports.loginUsuario = (request, response) => {
       }
     });
 };
+
+exports.ObtenerUserName= (request, response) =>{
+  var userData = {};
+  db.collection("Artistas")
+    .where("email", "==", request.body.email)
+    .get()
+    .then((data)=>{
+          data.forEach((doc) => {
+            userData.username =doc.data().username;
+          });
+          return response.json(userData);
+    });
+
+}
+
+exports.loginArtista = (request, response) => {
+  const user = {
+    email: request.body.email,
+    password: request.body.password,
+  };
+  const { valido, errors } = validarDatosdeLogin(user);
+  if (!valido) return response.status(400).json(errors);
+  /*var userData = {};
+  db.collection("Artistas")
+    .where("email", "==", request.body.email)
+    .get()
+    .then((data)=>{
+          data.forEach((doc) => {
+            userData.username =doc.data().username;
+          });
+          return response.json(userData);
+    });
+
+  if(userData.username != request.body.email){
+    return response.json(userData);
+    //return response
+  //.status(403)
+  //.json({ general: "Datos incorrectos, por favor intente nuevamente" });  
+  }*/
+  
+  firebase
+  .auth()
+  .signInWithEmailAndPassword(user.email, user.password)
+  .then((data) => {
+    return data.user.getIdToken();
+  })
+  .then((token) => {
+    return response.json({ token });
+  })
+  .catch((err) => {
+    console.error(err);
+    if (err.code == "auth/wrong-password") {
+      return response
+        .status(403)
+        .json({ general: "Datos incorrectos, por favor intente nuevamente" });
+    } else if (err.code == "auth/user-not-found") {
+      return response
+        .status(403)
+        .json({ general: "Datos incorrectos, por favor intente nuevamente" });
+    } else {
+      return response.status(500).json({ error: err.code });
+    }
+  });
+
+};
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 /*
@@ -222,68 +292,61 @@ salida: json con estado de aceptación o error
 */
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-exports.subirFotoPerfilUsuario = (request, response) => {
+exports.subirFotoPerfilUsuario = (req, res) => {
   const BusBoy = require("busboy");
   const path = require("path");
   const os = require("os");
   const fs = require("fs");
 
-  const busboy = new BusBoy({ headers: request.headers });
+  const busboy = new BusBoy({ headers: req.headers });
 
-  let nombreArchivoImagen;
-  let imagenACargar = {};
+  let imageToBeUploaded = {};
+  let imageFileName;
+  // String for image token
+  
 
-  busboy.on(
-    "file",
-    (nombreCampo, archivo, nombreArchivo, codificación, mimetype) => {
-      console.log(nombreCampo);
-      console.log(nombreArchivo);
-      console.log(mimetype);
-      if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
-        return response
-          .status(400)
-          .json({ error: "Archivo con formato incorrecto cargado" });
-      }
-      const extensionImagen = nombreArchivo.split(".")[
-        nombreArchivo.split(".").length - 1
-      ];
-      nombreArchivoImagen = `${Math.round(
-        Math.random() * 10000000000000
-      )}.${extensionImagen}`;
-      const direccionArchivo = path.join(os.tmpdir(), nombreArchivoImagen);
-      imagenACargar = { direccionArchivo, mimetype };
-
-      archivo.pipe(fs.createWriteStream(direccionArchivo));
+  busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
+    console.log(fieldname, file, filename, encoding, mimetype);
+    if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
+      return res.status(400).json({ error: "Wrong file type submitted" });
     }
-  );
+    // my.image.png => ['my', 'image', 'png']
+    const imageExtension = filename.split(".")[filename.split(".").length - 1];
+    // 32756238461724837.png
+    imageFileName = `${Math.round(
+      Math.random() * 1000000000000
+    ).toString()}.${imageExtension}`;
+    const filepath = path.join(os.tmpdir(), imageFileName);
+    imageToBeUploaded = { filepath, mimetype };
+    file.pipe(fs.createWriteStream(filepath));
+  });
   busboy.on("finish", () => {
     admin
       .storage()
       .bucket()
-      .upload(imagenACargar.direccionArchivo, {
+      .upload(imageToBeUploaded.filepath, {
         resumable: false,
         metadata: {
           metadata: {
-            contentType: imagenACargar.mimetype,
+            contentType: imageToBeUploaded.mimetype,
+            //Generate token to be appended to imageUrl
           },
         },
       })
       .then(() => {
-        const urlImagen = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${nombreArchivoImagen}?alt=media`;
-        console.log(urlImagen);
-        return db
-          .doc(`/Usuarios/${request.user.username}`)
-          .update({ Fotolink: urlImagen });
+        // Append token to url
+        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+        return db.doc(`/Usuarios/${req.user.username}`).update({ Fotolink: imageUrl });
       })
       .then(() => {
-        return response.json({ message: "Imagen cargada correctamente" });
+        return res.json({ message: "image uploaded successfully" });
       })
       .catch((err) => {
         console.error(err);
-        return response.status(500).json({ error: err.code });
+        return res.status(500).json({ error: "something went wrong" });
       });
   });
-  busboy.end(request.rawBody);
+  busboy.end(req.rawBody);
 };
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -360,7 +423,7 @@ exports.subirFotoPerfilArtista = (request, response) => {
 
 //addUserDetails
 exports.addUserDetails = (req, res) => {
-  let userDetails = reduceUserDetails(req.body);
+  let userDetails = soloDetails(req.body);
 
   db.doc(`/Usuarios/${req.user.username}`)
     .update(userDetails)
@@ -410,7 +473,6 @@ exports.getUserDetails = (req, res) => {
       return res.status(500).json({ error: err.code });
     });
 };
-
 //getUsuarioAutenticado
 exports.getUsuarioAutenticado = (req, res) => {
   let userData = {};
@@ -429,6 +491,59 @@ exports.getUsuarioAutenticado = (req, res) => {
       userData.likes = [];
       data.forEach((doc) => {
         userData.likes.push(doc.data());
+      });
+      return db
+          .collection("Notificaciones")
+          .where('destinatario', "==", req.user.username)
+          .orderBy("createdAt","desc")
+          
+          .get();
+      
+    })
+    .then((data)=> {
+      userData.notificaciones = [];
+      data.forEach((doc)=> {
+        userData.notificaciones.push({
+          destinatario: doc.data().destinatario,
+          remitente: doc.data().remitente,
+          createdAt: doc.data().createdAt,
+          postId: doc.data().postId,
+          type: doc.data().type,
+          read: doc.data().read,
+          notificationId: doc.id,
+        });
+      });
+      return db
+          .collection("Seguidos")
+          .where("username", "==", req.user.username)
+          .get();
+      
+    })
+    .then((data) => {
+      userData.seguidos = [];
+      data.forEach((doc) => {
+        userData.seguidos.push(doc.data());
+      });
+      return db
+      .collection("seguidos")
+      .where("follows","==",req.user.username)
+      .get();
+    })
+    .then((data) => {
+      userData.seguidores=[];
+      data.forEach((doc)=> {
+        userData.seguidores.push(doc.data());
+      });
+      return db
+        .collection("Publicaciones")
+        .where("postedBy", "==", req.user.username)
+        .orderBy("postDate", "desc")
+        .get();
+    })
+    .then((data) => {
+      userData.publicaciones = [];
+      data.forEach((doc) => {
+        userData.publicaciones.push(doc.data());
       });
       return res.json(userData);
     })
@@ -551,3 +666,22 @@ exports.unfollowUsuario = (req, res) => {
       res.status(500).json({ error: err.code });
     });
 };
+
+// marcar notificacion leida 
+
+exports.marcarNotificacionLeida =(req, res)=>{
+  let batch = db.batch();
+  req.body.forEach(notificationId => {
+    const notification = db.doc(`/Notificaciones/${notificationId}`);
+    batch.update(notification, {read:true});
+  });
+  batch.commit()
+  .then(()=>{
+    return res.json({message: 'Notificacion marcada leida'});
+
+  }).catch(err =>{
+    console.error(err);
+    return res.status(500).json({error: err.code});
+  });
+
+}

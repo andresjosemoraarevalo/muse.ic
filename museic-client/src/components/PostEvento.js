@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment , useState} from "react";
 import PropTypes from "prop-types";
 import { DialogContent, withStyles } from "@material-ui/core";
 import MyButton from "../util/MyButton";
@@ -13,8 +13,11 @@ import TextField from "@material-ui/core/TextField";
 
 //Reduc stuff
 import { connect } from "react-redux";
-import { postPublicacion, clearErrors } from "../redux/actions/dataActions";
+import { postEvento, clearErrors } from "../redux/actions/dataActions";
 
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import Grid from '@material-ui/core/Grid';
 const styles = {
   root: {
     marginTop: 15
@@ -35,11 +38,16 @@ const styles = {
     top: "6%",
   },
 };
-
-class PostPublicacion extends Component {
+class PostEvento extends Component {
+  
   state = {
     open: false,
     postBody: "",
+    nombre: "",
+    precio: "",
+    nombre: "",
+    lugar: "",
+    selectedDate: "",
     errors: {},
   };
   componentWillReceiveProps(nextProps){
@@ -64,9 +72,20 @@ class PostPublicacion extends Component {
   };
   handleSubmit = (event) => {
       event.preventDefault();
-      this.props.postPublicacion({ postBody: this.state.postBody })
-  }
+      this.props.postEvento({ 
+        postBody: this.state.postBody ,
+        nombre: this.state.nombre,
+        precio : this.state.precio,
+        nombre: this.state.nombre,
+        lugar: this.state.lugar,
+        fecha: this.state.selectedDate
+      })
+  };
+  handleDateChange = date => {
+    this.setState({ selectedDate: date });
+  };
   render() {
+    const { selectedDate } = this.state;
     const { errors } = this.state;
     const {
       classes,
@@ -86,7 +105,7 @@ class PostPublicacion extends Component {
           onClick={this.handleOpen}
           startIcon={<PostAddIcon />}
         >
-          Crear Publicacion
+          Crear Evento
         </Button>
         <Dialog
           open={this.state.open}
@@ -101,22 +120,74 @@ class PostPublicacion extends Component {
           >
             <CloseIcon />
           </MyButton>
-          <DialogTitle>Crea una nueva publicacion</DialogTitle>
+          <DialogTitle>Crea un nuevo evento</DialogTitle>
           <DialogContent>
             <form onSubmit={this.handleSubmit}>
+            <TextField
+                variant="outlined"
+                name="nombre"
+                type="text"
+                multiline
+                rows="1"
+                placeholder="Nombre del evento"
+                error={errors.nombre ? true : false}
+                helperText={errors.nombre}
+                onChange={this.handleChange}
+                fullWidth
+              />
               <TextField
                 variant="outlined"
                 name="postBody"
                 type="text"
-                label="Escribe algo musical"
                 multiline
                 rows="3"
-                placeholder="Crea una nueva publicacion para tus seguidores"
+                placeholder="Crea una nuevo evento para tus seguidores"
                 error={errors.postBody ? true : false}
                 helperText={errors.postBody}
                 onChange={this.handleChange}
                 fullWidth
               />
+
+              <TextField
+                variant="outlined"
+                name="precio"
+                type="text"
+                multiline
+                rows="1"
+                placeholder="precio"
+                error={errors.precio ? true : false}
+                helperText={errors.precio}
+                onChange={this.handleChange}
+                fullWidth
+              />
+              <TextField
+                variant="outlined"
+                name="Lugar"
+                type="text"
+                multiline
+                rows="1"
+                placeholder="Lugar"
+                error={errors.lugar ? true : false}
+                helperText={errors.lugar}
+                onChange={this.handleChange}
+                fullWidth
+              />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <Grid container className={classes.grid} justify="space-around">
+                <DatePicker
+                  margin="normal"
+                  label="Fecha"
+                  value={selectedDate}
+                  onChange={this.handleDateChange}
+                />
+                <TimePicker
+                  margin="normal"
+                  label="hora"
+                  value={selectedDate}
+                  onChange={this.handleDateChange}
+                />
+              </Grid>
+            </MuiPickersUtilsProvider>
               <Button
                 type="submit"
                 variant="contained"
@@ -141,8 +212,8 @@ class PostPublicacion extends Component {
   }
 }
 
-PostPublicacion.propTypes = {
-  postPublicacion: PropTypes.func.isRequired,
+PostEvento.propTypes = {
+  postEvento: PropTypes.func.isRequired,
   clearErrors: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired,
 };
@@ -151,6 +222,6 @@ const mapStateToProps = (state) => ({
   UI: state.UI,
 });
 
-export default connect(mapStateToProps, { postPublicacion, clearErrors })(
-  withStyles(styles)(PostPublicacion)
+export default connect(mapStateToProps, { postEvento, clearErrors })(
+  withStyles(styles)(PostEvento)
 );

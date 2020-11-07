@@ -69,14 +69,15 @@ export class EditarDetalles extends Component {
                   fullWidth
                   maxWidth="sm">
                     <DialogTitle> 
-                        Edite la bio
+                        Biografia:
                     </DialogTitle>
                     <DialogContent>
                         <form>
                             <TextField
+                                variant="outlined"
                                 name="bio"
                                 type="text"
-                                label="Bio"
+                                label="Biografia"
                                 multiline
                                 rows="3"
                                 placeholder="Breve descripción de quien eres"

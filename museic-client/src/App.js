@@ -4,6 +4,7 @@ import "./App.css";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import jwtDecode from "jwt-decode";
+import axios from "axios";
 //redux
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -13,12 +14,14 @@ import { logoutUser, getUserData } from './redux/actions/userActions';
 import Navbar from "./components/Navbar";
 import AuthRoute from "./util/AuthRoute.js";
 //Pages
+
 import home from "./pages/home";
 import login from "./pages/login";
 import signup from "./pages/signup";
 import artistlogin from "./pages/artistlogin";
 import intro from "./pages/intro";
 import user from "./pages/user";
+import ProfileUser from "./components/ProfileUser";
 
 const theme = createMuiTheme({
   palette: {
@@ -64,6 +67,12 @@ function App() {
               <div >
               <Switch>
                 <Route exact path="/" component={home} />
+                <Route
+                  exact
+                  path="/user"
+                  component={ProfileUser}
+                 // authenticated={authenticated}
+                />
                 <AuthRoute
                   exact
                   path="/intro"
@@ -75,11 +84,10 @@ function App() {
                   path="/login"
                   component={login}
                 />
-                <AuthRoute
+                <Route
                   exact
-                  path="/user"
+                  path="/usuarios/:username"
                   component={user}
-                  authenticated={authenticated}
                 />
                 <AuthRoute
                   exact

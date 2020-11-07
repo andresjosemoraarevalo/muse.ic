@@ -1,14 +1,18 @@
-import React, { Component } from "react";
+import React, { Component , Fragment} from "react";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import Publicacion from "../components/Publicacion";
 import PostPublicacion from '../components/PostPublicacion';
-
+import Profile from '../components/Profile';
+import Menu from '../components/menu';
 import { connect } from "react-redux";
 import { getPublicaciones } from "../redux/actions/dataActions";
-import Button from "@material-ui/core/Button";
-
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import PostEvento from '../components/PostEvento';
+//import Button from "@material-ui/core/Button";
+ // <Menu />
 const styles = {
   root: {
     marginTop: "80px",
@@ -18,65 +22,24 @@ const styles = {
   }
 };
 
+
 class home extends Component {
-<<<<<<< Updated upstream
-    state = {
-        publicaciones: null
-    }
-    componentDidMount(){
-        axios.get('/getPublicaciones')
-         .then(res=>{
-             console.log(res.data)
-             this.setState({
-                 publicaciones: res.data
-             })
-         })
-         .catch(err => console.log(err));
-    }
-    render(){
-        let recentPublicacionesMarkup = this.state.publicaciones ? (
-<<<<<<< Updated upstream
-            this.state.publicaciones.map((publicacion) => <Publicacion key={publicacion.postId} publicacion={publicacion}/>)
-=======
-            this.state.publicaciones.map((publicacion) => <Publicacion publicacion={publicacion}/>)
->>>>>>> Stashed changes
-        ) : (
-            <p>Loading...</p>
-        );
-        const {classes} = this.props;
-        return (
-            <Grid container className={classes.root} spacing={3} alignItems="center">
-<<<<<<< Updated upstream
-                <Grid item xs={8}>
-                    <p>Crear Publicacion</p>
-                    <Paper>Crear</Paper>
-                </Grid>
-                <Grid item xs={4}>
-                    Chat...
-                </Grid>
-                <Grid item xs={8}>
-                    {recentPublicacionesMarkup}
-                </Grid>
-                
-                
-=======
-                <Grid item sm={11} xs={12}>
-                    <p>Crear Publicacion</p>
-                    <Paper>Crear</Paper>
-                </Grid>
-                <Grid item sm={11} xs={12}>
-                    {recentPublicacionesMarkup}
-                </Grid>
->>>>>>> Stashed changes
-            </Grid>
-        );
-    }
-=======
   componentDidMount() {
     this.props.getPublicaciones();
   }
   render() {
-    const { publicaciones, loading } = this.props.data;
+    const { 
+      user: {
+        credentials: {
+          username,
+          artista,},
+          loading,
+          authenticated
+      }
+       
+       
+    } = this.props;
+    const {publicaciones}= this.props.data;
     let recentPublicacionesMarkup = !loading ? (
       publicaciones.map((publicacion) => (
         <Publicacion key={publicacion.postId} publicacion={publicacion} />
@@ -85,32 +48,98 @@ class home extends Component {
       <p>Loading...</p>
     );
     const { classes } = this.props;
-    return (
-      <Grid container className={classes.root} spacing={3}>
+
+    let homes = ! loading ?(
+      authenticated ?(
+        artista ?(
+          <Grid container className={classes.root} spacing={3}>
           <Grid item sm={1}>
-          
-        </Grid>
-        <Grid item sm={4}>
-            <PostPublicacion />
-        </Grid>
-        <Grid item sm={6} >
+          </Grid>
+          <Grid item sm={3}>
+          <div >
+            <Profile />
+            <Menu/>
+            <PostPublicacion/>
+            <PostEvento />
+          </div>      
+          </Grid>
+          <Grid item sm={4} >
+          <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon style={{fill: "black"},{ fontSize: 20 }} />
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+              />
+              </div>
+            </div>
+          <div id="homePublicaciones" >
           {recentPublicacionesMarkup}
+            </div>
+          </Grid>
+          <Grid item sm={3}>
+                <p>recomendaciones...</p>
+          </Grid>
+          <Grid item sm={1}>
+          </Grid>
         </Grid>
-        <Grid item sm={1}>
-          
+        ):(
+          <Grid container className={classes.root} spacing={3}>
+          <Grid item sm={1}>
+          </Grid>
+          <Grid item sm={3}>
+          <div >
+            <Profile />
+            <Menu/>
+            <PostPublicacion />
+          </div>      
+          </Grid>
+          <Grid item sm={4} >
+          <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon style={{fill: "black"},{ fontSize: 20 }} />
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+              />
+              </div>
+            </div>
+          <div id="homePublicaciones" >
+          {recentPublicacionesMarkup}
+            </div>
+          </Grid>
+          <Grid item sm={3}>
+                <p>recomendaciones...</p>
+          </Grid>
+          <Grid item sm={1}>
+          </Grid>
         </Grid>
-      </Grid>
+        )
+      ):(
+        <p>Loading...</p>
+      )
+    ):(
+      <p>Loading...</p>
     );
+
+    return homes;
   }
->>>>>>> Stashed changes
 }
 
 const mapStateToProps = (state) => ({
   data: state.data,
+  user: state.user,
 });
 
 home.propTypes = {
   classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   getPublicaciones: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
 };

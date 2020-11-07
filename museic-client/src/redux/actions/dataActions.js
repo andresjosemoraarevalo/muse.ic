@@ -6,10 +6,13 @@ import {
     DELETE_PUBLICACION,
     SET_ERRORS,
     POST_PUBLICACION,
+    POST_EVENTO,
     CLEAR_ERRORS,
     LOADING_UI,
     STOP_LOADING_UI,
-    SUBMIT_COMMENT
+    SUBMIT_COMMENT,
+    UNFOLLOW_USER,
+    FOLLOW_USER
   } from '../types';
 import axios from 'axios';
 
@@ -29,6 +32,28 @@ export const getPublicaciones = () => (dispatch) => {
         payload: []
       })
     });
+};
+
+export const followProfile = (username) => (dispatch) => {
+  axios.get(`/usuario/${username}/follow`)
+    .then(res => {
+      dispatch({
+        type: FOLLOW_USER,
+        payload: res.data
+      })
+    })
+    .catch(err => console.log(err));
+};
+
+export const unfollowProfile = (username) => (dispatch) => {
+  axios.get(`/usuario/${username}/unfollow`)
+    .then(res => {
+      dispatch({
+        type: UNFOLLOW_USER,
+        payload: res.data
+      })
+    })
+    .catch(err => console.log(err));
 };
 
 //like publicacion
@@ -54,6 +79,25 @@ export const unlikePublicacion = (postId) => (dispatch) => {
       })
     })
     .catch(err => console.log(err));
+};
+// post a evento 
+export const postEvento = (newEvento) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .post('/crearEvento', newEvento)
+    .then((res) => {
+      dispatch({
+        type: POST_EVENTO,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data
+      });
+    }); 
 };
 
 // Post a publicacion
@@ -82,6 +126,23 @@ export const postPublicacion = (newPublicacion) => (dispatch) => {
         dispatch({ type: DELETE_PUBLICACION, payload: postId});
       })
       .catch((err) => console.log(err));
+  };
+
+  export const getUserData = (username) => (dispatch) => {
+    dispatch({ type: LOADING_DATA });
+    axios.get(`/usuario/${username}`)
+      .then((res) => {
+        dispatch({
+          type: SET_PUBLICACIONES,
+          payload: res.data.publicaciones
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: SET_PUBLICACIONES,
+          payload: null
+        })
+      });
   };
 
   export const clearErrors = () => (dispatch) => {

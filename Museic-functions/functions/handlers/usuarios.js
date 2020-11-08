@@ -39,7 +39,8 @@ exports.signupUsuario = (request, response) => {
     confirmPassword: request.body.confirmPassword,
     username: request.body.username,
     seguidores: 0,
-    seguidos: 0
+    seguidos: 0,
+    artista: false
   };
 
   const { valido, errors } = validarDatosdeSignup(newUsuario);
@@ -77,7 +78,8 @@ exports.signupUsuario = (request, response) => {
         Fotolink: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imagenInicial}?alt=media`,
         userId,
         seguidores: newUsuario.seguidores,
-        seguidos: newUsuario.seguidos
+        seguidos: newUsuario.seguidos,
+        artista: newUsuario.artista
       };
       return db.doc(`/Usuarios/${newUsuario.username}`).set(userCredentials);
     })
@@ -117,6 +119,9 @@ exports.signupArtista = (request, response) => {
     password: request.body.password,
     confirmPassword: request.body.confirmPassword,
     username: request.body.username,
+    seguidores: 0,
+    seguidos: 0,
+    artista: true
   };
 
   const { valido, errors } = validarDatosdeSignup(newArtista);
@@ -126,7 +131,7 @@ exports.signupArtista = (request, response) => {
   const imagenInicial = "foto_perfil_basica.jpg";
 
   let token, userId;
-  db.doc(`/Artistas/${newArtista.username}`)
+  db.doc(`/Usuarios/${newArtista.username}`)
     .get()
     .then((doc) => {
       if (doc.exists) {
@@ -153,8 +158,12 @@ exports.signupArtista = (request, response) => {
         email: newArtista.email,
         Fotolink: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imagenInicial}?alt=media`,
         userId,
+        seguidores: newArtista.seguidores,
+        seguidos: newArtista.seguidos,
+        artista: newArtista.artista
+      
       };
-      return db.doc(`/Artistas/${newArtista.username}`).set(userCredentials);
+      return db.doc(`/Usuarios/${newArtista.username}`).set(userCredentials);
     })
     .then(() => {
       return response.status(201).json({ token });

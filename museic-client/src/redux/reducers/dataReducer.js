@@ -9,7 +9,9 @@ import {
     SET_PUBLICACION,
     SET_EVENTOS,
     FOLLOW_USER,
-    UNFOLLOW_USER
+    UNFOLLOW_USER,
+    LIKE_EVENTO,
+    UNLIKE_EVENTO
   } from '../types';
   
   const initialState = {
@@ -40,6 +42,13 @@ import {
             eventos: action.payload,
             loading: false
           };
+      case LIKE_EVENTO:
+      case UNLIKE_EVENTO:
+              let index3 = state.eventos.findIndex((evento) => evento.postId === action.payload.postId);
+              state.eventos[index] = action.payload;
+              return {
+                ...state
+              };
       case LIKE_PUBLICACION:
       case UNLIKE_PUBLICACION:
         let index = state.publicaciones.findIndex((publicacion) => publicacion.postId === action.payload.postId);

@@ -5,6 +5,8 @@ import {
     LIKE_PUBLICACION,
     UNLIKE_PUBLICACION,
     DELETE_PUBLICACION,
+    LIKE_EVENTO,
+    UNLIKE_EVENTO,
     SET_ERRORS,
     POST_PUBLICACION,
     POST_EVENTO,
@@ -99,6 +101,32 @@ export const unlikePublicacion = (postId) => (dispatch) => {
     })
     .catch(err => console.log(err));
 };
+
+//like evento
+export const likeEvento = (postId) => (dispatch) => {
+  axios.get(`/Eventos/${postId}/like`)
+    .then(res => {
+      dispatch({
+        type: LIKE_EVENTO,
+        payload: res.data
+      })
+    })
+    .catch(err => console.log(err));
+};
+
+
+//unlike publicacion
+export const unlikeEvento = (postId) => (dispatch) => {
+  axios.get(`/Eventos/${postId}/unlike`)
+    .then(res => {
+      dispatch({
+        type: UNLIKE_EVENTO,
+        payload: res.data
+      })
+    })
+    .catch(err => console.log(err));
+};
+
 // post a evento 
 export const postEvento = (newEvento) => (dispatch) => {
   dispatch({ type: LOADING_UI });

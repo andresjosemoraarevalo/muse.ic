@@ -501,6 +501,18 @@ exports.getUsuarioAutenticado = (req, res) => {
       data.forEach((doc) => {
         userData.likes.push(doc.data());
       });
+
+      return db
+      .collection("LikesEventos")
+      .where("username", "==", req.user.username)
+      .get();
+    }
+    )
+    .then((data) => {
+      userData.likesE = [];
+    data.forEach((doc) => {
+      userData.likesE.push(doc.data());
+    });
       return db
           .collection("Notificaciones")
           .where('destinatario', "==", req.user.username)

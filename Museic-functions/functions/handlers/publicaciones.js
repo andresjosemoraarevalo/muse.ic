@@ -92,69 +92,6 @@ exports.getPublicaciones = (req, res) => {
     })
     .catch((err) => console.error(err));
 };
-// obtener eventos 
-exports.getEventos = (req, res) => {
-  db.collection("Eventos")
-    .orderBy("postDate", "desc")
-    .get()
-    .then((data) => {
-      let eventos = [];
-      data.forEach((doc) => {
-        eventos.push({
-          postId: doc.id,
-          postBody: doc.data().postBody,
-          postedBy: doc.data().postedBy,
-          postDate: doc.data().postDate,
-          comentarios: doc.data().comentarios,
-          likes: doc.data().likes,
-          Fotolink: doc.data().Fotolink,
-          nombre: doc.data().nombre,
-          precio: doc.data().precio,
-          fechaEvento: doc.data().fechaEvento,
-          horaEvento: doc.data().horaEvento,
-          precio: doc.data().precio,
-          lugar: doc.data().lugar
-        });
-      });
-      return res.json(eventos);
-    })
-    .catch((err) => console.error(err));
-};
-
-// Hacer un evento 
-exports.crearEvento = (req, res)=>{
-  if (req.body.postBody.trim() === "") {
-    return res
-      .status(400)
-      .jsn({ postBody: "El evento no debe estar vacia" });
-  }
-  const newEvento = {
-    postBody: req.body.postBody,
-    postedBy: req.user.username,
-    Fotolink: req.user.Fotolink,
-    postDate: new Date().toISOString(),
-    lugar: req.body.lugar,
-    fechaEvento: req.body.fecha,
-    nombre: req.body.nombre,
-    precio: req.body.precio,
-    likes: 0,
-    comentarios: 0,
-  };
-  admin
-  .firestore()
-  .collection("Eventos")
-  .add(newEvento)
-  .then((doc) => {
-    const resEvento = newEvento;
-    resEvento.postId = doc.id;
-    res.json(resEvento);
-  })
-  .catch((err) => {
-    res.status(500).json({ error: "error al crear el evento" });
-    console.error(err);
-  });
-
-};
 //hacer una publicacion
 exports.crearPublicacion = (req, res) => {
   if (req.body.postBody.trim() === "") {

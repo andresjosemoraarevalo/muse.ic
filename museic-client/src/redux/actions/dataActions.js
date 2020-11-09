@@ -4,6 +4,7 @@ import {
     LIKE_PUBLICACION,
     UNLIKE_PUBLICACION,
     DELETE_PUBLICACION,
+    SET_PUBLICACION,
     SET_ERRORS,
     POST_PUBLICACION,
     POST_EVENTO,
@@ -32,6 +33,19 @@ export const getPublicaciones = () => (dispatch) => {
         payload: []
       })
     });
+};
+
+export const getPublicacion = (postId) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios.get(`/publicaciones/${postId}`)
+    .then(res => {
+      dispatch({
+        type: SET_PUBLICACION,
+        payload: res.data
+      });
+      dispatch({ type: STOP_LOADING_UI });
+    })
+    .catch(err => console.log(err));
 };
 
 export const followProfile = (username) => (dispatch) => {

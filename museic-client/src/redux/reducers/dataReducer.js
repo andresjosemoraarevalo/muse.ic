@@ -33,10 +33,18 @@ import {
           publicaciones: action.payload,
           loading: false
         };
+      case SET_PUBLICACION:
+        return {
+          ...state,
+          publicacion: action.payload,
+        };
       case LIKE_PUBLICACION:
       case UNLIKE_PUBLICACION:
         let index = state.publicaciones.findIndex((publicacion) => publicacion.postId === action.payload.postId);
         state.publicaciones[index] = action.payload;
+        if (state.publicacion.postId === action.payload.postId) {
+          state.publicacion = action.payload;
+        }
         return {
           ...state
         };

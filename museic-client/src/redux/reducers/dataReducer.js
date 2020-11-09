@@ -7,8 +7,13 @@ import {
     POST_PUBLICACION,
     POST_EVENTO,
     SET_PUBLICACION,
+    SET_EVENTOS,
     FOLLOW_USER,
-    UNFOLLOW_USER
+    UNFOLLOW_USER,
+    LIKE_EVENTO,
+    UNLIKE_EVENTO,
+    DELETE_EVENTO,
+    SET_USUARIOS
   } from '../types';
   
   const initialState = {
@@ -17,6 +22,7 @@ import {
     publicacion: {},
     seguidos: [],
     seguidores: [],
+    usuarios:[],
     loading: false
   };
   
@@ -33,6 +39,27 @@ import {
           publicaciones: action.payload,
           loading: false
         };
+
+        case SET_USUARIOS:
+          return {
+            ...state,
+            usuarios: action.payload,
+            loading: false
+          };
+      case SET_EVENTOS:
+          return {
+            ...state,
+            eventos: action.payload,
+            loading: false
+          };
+      case LIKE_EVENTO:
+      case UNLIKE_EVENTO:
+              let index3 = state.eventos.findIndex((evento) => evento.postId === action.payload.postId);
+              state.eventos[index] = action.payload;
+              return {
+                ...state
+              };
+
       case SET_PUBLICACION:
         return {
           ...state,
@@ -65,6 +92,12 @@ import {
         return {
           ...state
         };
+        case DELETE_EVENTO:
+          let indexe = state.eventos.findIndex((evento) => evento.postId === action.payload);
+          state.eventos.splice(indexe, 1);
+          return {
+            ...state
+          };
       case FOLLOW_USER:
       case UNFOLLOW_USER:
         let indexU = state.seguidos.findIndex((seguido) => seguido.follows === action.payload.username);

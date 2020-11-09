@@ -162,11 +162,11 @@ class PostEvento extends Component {
               />
               <TextField
                 variant="outlined"
-                name="Lugar"
+                name="lugar"
                 type="text"
                 multiline
                 rows="1"
-                placeholder="Lugar"
+                placeholder="lugar"
                 error={errors.lugar ? true : false}
                 helperText={errors.lugar}
                 onChange={this.handleChange}

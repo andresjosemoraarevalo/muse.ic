@@ -1,15 +1,16 @@
+
 import React, { Component , Fragment} from "react";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
-import Publicacion from "../components/Publicacion";
+import Usuario from "../components/Usuario";
 import Evento from "../components/Evento";
 import PostPublicacion from '../components/PostPublicacion';
 import Profile from '../components/Profile';
 import Menu from '../components/menu';
 import { connect } from "react-redux";
-import { getPublicaciones, getEventos } from "../redux/actions/dataActions";
+import { getPublicaciones, getEventos, getUsuarios } from "../redux/actions/dataActions";
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import PostEvento from '../components/PostEvento';
@@ -17,7 +18,7 @@ import PostEvento from '../components/PostEvento';
  // <Menu />
 const styles = {
   root: {
-    marginTop: "60px",
+    marginTop: "80px",
   },
   posts: {
       overflow: 'scroll'
@@ -25,42 +26,33 @@ const styles = {
 };
 
 
-class home extends Component {
+class chat extends Component {
   componentDidMount() {
-    this.props.getPublicaciones();
-    this.props.getEventos();
+    this.props.getUsuarios();
   }
   render() {
     const { 
       user: {
         credentials: {
           username,
-          artista,
-        },
+          artista,},
           loading,
           authenticated
       }
      // 
        
     } = this.props;
-    const {publicaciones,eventos}= this.props.data;
-    let recentPublicacionesMarkup = !loading ? (
-      publicaciones.map((publicacion) => (
-        <Publicacion key={publicacion.postId} publicacion={publicacion} />
-      ))
-    ) : (
-      <p>Loading...</p>
-    );
-    let recentEventosMarkup = !loading ? (
-      eventos.map((evento) => (
-        <Evento key={evento.postId} evento={evento} />
-      ))
-    ) : (
-      <p>Loading...</p>
-    );
-    const { classes } = this.props;
-
-    let homes = ! loading ?(
+    
+    const {usuarios}= this.props.data;
+    let recentUsuariosMarkup = !loading ? (
+        usuarios.map((usuario) => (
+          <Usuario key={usuario.username} usuario={usuario} />
+        ))
+      ) : (
+        <p>Loading...</p>
+      );
+      const { classes } = this.props;
+    let chats = ! loading ?(
       authenticated ?(
         artista ?(
           <Grid container className={classes.root} spacing={3}>
@@ -75,9 +67,20 @@ class home extends Component {
           </div>      
           </Grid>
           <Grid item sm={4} >
-          
+          <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon style={{fill: "black"},{ fontSize: 20 }} />
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+              />
+              </div>
+            </div>
           <div id="homePublicaciones" >
-          {recentPublicacionesMarkup}
+              {recentUsuariosMarkup}
             </div>
           </Grid>
           <Grid item sm={3}>
@@ -85,10 +88,9 @@ class home extends Component {
               variant="h5"
               color="primary"
             >
-              Eventos
+              Chat
             </Typography>
             <div id="homePublicaciones">
-              {recentEventosMarkup}
             </div>
           </Grid>
           <Grid item sm={1}>
@@ -106,9 +108,16 @@ class home extends Component {
           </div>      
           </Grid>
           <Grid item sm={4} >
-          
+          <div className={classes.search}>
+            </div>
           <div id="homePublicaciones" >
-          {recentPublicacionesMarkup}
+          <Typography
+                variant="h5"
+                color="primary"
+            >
+            Usuarios
+            </Typography>   
+          {recentUsuariosMarkup}
             </div>
           </Grid>
           <Grid item sm={3}>
@@ -116,10 +125,9 @@ class home extends Component {
             variant="h5"
             color="primary"
           >
-            Eventos
+            Chat
           </Typography>
           <div id="homePublicaciones">
-            {recentEventosMarkup}
           </div>
           </Grid>
           <Grid item sm={1}>
@@ -133,7 +141,7 @@ class home extends Component {
       <p>Loading...</p>
     );
 
-    return homes;
+    return chats;
   }
 }
 
@@ -142,13 +150,14 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-home.propTypes = {
+chat.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  getPublicaciones: PropTypes.func.isRequired,
-  getEventos: PropTypes.func.isRequired,
+ 
+  getUsuarios: PropTypes.func.isRequired,
+  
   data: PropTypes.object.isRequired,
 };
-export default connect(mapStateToProps, { getPublicaciones, getEventos })(
-  withStyles(styles)(home)
+export default connect(mapStateToProps, { getUsuarios })(
+  withStyles(styles)(chat)
 );

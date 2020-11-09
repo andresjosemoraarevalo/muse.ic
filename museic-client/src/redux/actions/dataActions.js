@@ -1,9 +1,12 @@
 import {
     SET_PUBLICACIONES,
+    SET_EVENTOS,
     LOADING_DATA,
     LIKE_PUBLICACION,
     UNLIKE_PUBLICACION,
     DELETE_PUBLICACION,
+    LIKE_EVENTO,
+    UNLIKE_EVENTO,
     SET_PUBLICACION,
     SET_ERRORS,
     POST_PUBLICACION,
@@ -13,7 +16,9 @@ import {
     STOP_LOADING_UI,
     SUBMIT_COMMENT,
     UNFOLLOW_USER,
-    FOLLOW_USER
+    FOLLOW_USER,
+    DELETE_EVENTO,
+    SET_USUARIOS,
   } from '../types';
 import axios from 'axios';
 
@@ -30,6 +35,40 @@ export const getPublicaciones = () => (dispatch) => {
     .catch(err => {
       dispatch({
         type: SET_PUBLICACIONES,
+        payload: []
+      })
+    });
+};
+export const getUsuarios = () => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios.get('/getUsuarios')
+    .then(res => {
+      dispatch({
+        type: SET_USUARIOS,
+        payload: res.data
+      })
+    })
+    .catch(err => {
+      dispatch({
+        type: SET_USUARIOS,
+        payload: []
+      })
+    });
+};
+
+//get todas los eventos
+export const getEventos = () => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios.get('/getEventos')
+    .then(res => {
+      dispatch({
+        type: SET_EVENTOS,
+        payload: res.data
+      })
+    })
+    .catch(err => {
+      dispatch({
+        type: SET_EVENTOS,
         payload: []
       })
     });
@@ -94,6 +133,32 @@ export const unlikePublicacion = (postId) => (dispatch) => {
     })
     .catch(err => console.log(err));
 };
+
+//like evento
+export const likeEvento = (postId) => (dispatch) => {
+  axios.get(`/Eventos/${postId}/like`)
+    .then(res => {
+      dispatch({
+        type: LIKE_EVENTO,
+        payload: res.data
+      })
+    })
+    .catch(err => console.log(err));
+};
+
+
+//unlike publicacion
+export const unlikeEvento = (postId) => (dispatch) => {
+  axios.get(`/Eventos/${postId}/unlike`)
+    .then(res => {
+      dispatch({
+        type: UNLIKE_EVENTO,
+        payload: res.data
+      })
+    })
+    .catch(err => console.log(err));
+};
+
 // post a evento 
 export const postEvento = (newEvento) => (dispatch) => {
   dispatch({ type: LOADING_UI });
@@ -138,6 +203,14 @@ export const postPublicacion = (newPublicacion) => (dispatch) => {
     axios.delete(`/publicaciones/${postId}`)
       .then(() => {
         dispatch({ type: DELETE_PUBLICACION, payload: postId});
+      })
+      .catch((err) => console.log(err));
+  };
+
+  export const deleteEvento= (postId) => (dispatch) => {
+    axios.delete(`/Eventos/${postId}`)
+      .then(() => {
+        dispatch({ type: DELETE_EVENTO, payload: postId});
       })
       .catch((err) => console.log(err));
   };

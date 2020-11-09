@@ -6,7 +6,7 @@ body{
   background-color: rgb(245,245,245);
 }
 .container{
-  margin: 80px auto 0 auto;
+  margin: 80 auto 0 auto;
   /*max-width: 1000px;*/
 }
 .nav-container{
@@ -30,7 +30,7 @@ a{
   width: 440px;
   position: absolute;
   bottom: 20px;
-  top: 150px;
+  top: 100px;
   overflow: auto
 }
 
@@ -39,6 +39,6 @@ a{
   width:320px;
   position: absolute;
   bottom: 20px;
-  top: 70px;
+  /*top: 60px;*/
   overflow: auto
 }

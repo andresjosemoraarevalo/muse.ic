@@ -90,10 +90,12 @@ class StaticProfile extends Component {
   followProfile = () => {
     this.props.followProfile(this.props.profile.username);
     this.props.profile.seguidores++;
+    this.props.user.credentials.seguidos++;
   };
   unfollowProfile = () => {
     this.props.unfollowProfile(this.props.profile.username);
     this.props.profile.seguidores--;
+    this.props.user.credentials.seguidos--;
   }
   render() {
   const {

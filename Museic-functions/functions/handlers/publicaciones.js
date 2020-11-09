@@ -142,7 +142,7 @@ exports.getPublicacion = (req, res) => {
         .get();
     })
     .then((data) => {
-      publicacionData.comentarios = [];
+      publicacionData.listacomentarios = [];
       data.forEach((doc) => {
         publicacionData.comentarios.push(doc.data());
       });

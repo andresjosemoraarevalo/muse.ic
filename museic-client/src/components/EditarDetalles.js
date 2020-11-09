@@ -9,23 +9,56 @@ import { Dialog, DialogContent, DialogActions, DialogTitle, TextField, Tooltip }
 import IconButton from '@material-ui/core/IconButton';
 
 import Button from '@material-ui/core/Button';
+import Box from "@material-ui/core/Box";
 import EditIcon from '@material-ui/icons/Edit';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import Grid from "@material-ui/core/Grid";
+import AddIcon from '@material-ui/icons/Add';
 
 
 const styles = ({
     paper: {
         padding: 20
+    },
+    box: {
+        backgroundColor: "#800080",
+        color: "#FFFFFF",
+        marginRight: 10
+    },
+    boxDiv: {
+        marginTop: 20,
+        marginBottom: 20,
+    },
+    TextField: {
+        marginBottom: 20
+    },
+    agregar: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center"
+    },
+    boton: {
+        margin: '8px',
+        textTransform: "none"
       },
 })
+
+const options = ["Rock Alternativo", "Ambiente", "Clasica", "Country", "Cumbia", "Dance", "EDM", "Dancehall", "Deep House",
+                 "Disco", "Drum & Bass", "Dubstep", "Electrónica", "Folk", "Hip Hop y Rap", "House",
+                 "Indie", "Jazz y Blues", "Latina", "Metal", "Piano", "Pop", "R&B y Soul", "Reggae", 
+                 "Reguetón", "Rock", "Bandas Sonoras", "Techno", "Trance", "Trap", "Triphop", "Vallenato"];
 
 export class EditarDetalles extends Component {
     state = {
         bio: '',
+        gustos: [],
+        aux: 'hola',
         open: false
     }
     mapUserDetailsToState = (credentials) => {
         this.setState({
             bio: credentials.bio ? credentials.bio : '',
+            gustos: credentials.gustos ? credentials.gustos : []
         });
     }
     handleOpen = () => {
@@ -46,23 +79,48 @@ export class EditarDetalles extends Component {
     }
     handleSubmit = () => {
         const userDetails = {
-            bio: this.state.bio
+            bio: this.state.bio,
+            gustos: this.state.gustos
         };
         this.props.editUserDetails(userDetails);
         this.handleClose();
+    }
+    addGusto = () => {
+        const gustos = this.state.gustos;
+        const aux = this.state.aux;
+        if(gustos.find(gusto => gusto === aux)){
+            return alert("No valores duplicados")
+        }
+        gustos.push(aux);
+        this.setState({
+            gustos
+        })
+
+    }
+    onChangeGustos = (event, values) => {
+        this.setState({
+            gustos: values
+        }, () => {
+            console.log(this.state.gustos);
+        });
     }
 
     render() {
         const { classes } = this.props;
         return (
               <Fragment>
-                  <Tooltip title="Editar bio" placement="top">
-                    <IconButton onClick={this.handleOpen} className={classes.button}>
-                        <EditIcon color="primary">
-
-                        </EditIcon>
-                    </IconButton>
-                  </Tooltip>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    onClick={this.handleOpen}
+                    buttonStyle={{ borderRadius: 5 }}
+                    style={{ borderRadius: 5 }}
+                    className={classes.boton}
+                  >
+                    Editar perfil
+                  </Button>
+                  
                   <Dialog
                   open={this.state.open}
                   onClose={this.handleClose}
@@ -86,6 +144,16 @@ export class EditarDetalles extends Component {
                                 onChange={this.handleChange}
                                 fullWidth
                                 />
+                            <Autocomplete
+                                multiple
+                                id="combo-box-gustos"
+                                options={options}
+                                fullWidth
+                                defaultValue={this.state.gustos}
+                                filterSelectedOptions
+                                onChange={this.onChangeGustos}
+                                renderInput={(params) => <TextField {...params} label="Generos" placeholder="Generos" variant="outlined"/>}
+                            />
                         </form>
                     </DialogContent>
                     <DialogActions>

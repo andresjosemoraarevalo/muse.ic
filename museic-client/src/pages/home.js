@@ -17,7 +17,7 @@ import PostEvento from '../components/PostEvento';
  // <Menu />
 const styles = {
   root: {
-    marginTop: "80px",
+    marginTop: "60px",
   },
   posts: {
       overflow: 'scroll'
@@ -35,7 +35,8 @@ class home extends Component {
       user: {
         credentials: {
           username,
-          artista,},
+          artista,
+        },
           loading,
           authenticated
       }
@@ -74,18 +75,7 @@ class home extends Component {
           </div>      
           </Grid>
           <Grid item sm={4} >
-          <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon style={{fill: "black"},{ fontSize: 20 }} />
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-              />
-              </div>
-            </div>
+          
           <div id="homePublicaciones" >
           {recentPublicacionesMarkup}
             </div>
@@ -116,18 +106,7 @@ class home extends Component {
           </div>      
           </Grid>
           <Grid item sm={4} >
-          <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon style={{fill: "black"},{ fontSize: 20 }} />
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-              />
-              </div>
-            </div>
+          
           <div id="homePublicaciones" >
           {recentPublicacionesMarkup}
             </div>

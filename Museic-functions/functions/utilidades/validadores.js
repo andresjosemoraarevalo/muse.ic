@@ -77,5 +77,6 @@ exports.reduceUserDetails = (data) => {
 exports.soloDetails = (data) => {
     let userDetails = {};
     if(!isEmpty(data.bio.trim())) userDetails.bio = data.bio;
+    userDetails.gustos = data.gustos;
     return userDetails;
 }

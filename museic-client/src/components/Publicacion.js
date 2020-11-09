@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import MyButton from "../util/MyButton";
 import DeletePublicacion from './DeletePublicacion';
 import LikeButton from './LikeButtom';
+import ShareButtom from './ShareButtom';
 
 //MUI stuff
 import Card from "@material-ui/core/Card";
@@ -49,7 +50,9 @@ class Publicacion extends Component {
         comentarios,
         likes,
         Fotolink,
-        postId
+        postId,
+        remixeados,
+        remixeado
       },
       user: {
           authenticated,
@@ -109,6 +112,8 @@ class Publicacion extends Component {
             <ChatIcon color="primary" />
           </MyButton>
           <span>{comentarios} Comentarios</span>
+          <ShareButtom postId = {postId}/>
+          <span>{remixeados} Remixeados</span>
         </CardContent>
       </Card>
     );

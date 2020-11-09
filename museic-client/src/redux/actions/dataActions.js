@@ -12,7 +12,8 @@ import {
     STOP_LOADING_UI,
     SUBMIT_COMMENT,
     UNFOLLOW_USER,
-    FOLLOW_USER
+    FOLLOW_USER,
+    SHARE_PUBLICACION
   } from '../types';
 import axios from 'axios';
 
@@ -119,6 +120,26 @@ export const postPublicacion = (newPublicacion) => (dispatch) => {
         });
       }); 
   };
+
+  // Share a publicacion
+export const sharePublicacion = (newPublicacion) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .post('/crearPublicacion', newPublicacion)
+    .then((res) => {
+      dispatch({
+        type: SHARE_PUBLICACION,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data
+      });
+    }); 
+};
 
   export const deletePublicacion = (postId) => (dispatch) => {
     axios.delete(`/publicaciones/${postId}`)

@@ -28,6 +28,7 @@ exports.getUsuarios = (request, response) => {
           interesesMusicales: doc.data().interesesMusicales,
           Fotolink: doc.data().Fotolink,
           email: doc.data().email,
+          artista: doc.data().artista,
         });
       });
       return response.json(usuarios);

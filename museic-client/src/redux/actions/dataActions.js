@@ -15,7 +15,9 @@ import {
     STOP_LOADING_UI,
     SUBMIT_COMMENT,
     UNFOLLOW_USER,
-    FOLLOW_USER
+    FOLLOW_USER,
+    DELETE_EVENTO,
+    SET_USUARIOS,
   } from '../types';
 import axios from 'axios';
 
@@ -32,6 +34,22 @@ export const getPublicaciones = () => (dispatch) => {
     .catch(err => {
       dispatch({
         type: SET_PUBLICACIONES,
+        payload: []
+      })
+    });
+};
+export const getUsuarios = () => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios.get('/getUsuarios')
+    .then(res => {
+      dispatch({
+        type: SET_USUARIOS,
+        payload: res.data
+      })
+    })
+    .catch(err => {
+      dispatch({
+        type: SET_USUARIOS,
         payload: []
       })
     });
@@ -171,6 +189,14 @@ export const postPublicacion = (newPublicacion) => (dispatch) => {
     axios.delete(`/publicaciones/${postId}`)
       .then(() => {
         dispatch({ type: DELETE_PUBLICACION, payload: postId});
+      })
+      .catch((err) => console.log(err));
+  };
+
+  export const deleteEvento= (postId) => (dispatch) => {
+    axios.delete(`/Eventos/${postId}`)
+      .then(() => {
+        dispatch({ type: DELETE_EVENTO, payload: postId});
       })
       .catch((err) => console.log(err));
   };

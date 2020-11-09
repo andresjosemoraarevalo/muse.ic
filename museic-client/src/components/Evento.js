@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
 import MyButton from "../util/MyButton";
-import DeletePublicacion from './DeletePublicacion';
+import DeleteEvento from './DeleteEvento';
 import LikeButtonE from './likeButtomE';
 
 //MUI stuff
@@ -63,9 +63,9 @@ class Evento extends Component {
       }
     } = this.props;
     
-    /*const deleteButton = authenticated && postedBy === username ? (
-        <DeletePublicacion postId={postId}/>
-    ) : null */
+    const deleteButton = authenticated && postedBy === username ? (
+        <DeleteEvento postId={postId}/>
+    ) : null 
     return (
       <Card className={classes.card}>
         <CardHeader
@@ -92,9 +92,9 @@ class Evento extends Component {
             )
             
           }
-          //action={
-            //deleteButton
-          //}
+          action={
+            deleteButton
+          }
           subheader={
             <Typography variant="body2" color="textSecondary">
               {dayjs(postDate).fromNow()}

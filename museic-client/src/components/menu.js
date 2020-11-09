@@ -54,8 +54,9 @@ class Menu extends Component {
                 artista ? (
                     <Paper className={classes.paper}>
                 <MenuList>
-                    <MenuItem component={Link}
-                            to={'/user'}>
+                    <MenuItem 
+                        component={Link}
+                         to={'/user'}>
                         <MyButton>
                             <PersonIcon style={{fill: "secondary"}}/>
                         </MyButton>
@@ -63,8 +64,10 @@ class Menu extends Component {
                             Perfil
                         </Typography>
                     </MenuItem>
-                    <MenuItem>
-                        <MyButton tip="Perfil">
+                    <MenuItem
+                        component={Link}
+                        to={'/chat'}>
+                        <MyButton>
                             <SendIcon style={{fill: "secondary"}} />
                         </MyButton>
                             <Typography variant="inherit">Mensajes</Typography>     
@@ -101,7 +104,9 @@ class Menu extends Component {
                                 Perfil
                             </Typography>
                         </MenuItem>
-                        <MenuItem>
+                        <MenuItem 
+                            component={Link}
+                            to={'/chat'}>
                             <MyButton tip="Perfil">
                                 <SendIcon style={{fill: "secondary"}} />
                             </MyButton>

@@ -23,6 +23,7 @@ import intro from "./pages/intro";
 import user from "./pages/user";
 import ProfileUser from "./components/ProfileUser";
 import signupArt from "./pages/signupArtista";
+import chat from "./pages/chats";
 
 const theme = createMuiTheme({
   palette: {
@@ -74,6 +75,12 @@ function App() {
                   component={ProfileUser}
                  // authenticated={authenticated}
                 />
+                <Route
+                  exact
+                  path="/chat"
+                  component={chat}
+                // authenticated={authenticated}
+/>
                 <AuthRoute
                   exact
                   path="/intro"

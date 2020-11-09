@@ -164,3 +164,25 @@ exports.likeEvento = (req, res) => {
         res.status(500).json({ error: err.code });
       });
   };
+
+  exports.deleteEvento = (req, res) => {
+  const document = db.doc(`/Eventos/${req.params.postId}`);
+  document.get()
+    .then(doc => {
+      if(!doc.exists){
+        return res.status(404).json({ error: 'Evento no encontrada' });
+      }
+      if(doc.data().postedBy !== req.user.username){
+        return res.status(403).json({ error: 'Sin autorizacion' });
+      } else {
+        return document.delete();
+      }
+    })
+    .then(() => {
+      res.json({ message: 'Evento eliminado' });
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    })
+};

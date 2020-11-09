@@ -546,7 +546,7 @@ exports.getUsuarioAutenticado = (req, res) => {
         userData.seguidos.push(doc.data());
       });
       return db
-      .collection("seguidos")
+      .collection("Seguidos")
       .where("follows","==",req.user.username)
       .get();
     })

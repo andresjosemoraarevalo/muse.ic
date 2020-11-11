@@ -33,7 +33,7 @@ export class LikeButton extends Component {
       };
 
   render() {
-      const { authenticated } = this.props.user;
+    const { authenticated } = this.props.user;
     const likeButton = !authenticated ? (
         <Link to="/login">
             <MyButton tip="Like">

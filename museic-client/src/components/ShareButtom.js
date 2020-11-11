@@ -21,7 +21,7 @@ import {
   } from "../redux/actions/dataActions";
 
 
-const styles = {
+  const styles = {
     root: {
       marginTop: 15
     },
@@ -43,22 +43,13 @@ const styles = {
   };
 
 export class ShareButtom extends Component {
-    state = {
-        open: false,
-        postBody: "",
-        errors: {}
-    };
+  state = {
+    open: false,
+    postBody: "",
+    errors: {},
+  };
+  
 
-    sharedPublicacion = () => {
-        if (
-          this.props.user.remixeados &&
-          this.props.user.remixeados.find(
-            (remixeado) => remixeado.postId === this.props.postId
-          )
-        )
-          return true;
-        else return false;
-    };
     componentWillReceiveProps(nextProps){
       if(nextProps.UI.errors){
           this.setState({
@@ -68,7 +59,7 @@ export class ShareButtom extends Component {
       if(!nextProps.UI.errors && !nextProps.UI.loading){
           this.setState({ postBody: '', open: false, errors: {}});
       }
-  };
+    };
     sharePublicacion = () => {
         this.props.sharePublicacion(this.props.postId);
     };
@@ -83,17 +74,20 @@ export class ShareButtom extends Component {
         this.props.clearErrors();
         this.setState({ open: false, errors: {} });
       };
+    handleOpen = () => {
+        this.setState({ open: true });
+    };
 
   render() {
-    const { errors, authenticated } = this.state;
+    const { errors } = this.state;
     const {
       classes,
       UI: { loading },
     } = this.props;
 
-    const shareButtom = authenticated ? (
-    
-        <Fragment>
+    return (
+      <div container className={classes.root}>
+        <Fragment className={classes.root}>
         <MyButton tip="Remixear" onClick={this.handleOpen}>
             <ShareIcon color="primary"/>
         </MyButton>
@@ -146,35 +140,31 @@ export class ShareButtom extends Component {
             </DialogContent>
             </Dialog>
         </Fragment>
-        ):(
-            <Link to="/login">
-             <MyButton tip="remixear">
-                     <share color="primary"/>
-             </MyButton>
-            </Link>
-
-        );
-    return (shareButtom);
+        </div>
+        )
     
   }
 }
 
 ShareButtom.propTypes = {
-    user: PropTypes.object.isRequired,
     postId: PropTypes.string.isRequired,
-    sharePublicacion: PropTypes.func.isRequired
+    sharePublicacion: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired,
+    UI: PropTypes.object.isRequired,
 
 };
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    UI: state.UI
   });
 
-const mapActionsToProps = {
-    sharePublicacion
-  };
+
 
 export default connect(
-    mapStateToProps,
-    mapActionsToProps
-  )(ShareButtom);
+    mapStateToProps, 
+    {clearErrors, sharePublicacion}
+  )
+  (
+    withStyles(styles)
+    (ShareButtom)
+  );

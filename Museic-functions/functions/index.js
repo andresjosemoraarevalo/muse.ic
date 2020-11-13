@@ -39,7 +39,8 @@ const {
 
 const{
 
-  crearMensaje
+  crearMensaje,
+  getMensajes
 }= require("./handlers/mensajes");
 
 const FBAuthUsuarios = require("./utilidades/fbauthUsuarios");
@@ -73,6 +74,7 @@ app.delete("/Eventos/:postId", FBAuthUsuarios, deleteEvento);
 
 // Mensajes 
 app.post("/crearMensaje", FBAuthUsuarios, crearMensaje);
+app.post("/Mensajes", FBAuthUsuarios, getMensajes);
 //funciones trasladadas a usuarios.js
 //funciones users
 

@@ -69,7 +69,7 @@ export const setChat =(chat) => (dispatch)=>{
 // get todos los mensajes de un usuario
 export const getMensajes = (chat) => (dispatch) => {
   dispatch({ type: LOADING_DATA });
-  axios.post(`/Mensajes`,chat)
+  axios.post(`/Mensajes`,{"chat":"DuaLipa"})
   .then(res => {
     dispatch({
       type: SET_MENSAJES,

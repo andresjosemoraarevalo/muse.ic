@@ -17,6 +17,7 @@ import PostEvento from '../components/PostEvento';
 import Chatbox from "../components/chatbox";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import {setChat,getMensajes} from "../redux/actions/dataActions";
 //import Button from "@material-ui/core/Button";
  // <Menu />
 const styles = {
@@ -32,7 +33,7 @@ const styles = {
     overflow: "auto",
   },
   text:{
-    width: "475px",
+    width: "350px",
     height:"450px",
   },
   submitButton: {
@@ -41,6 +42,13 @@ const styles = {
     width: "70px",
     height:"50px",
   },
+  users:{
+  width: "440px",
+  position: "absolute",
+  bottom: "20px",
+  top: "150px",
+  overflow: "auto"
+  }
 };
 
 
@@ -64,7 +72,11 @@ class chat extends Component {
     const {usuarios,chat}= this.props.data;
     let recentUsuariosMarkup = !loading ? (
         usuarios.map((usuario) => (
-          <Usuario key={usuario.username} usuario={usuario} />
+          <Usuario 
+          
+          key={usuario.username} usuario={usuario} 
+          
+          />
         ))
       ) : (
         <p>Loading...</p>
@@ -143,13 +155,13 @@ class chat extends Component {
           </div>      
           </Grid>
           <Grid item sm={4} >
-          <div id="homePublicaciones" >
           <Typography
                 variant="h5"
                 color="primary"
             >
             Usuarios
             </Typography>   
+          <div className={classes.users}> 
           {recentUsuariosMarkup}
             </div>
           </Grid>
@@ -213,6 +225,8 @@ const mapStateToProps = (state) => ({
 });
 
 chat.propTypes = {
+  setChat: PropTypes.func.isRequired,
+  getMensajes: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
  
@@ -220,6 +234,6 @@ chat.propTypes = {
   
   data: PropTypes.object.isRequired,
 };
-export default connect(mapStateToProps, { getUsuarios })(
+export default connect(mapStateToProps, { getUsuarios , setChat,getMensajes})(
   withStyles(styles)(chat)
 );

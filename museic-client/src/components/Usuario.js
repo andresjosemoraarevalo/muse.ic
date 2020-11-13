@@ -44,11 +44,6 @@ class Usuario extends Component {
         chat: "",
         errors: {},
       };
-    handleChange = (event) => {
-        
-        
-        
-    }
   render() {
     dayjs.extend(relativeTime);
     const {
@@ -63,17 +58,20 @@ class Usuario extends Component {
     //const {chat}=this.props.data;
     return (
       <MenuItem classes={classes} 
-      onClick={ this.props.setChat({ chat: username }) &&  this.props.getMensajes({ chat: username })}
+      onClick={ this.props.setChat(username)}
+      
       >
         <CardHeader
+          
           avatar={<Avatar alt={username} src={Fotolink}></Avatar>}
           title={
                 <Typography
                 variant="h6"
                 color="primary"
                 name="chat"
-                component={Link}
-                to={`/usuarios/${username}`}
+                //component={Link}
+                //to={`/usuarios/${username}`}
+                onSelect={ this.props.setChat(username)}
               >
                 {username}
               </Typography>

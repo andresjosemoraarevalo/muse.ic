@@ -14,14 +14,40 @@ import { getPublicaciones, getEventos, getUsuarios } from "../redux/actions/data
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import PostEvento from '../components/PostEvento';
+import Chatbox from "../components/chatbox";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import {setChat,getMensajes} from "../redux/actions/dataActions";
 //import Button from "@material-ui/core/Button";
  // <Menu />
 const styles = {
   root: {
-    marginTop: "80px",
+    marginTop: "90px",
   },
-  posts: {
-      overflow: 'scroll'
+  chatbox:{
+    width: "550px",
+    height:"450px",
+   
+    
+    top: "150px",
+    overflow: "auto",
+  },
+  text:{
+    width: "350px",
+    height:"450px",
+  },
+  submitButton: {
+    top: "4px",
+    position: "relative",
+    width: "70px",
+    height:"50px",
+  },
+  users:{
+  width: "440px",
+  position: "absolute",
+  bottom: "20px",
+  top: "150px",
+  overflow: "auto"
   }
 };
 
@@ -43,10 +69,14 @@ class chat extends Component {
        
     } = this.props;
     
-    const {usuarios}= this.props.data;
+    const {usuarios,chat}= this.props.data;
     let recentUsuariosMarkup = !loading ? (
         usuarios.map((usuario) => (
-          <Usuario key={usuario.username} usuario={usuario} />
+          <Usuario 
+          
+          key={usuario.username} usuario={usuario} 
+          
+          />
         ))
       ) : (
         <p>Loading...</p>
@@ -67,31 +97,48 @@ class chat extends Component {
           </div>      
           </Grid>
           <Grid item sm={4} >
-          <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon style={{fill: "black"},{ fontSize: 20 }} />
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-              />
-              </div>
-            </div>
           <div id="homePublicaciones" >
               {recentUsuariosMarkup}
             </div>
           </Grid>
-          <Grid item sm={3}>
+          <Grid item sm={4}>
             <Typography
               variant="h5"
               color="primary"
             >
               Chat
             </Typography>
-            <div id="homePublicaciones">
+            <div className={classes.chatbox}>
+            <Chatbox />
             </div>
+            <TextField
+            variant="outlined"
+            name="nombre"
+            type="text"
+            multiline
+            placeholder= {`Enviale un mensaje a ${username}`}
+            //error={errors.nombre ? true : false}
+            //helperText={errors.nombre}
+            onChange={this.handleChange}
+            className={classes.text}
+                    />
+            <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.submitButton}
+            disabled={loading}
+            >
+            {/*Publicar
+            {loading && (
+                <CircularProgress
+                size={30}
+                className={classes.progressSpinner}
+                />
+            )}*/}
+            enviar 
+  </Button>
+            
           </Grid>
           <Grid item sm={1}>
           </Grid>
@@ -108,27 +155,54 @@ class chat extends Component {
           </div>      
           </Grid>
           <Grid item sm={4} >
-          <div className={classes.search}>
-            </div>
-          <div id="homePublicaciones" >
           <Typography
                 variant="h5"
                 color="primary"
             >
             Usuarios
             </Typography>   
+          <div className={classes.users}> 
           {recentUsuariosMarkup}
             </div>
           </Grid>
-          <Grid item sm={3}>
+          <Grid item sm={4}>
           <Typography
             variant="h5"
             color="primary"
           >
             Chat
           </Typography>
-          <div id="homePublicaciones">
+          <div className={classes.chatbox}>
+              <Chatbox />
           </div>
+          <TextField
+            variant="outlined"
+            name="nombre"
+            type="text"
+            multiline
+            placeholder= {`Enviale un mensaje a ${chat}`}
+            //error={errors.nombre ? true : false}
+            //helperText={errors.nombre}
+            onChange={this.handleChange}
+            className={classes.text}
+
+        />
+            <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.submitButton}
+            disabled={loading}
+            >
+            {/*Publicar
+            {loading && (
+                <CircularProgress
+                size={30}
+                className={classes.progressSpinner}
+                />
+            )}*/}
+            enviar 
+            </Button>
           </Grid>
           <Grid item sm={1}>
           </Grid>
@@ -151,6 +225,8 @@ const mapStateToProps = (state) => ({
 });
 
 chat.propTypes = {
+  setChat: PropTypes.func.isRequired,
+  getMensajes: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
  
@@ -158,6 +234,6 @@ chat.propTypes = {
   
   data: PropTypes.object.isRequired,
 };
-export default connect(mapStateToProps, { getUsuarios })(
+export default connect(mapStateToProps, { getUsuarios , setChat,getMensajes})(
   withStyles(styles)(chat)
 );

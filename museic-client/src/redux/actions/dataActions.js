@@ -19,6 +19,9 @@ import {
     FOLLOW_USER,
     DELETE_EVENTO,
     SET_USUARIOS,
+    SET_CHAT,
+    SET_MENSAJES,
+    POST_MENSAJE
   } from '../types';
 import axios from 'axios';
 
@@ -54,6 +57,50 @@ export const getUsuarios = () => (dispatch) => {
         payload: []
       })
     });
+};
+
+export const setChat =(chat) => (dispatch)=>{
+  dispatch({
+    type: SET_CHAT,
+    payload: chat
+  });
+  getMensajes(chat);
+}
+// get todos los mensajes de un usuario
+export const getMensajes = (chat) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios.post(`/Mensajes`,{"chat":"DuaLipa"})
+  .then(res => {
+    dispatch({
+      type: SET_MENSAJES,
+      payload: res.data
+    })
+  })
+  .catch(err => {
+    dispatch({
+      type: SET_MENSAJES,
+      payload: []
+    })
+  });
+} 
+//post un mensaje nuevo 
+export const postMensaje = (newMensaje) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .post('/crearMensaje', newMensaje)
+    .then((res) => {
+      dispatch({
+        type: POST_MENSAJE,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data
+      });
+    }); 
 };
 
 //get todas los eventos
@@ -198,7 +245,6 @@ export const postPublicacion = (newPublicacion) => (dispatch) => {
         });
       }); 
   };
-
   export const deletePublicacion = (postId) => (dispatch) => {
     axios.delete(`/publicaciones/${postId}`)
       .then(() => {

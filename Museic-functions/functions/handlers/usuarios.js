@@ -465,6 +465,7 @@ exports.getUserDetails = (req, res) => {
       userData.publicaciones = [];
       data.forEach((doc) => {
         userData.publicaciones.push({
+          postedBy: doc.data().postedBy,
           postBody: doc.data().postBody,
           postDate: doc.data().postDate,
           username: doc.data().username,

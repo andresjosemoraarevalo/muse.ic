@@ -13,14 +13,16 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
 import ChatIcon from "@material-ui/icons/ChatBubbleOutline";
-
+import ListItem from '@material-ui/core/ListItem';
+import MenuItem from '@material-ui/core/MenuItem';
 //redux
 import { connect } from "react-redux";
-
+import {setChat,getMensajes} from "../redux/actions/dataActions";
 
 const styles = {
   card: {
     marginBottom: 15,
+    
   },
   content: {
     padding: 25,
@@ -32,10 +34,16 @@ const styles = {
   section2: {
     margin: "16px",
   },
+  pedrito:{
+      background:"black",
+  }
 };
 
 class Usuario extends Component {
-  
+    state = {
+        chat: "",
+        errors: {},
+      };
   render() {
     dayjs.extend(relativeTime);
     const {
@@ -44,40 +52,41 @@ class Usuario extends Component {
           username,
           Fotolink,
           artista
-      }
+      },
+      
     } = this.props;
-    
+    //const {chat}=this.props.data;
     return (
-      <Card className={classes.card}>
+      <MenuItem classes={classes} 
+      onClick={ this.props.setChat(username)}
+      
+      >
         <CardHeader
+          
           avatar={<Avatar alt={username} src={Fotolink}></Avatar>}
           title={
                 <Typography
                 variant="h6"
                 color="primary"
-                component={Link}
-                to={`/usuarios/${username}`}
+                name="chat"
+                //component={Link}
+                //to={`/usuarios/${username}`}
+                onSelect={ this.props.setChat(username)}
               >
                 {username}
               </Typography>
               
-          }
-          subheader={
-            artista
-          }
-        />
-        <Divider variant="middle" />
-       <CardContent>
+          }/>
 
 
-
-       </CardContent>
-      </Card>
+      </MenuItem>
     );
   }
 }
 
 Usuario.propTypes = {
+  setChat: PropTypes.func.isRequired,
+  getMensajes: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   usuario: PropTypes.object.isRequired,
@@ -90,5 +99,5 @@ const mapStateToProps = (state) => ({
 
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,{setChat,getMensajes}
 )(withStyles(styles)(Usuario));

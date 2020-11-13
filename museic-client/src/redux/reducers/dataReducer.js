@@ -13,11 +13,16 @@ import {
     LIKE_EVENTO,
     UNLIKE_EVENTO,
     DELETE_EVENTO,
-    SET_USUARIOS
+    SET_USUARIOS,
+    SET_CHAT,
+    SET_MENSAJES,
+    POST_MENSAJE
   } from '../types';
   
   const initialState = {
     eventos:[],
+    chat:{},
+    mensajes: [],
     publicaciones: [],
     publicacion: {},
     seguidos: [],
@@ -64,6 +69,23 @@ import {
         return {
           ...state,
           publicacion: action.payload,
+        };
+      case SET_CHAT:
+        return {
+          ...state,
+          chat: action.payload,
+          loading: false
+        };
+      case SET_MENSAJES:
+        return {
+          ...state,
+          mensajes: action.payload,
+          loading: false
+        };
+      case POST_MENSAJE:
+        return {
+          ...state,
+          mensajes: [action.payload, ...state.mensajes]
         };
       case LIKE_PUBLICACION:
       case UNLIKE_PUBLICACION:

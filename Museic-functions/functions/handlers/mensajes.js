@@ -1,22 +1,33 @@
 const { db, admin } = require("../utilidades/administrador");
 
-//get una publicacion
+//get mensajes 
 exports.getMensajes = (req, res) => {
-    let publicacionData = {};
-    db.doc(`/Mensajes/${req.params.postId}`)
-      .get()
-      .then((doc) => {
-        if (!doc.exists) {
-          return res.status(404).json({ error: "Mensaje no encontrada" });
-        }
-        publicacionData = doc.data();
-        publicacionData.postId = doc.id;
-        return res.json(publicacionData);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).json({ error: err.code });
-      });
+    let mensajes = [];
+    db.collection("Mensajes")
+  .where("postedBy","==",req.user.username)
+  .where("postedFor","==",req.body.chat)
+  .get()
+  .then((data) => { 
+    data.forEach((doc) => {
+        
+      mensajes.push(doc.data());
+    });
+    return db.collection("Mensajes")
+    .where("postedFor","==",req.user.username)
+    .where("postedBy","==",req.body.chat)
+    .get()
+  })
+  .then ((data)=> {
+    data.forEach((doc)=> {
+        
+        mensajes.push(
+            doc.data()
+        );
+    });
+    return res.json(mensajes);
+  })
+  
+  .catch((err) => console.error(err));
   };
 
 

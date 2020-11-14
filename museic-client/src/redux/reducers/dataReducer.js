@@ -7,16 +7,27 @@ import {
     POST_PUBLICACION,
     POST_EVENTO,
     SET_PUBLICACION,
+    SET_EVENTOS,
     FOLLOW_USER,
-    UNFOLLOW_USER
+    UNFOLLOW_USER,
+    LIKE_EVENTO,
+    UNLIKE_EVENTO,
+    DELETE_EVENTO,
+    SET_USUARIOS,
+    SET_CHAT,
+    SET_MENSAJES,
+    POST_MENSAJE
   } from '../types';
   
   const initialState = {
     eventos:[],
+    chat: {},
+    mensajes: [],
     publicaciones: [],
     publicacion: {},
     seguidos: [],
     seguidores: [],
+    usuarios:[],
     loading: false
   };
   
@@ -33,10 +44,56 @@ import {
           publicaciones: action.payload,
           loading: false
         };
+
+        case SET_USUARIOS:
+          return {
+            ...state,
+            usuarios: action.payload,
+            loading: false
+          };
+      case SET_EVENTOS:
+          return {
+            ...state,
+            eventos: action.payload,
+            loading: false
+          };
+      case LIKE_EVENTO:
+      case UNLIKE_EVENTO:
+              let index3 = state.eventos.findIndex((evento) => evento.postId === action.payload.postId);
+              state.eventos[index] = action.payload;
+              return {
+                ...state
+              };
+
+      case SET_PUBLICACION:
+        return {
+          ...state,
+          publicacion: action.payload,
+        };
+      case SET_CHAT:
+        return {
+          ...state,
+          chat: action.payload,
+          loading: false
+        };
+      case SET_MENSAJES:
+        return {
+          ...state,
+          mensajes: action.payload,
+          loading: false
+        };
+      case POST_MENSAJE:
+        return {
+          ...state,
+          mensajes: [action.payload, ...state.mensajes]
+        };
       case LIKE_PUBLICACION:
       case UNLIKE_PUBLICACION:
         let index = state.publicaciones.findIndex((publicacion) => publicacion.postId === action.payload.postId);
         state.publicaciones[index] = action.payload;
+        if (state.publicacion.postId === action.payload.postId) {
+          state.publicacion = action.payload;
+        }
         return {
           ...state
         };
@@ -57,6 +114,12 @@ import {
         return {
           ...state
         };
+        case DELETE_EVENTO:
+          let indexe = state.eventos.findIndex((evento) => evento.postId === action.payload);
+          state.eventos.splice(indexe, 1);
+          return {
+            ...state
+          };
       case FOLLOW_USER:
       case UNFOLLOW_USER:
         let indexU = state.seguidos.findIndex((seguido) => seguido.follows === action.payload.username);

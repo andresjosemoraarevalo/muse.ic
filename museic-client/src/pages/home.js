@@ -2,23 +2,32 @@ import React, { Component , Fragment} from "react";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
+import Typography from "@material-ui/core/Typography";
 import Publicacion from "../components/Publicacion";
+import Evento from "../components/Evento";
 import PostPublicacion from '../components/PostPublicacion';
 import Profile from '../components/Profile';
 import Menu from '../components/menu';
 import { connect } from "react-redux";
-import { getPublicaciones } from "../redux/actions/dataActions";
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
+import { getPublicaciones, getEventos } from "../redux/actions/dataActions";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import PostEvento from '../components/PostEvento';
 //import Button from "@material-ui/core/Button";
  // <Menu />
 const styles = {
   root: {
-    marginTop: "80px",
+    marginTop: "60px",
   },
   posts: {
       overflow: 'scroll'
+  },
+  spinnerDiv: {
+    textAlign: 'center',
+    marginTop: 200,
+    marginBottom: 50
+  },
+  eventos: {
+    //padding: 10
   }
 };
 
@@ -26,23 +35,32 @@ const styles = {
 class home extends Component {
   componentDidMount() {
     this.props.getPublicaciones();
+    this.props.getEventos();
   }
   render() {
     const { 
       user: {
         credentials: {
           username,
-          artista,},
+          artista,
+        },
           loading,
           authenticated
       }
-       
+     // 
        
     } = this.props;
-    const {publicaciones}= this.props.data;
+    const {publicaciones,eventos}= this.props.data;
     let recentPublicacionesMarkup = !loading ? (
       publicaciones.map((publicacion) => (
         <Publicacion key={publicacion.postId} publicacion={publicacion} />
+      ))
+    ) : (
+      <p>Loading...</p>
+    );
+    let recentEventosMarkup = !loading ? (
+      eventos.map((evento) => (
+        <Evento key={evento.postId} evento={evento} />
       ))
     ) : (
       <p>Loading...</p>
@@ -53,7 +71,7 @@ class home extends Component {
       authenticated ?(
         artista ?(
           <Grid container className={classes.root} spacing={3}>
-          <Grid item sm={1}>
+          <Grid item sm={0}>
           </Grid>
           <Grid item sm={3}>
           <div >
@@ -63,33 +81,29 @@ class home extends Component {
             <PostEvento />
           </div>      
           </Grid>
-          <Grid item sm={4} >
-          <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon style={{fill: "black"},{ fontSize: 20 }} />
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-              />
-              </div>
-            </div>
+          <Grid item sm={5} >
+          
           <div id="homePublicaciones" >
           {recentPublicacionesMarkup}
             </div>
           </Grid>
-          <Grid item sm={3}>
-                <p>recomendaciones...</p>
+          <Grid item sm={4}>
+            <Typography
+              variant="h5"
+              color="primary"
+            >
+              Eventos
+            </Typography>
+            <div id="homePublicaciones">
+              {recentEventosMarkup}
+            </div>
           </Grid>
-          <Grid item sm={1}>
+          <Grid item sm={0}>
           </Grid>
         </Grid>
         ):(
           <Grid container className={classes.root} spacing={3}>
-          <Grid item sm={1}>
-          </Grid>
+          
           <Grid item sm={3}>
           <div >
             <Profile />
@@ -97,35 +111,35 @@ class home extends Component {
             <PostPublicacion />
           </div>      
           </Grid>
-          <Grid item sm={4} >
-          <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon style={{fill: "black"},{ fontSize: 20 }} />
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-              />
-              </div>
-            </div>
+          <Grid item sm={5} >
+          
           <div id="homePublicaciones" >
           {recentPublicacionesMarkup}
             </div>
           </Grid>
-          <Grid item sm={3}>
-                <p>recomendaciones...</p>
+          <Grid item sm={4}>
+          <Typography
+            variant="h5"
+            color="primary"
+            className={classes.eventos}
+          >
+            Eventos
+          </Typography>
+          <div id="homeEventos">
+            {recentEventosMarkup}
+          </div>
           </Grid>
-          <Grid item sm={1}>
-          </Grid>
+          
+          
         </Grid>
         )
       ):(
         <p>Loading...</p>
       )
     ):(
-      <p>Loading...</p>
+      <div className={classes.spinnerDiv}>
+                <CircularProgress size={150} thickness={2} />
+            </div>
     );
 
     return homes;
@@ -141,8 +155,9 @@ home.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   getPublicaciones: PropTypes.func.isRequired,
+  getEventos: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
 };
-export default connect(mapStateToProps, { getPublicaciones })(
+export default connect(mapStateToProps, { getPublicaciones, getEventos })(
   withStyles(styles)(home)
 );

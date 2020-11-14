@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import imagenLogin from '../images/artistloginimage.jpg';
-
+import { Link } from "react-router-dom";
 //MUI stuff
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -14,7 +14,6 @@ import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { connect } from 'react-redux';
@@ -153,7 +152,7 @@ class artistlogin extends Component {
                                     </Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link href="#" variant="body2">
+                                    <Link href="#" to="/signupA"variant="body2">
                                     {"No tienes una cuenta? Registrate aqui"}
                                     </Link>
                                 </Grid>

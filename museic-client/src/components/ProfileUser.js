@@ -25,7 +25,7 @@ import CloseIcon from "@material-ui/icons/Close";
 //Redux
 import { connect } from "react-redux";
 import { logoutUser, uploadImage } from "../redux/actions/userActions";
-import { getUserData } from '../redux/actions/dataActions';
+import { getUserData, unfollowProfile, followProfile, } from '../redux/actions/dataActions';
 
 const styles = {
   root: {
@@ -98,8 +98,24 @@ const styles = {
 class ProfileUser extends Component {
   state = {
     openSeguidos: false,
-    openSeguidores: false
+    openSeguidores: false,
+    postIdParam: null
   };
+  componentDidMount(){
+    //const username = this.props.match.params.username;
+    const postId = this.props.match.params.postId;
+        
+    if (postId) this.setState({postIdParam: postId});
+    this.props.getUserData(this.props.user.credentials.username);
+  }
+  followProfile = (nombreDeUsuario) => {
+    this.props.followProfile(nombreDeUsuario);
+    this.props.user.credentials.seguidos++;
+  }
+  unfollowProfile = (nombreDeUsuario) => {
+    this.props.unfollowProfile(nombreDeUsuario);
+    this.props.user.credentials.seguidos--;
+  }
   handleImageChange = (event) => {
     const image = event.target.files[0];
     const formData = new FormData();
@@ -142,19 +158,108 @@ class ProfileUser extends Component {
         },
         loading,
         authenticated,
-        publicaciones,
+        
         
       },
       user
     } = this.props;
-
+    const { postIdParam } = this.state;
+    const { publicaciones } = this.props.data;
+    
     const seguidosMarkup = user.seguidos !== null ? (
-      user.seguidos.map((seguido) => <MenuItem>{seguido.follows}</MenuItem>)
+      user.seguidos.map((seguido) => 
+        <Grid container>
+          <Grid item sm={9}>
+            <MenuItem>
+              <Typography
+                variant="h6"
+                color="primary"
+                component={Link}
+                to={`/usuarios/${seguido.follows}`}
+              >
+                {seguido.follows}
+              </Typography>
+            </MenuItem>
+          </Grid>
+          <Grid item sm={3}>
+            {user.seguidos.find((seguidoo) => seguidoo.follows === seguido.follows) ? (
+              <Button
+                variant="outlined"
+                color="primary"
+                size="small"
+                onClick={() => this.unfollowProfile(seguido.follows)}
+                buttonStyle={{ borderRadius: 5 }}
+                style={{ borderRadius: 5 }}
+                className={classes.boton}
+              >
+                Dejar de Seguir
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={() => this.followProfile(seguido.follows)}
+                buttonStyle={{ borderRadius: 5 }}
+                style={{ borderRadius: 5 }}
+                className={classes.boton}
+              >
+                Seguir
+              </Button>
+            )
+            }
+          </Grid>
+        </Grid>
+        )
     ) : (
       <p>No tiene usuarios seguidos</p>
     );
     const seguidoresMarkup = user.seguidores !== null ? (
-      user.seguidores.map((seguidor) => <MenuItem>{seguidor.username}</MenuItem>)
+      user.seguidores.map((seguidor) => 
+        <Grid container>
+          <Grid item sm={9}>
+            <MenuItem>
+              <Typography
+                variant="h6"
+                color="primary"
+                component={Link}
+                to={`/usuarios/${seguidor.username}`}
+              >
+                {seguidor.username}
+              </Typography>
+
+            </MenuItem>
+          </Grid>
+          <Grid item sm={3}>
+            {user.seguidos.find((seguidoo) => seguidoo.follows === seguidor.username) ? (
+              <Button
+                variant="outlined"
+                color="primary"
+                size="small"
+                onClick={() => this.unfollowProfile(seguidor.username)}
+                buttonStyle={{ borderRadius: 5 }}
+                style={{ borderRadius: 5 }}
+                className={classes.boton}
+              >
+                Dejar de Seguir
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={() => this.followProfile(seguidor.username)}
+                buttonStyle={{ borderRadius: 5 }}
+                style={{ borderRadius: 5 }}
+                className={classes.boton}
+              >
+                Seguir
+              </Button>
+            )
+            }
+          </Grid>
+        </Grid>
+          )
     ) : (
       <p>No tiene usuarios seguidores</p>
     );
@@ -163,9 +268,16 @@ class ProfileUser extends Component {
       <p> </p>
     ) : publicaciones === null ? (
         <p>Sin publicaciones</p>
+    ) : !postIdParam ? (
+      publicaciones.map((publicacion) => <Publicacion key={publicacion.postId} publicacion={publicacion}/>)
     ) : (
-        publicaciones.map((publicacion) => <Publicacion key={publicacion.postId} publicacion={publicacion}/>)
-    )
+      publicaciones.map(publicacion => {
+          if(publicacion.postId !== postIdParam)
+              return <Publicacion key={publicacion.postId} publicacion={publicacion}/>
+          else return <Publicacion key={publicacion.postId} publicacion={publicacion} openDialog />
+      })
+    );
+  
     let profileMarkup = !loading ? (
       authenticated ? (
         <div container className={classes.root}>
@@ -187,7 +299,7 @@ class ProfileUser extends Component {
                     onChange={this.handleImageChange}
                   />
                   <MyButton
-                    tip="Edit profile picture"
+                    tip="Editar Foto de Perfil"
                     onClick={this.handleEditPicture}
                     btnClassName="button"
                   >
@@ -205,17 +317,7 @@ class ProfileUser extends Component {
                   </Typography>
                 </Grid>
                 <Grid item >
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    size="small"
-                    //onClick={this.followProfile}
-                    buttonStyle={{ borderRadius: 5 }}
-                    style={{ borderRadius: 5 }}
-                    className={classes.boton}
-                  >
-                    Editar perfil
-                  </Button>
+                  <EditarDetalles />
                 </Grid>
               </Grid>
 
@@ -285,7 +387,7 @@ class ProfileUser extends Component {
               )}
               {bio && (
                 <Typography variant="body1" className={classes.bio}>
-                  {bio} <EditarDetalles />
+                  {bio}
                 </Typography>
               )}
               <Grid container spacing={1}>
@@ -359,7 +461,7 @@ const mapStateToProps = (state) => ({
   data: state.data
 });
 
-const mapActionToProps = { logoutUser, uploadImage, getUserData };
+const mapActionToProps = { logoutUser, uploadImage, getUserData, followProfile, unfollowProfile };
 
 ProfileUser.propTypes = {
   logoutUser: PropTypes.func.isRequired,
@@ -367,7 +469,10 @@ ProfileUser.propTypes = {
   user: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   data: PropTypes.object.isRequired,
-  getUserData: PropTypes.func.isRequired
+  getUserData: PropTypes.func.isRequired,
+  followProfile: PropTypes.func.isRequired,
+  unfollowProfile: PropTypes.func.isRequired,
+  openDialog: PropTypes.bool,
 };
 
 export default connect(

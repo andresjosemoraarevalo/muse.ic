@@ -5,6 +5,8 @@ import {
   LOADING_USER,
   LIKE_PUBLICACION,
   UNLIKE_PUBLICACION,
+  LIKE_EVENTO,
+  UNLIKE_EVENTO,
   FOLLOW_USER,
   UNFOLLOW_USER,
   MARK_NOTIFICATIONS_READ
@@ -15,6 +17,7 @@ const initialState = {
   loading: false,
   credentials: {},
   likes: [],
+  likesE:[],
   seguidos: [],
   seguidores: [],
   publicaciones: [],
@@ -59,6 +62,24 @@ export default function (state = initialState, action) {
           (like) => like.postId !== action.payload.postId
         ),
       };
+      case LIKE_EVENTO:
+        return {
+          ...state,
+          likesE: [
+            ...state.likesE,
+            {
+              username: state.credentials.username,
+              postId: action.payload.postId,
+            },
+          ],
+        };
+      case UNLIKE_EVENTO:
+        return {
+          ...state,
+          likesE: state.likes.filter(
+            (like) => like.postId !== action.payload.postId
+          ),
+        };
     case MARK_NOTIFICATIONS_READ:
         state.notificaciones.array.forEach(not => not.read = true );
         return {

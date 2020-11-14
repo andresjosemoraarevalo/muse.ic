@@ -3,14 +3,24 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
 import dayjs from "dayjs";
 import { connect } from "react-redux";
+import EditarDetalles from "../components/EditarDetalles";
+import MyButton from "../util/MyButton";
+import { Link } from "react-router-dom";
 
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import EditIcon from "@material-ui/icons/Edit";
+import MenuItem from '@material-ui/core/MenuItem';
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { DialogContent } from "@material-ui/core";
+import MenuList from '@material-ui/core/MenuList';
 
 import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
+import CloseIcon from "@material-ui/icons/Close";
 import {
   unfollowProfile,
   followProfile,
@@ -73,10 +83,19 @@ const styles = {
   boton: {
     margin: '8px',
     textTransform: "none"
-  }
+  },
+  closeButton: {
+    position: "absolute",
+    left: "91%",
+    top: "6%",
+  },
 };
 
 class StaticProfile extends Component {
+  state = {
+    openSeguidos: false,
+    openSeguidores: false
+  }
   followedProfile = () => {
     if (
       this.props.user.seguidos &&
@@ -90,11 +109,32 @@ class StaticProfile extends Component {
   followProfile = () => {
     this.props.followProfile(this.props.profile.username);
     this.props.profile.seguidores++;
+    this.props.user.credentials.seguidos++;
   };
   unfollowProfile = () => {
     this.props.unfollowProfile(this.props.profile.username);
     this.props.profile.seguidores--;
+    this.props.user.credentials.seguidos--;
   }
+  handleImageChange = (event) => {
+    const image = event.target.files[0];
+    const formData = new FormData();
+    formData.append("image", image, image.name);
+    this.props.uploadImage(formData);
+  };
+  handleEditPicture = () => {
+    const fileInput = document.getElementById("imageInput");
+    fileInput.click();
+  };
+  handleOpenSeguidos = () => {
+    this.setState({ openSeguidos: true });
+  };
+  handleOpenSeguidores = () => {
+    this.setState({ openSeguidores: true });
+  };
+  handleClose = () => {
+    this.setState({ openSeguidos: false, openSeguidores: false });
+  };
   render() {
   const {
     classes,
@@ -107,8 +147,107 @@ class StaticProfile extends Component {
       seguidores,
       website,
       gustos,
-    }
+    },
+    user
   } = this.props;
+
+  const seguidosMarkup = user.seguidos !== null ? (
+    user.seguidos.map((seguido) => 
+      <Grid container>
+        <Grid item sm={9}>
+          <MenuItem>
+            <Typography
+              variant="h6"
+              color="primary"
+              component={Link}
+              to={`/usuarios/${seguido.follows}`}
+            >
+              {seguido.follows}
+            </Typography>
+          </MenuItem>
+        </Grid>
+        <Grid item sm={3}>
+          {user.seguidos.find((seguidoo) => seguidoo.follows === seguido.follows) ? (
+            <Button
+              variant="outlined"
+              color="primary"
+              size="small"
+              onClick={() => this.unfollowProfile(seguido.follows)}
+              buttonStyle={{ borderRadius: 5 }}
+              style={{ borderRadius: 5 }}
+              className={classes.boton}
+            >
+              Dejar de Seguir
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={() => this.followProfile(seguido.follows)}
+              buttonStyle={{ borderRadius: 5 }}
+              style={{ borderRadius: 5 }}
+              className={classes.boton}
+            >
+              Seguir
+            </Button>
+          )
+          }
+        </Grid>
+      </Grid>
+      )
+  ) : (
+    <p>No tiene usuarios seguidos</p>
+  );
+  const seguidoresMarkup = user.seguidores !== null ? (
+    user.seguidores.map((seguidor) => 
+      <Grid container>
+        <Grid item sm={9}>
+          <MenuItem>
+            <Typography
+              variant="h6"
+              color="primary"
+              component={Link}
+              to={`/usuarios/${seguidor.username}`}
+            >
+              {seguidor.username}
+            </Typography>
+
+          </MenuItem>
+        </Grid>
+        <Grid item sm={3}>
+          {user.seguidos.find((seguidoo) => seguidoo.follows === seguidor.username) ? (
+            <Button
+              variant="outlined"
+              color="primary"
+              size="small"
+              onClick={() => this.unfollowProfile(seguidor.username)}
+              buttonStyle={{ borderRadius: 5 }}
+              style={{ borderRadius: 5 }}
+              className={classes.boton}
+            >
+              Dejar de Seguir
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={() => this.followProfile(seguidor.username)}
+              buttonStyle={{ borderRadius: 5 }}
+              style={{ borderRadius: 5 }}
+              className={classes.boton}
+            >
+              Seguir
+            </Button>
+          )
+          }
+        </Grid>
+      </Grid>
+        )
+  ) : (
+    <p>No tiene usuarios seguidores</p>
+  );
 
   const seguirButton = this.followedProfile() ? (
     <Button
@@ -148,6 +287,27 @@ class StaticProfile extends Component {
               width="250"
               height="200"
             />
+            {username !== this.props.user.credentials.username ? (
+                null
+              ) : (
+                <div>
+                <input
+                  type="file"
+                  id="imageInput"
+                  hidden="hidden"
+                  onChange={this.handleImageChange}
+                />
+                <MyButton
+                  tip="Editar Foto de Perfil"
+                  onClick={this.handleEditPicture}
+                  btnClassName="button"
+                >
+                  <EditIcon color="primary" />
+                </MyButton>
+                </div>
+                )
+              }
+            
           </div>
         </div>
       </Grid>
@@ -160,19 +320,82 @@ class StaticProfile extends Component {
               </Typography>
             </Grid>
             <Grid item>
-              {seguirButton}
+              {username !== this.props.user.credentials.username ? (
+                <div>{seguirButton}</div>
+              ) : (
+              <div><EditarDetalles /></div>
+                )
+              }
             </Grid>
             
           </Grid>
           <Grid container spacing={6}>
             <Grid item >
-              
-            <Typography variant="body1" className={classes.seguidos}>
-                {seguidores}{" Seguidores"}
-              </Typography>
+              {username !== this.props.user.credentials.username ? (
+                <Typography variant="body1" className={classes.seguidos}>
+                  {seguidores}{" Seguidores"}
+                </Typography>
+              ) : (
+                <Link href="#" onClick={this.handleOpenSeguidores} color="inherit">
+                  <Typography variant="body1" className={classes.seguidos}>
+                    {seguidores}{" Seguidores"}
+                  </Typography>
+                </Link>
+                
+                )
+              }
+              <Dialog
+                  open={this.state.openSeguidores}
+                  onClose={this.handleClose}
+                  fullWidth
+                  maxWidth="sm">
+                    <MyButton
+                      tip="Cerrar"
+                      onClick={this.handleClose}
+                      tipClassName={classes.closeButton}
+                    >
+                      <CloseIcon />
+                    </MyButton>
+                    <DialogTitle>Lista de Seguidores</DialogTitle>
+                    <DialogContent>
+                      <MenuList>
+                        {seguidoresMarkup}
+                      </MenuList>
+                    </DialogContent>
+                  </Dialog>
             </Grid>
             <Grid item >
-              <Typography variant="body1" className={classes.seguidos}>{seguidos}{" Seguidos"}</Typography>
+              {username !== this.props.user.credentials.username ? (
+                <Typography variant="body1" className={classes.seguidos}>
+                  {seguidos}{" Seguidos"}
+                </Typography>
+              ) : (
+                <Link href="#" onClick={this.handleOpenSeguidos} color="inherit">
+                  <Typography variant="body1" className={classes.seguidos}>
+                    {seguidos}{" Seguidos"}
+                  </Typography>
+                </Link>
+                )
+              }
+              <Dialog
+                  open={this.state.openSeguidos}
+                  onClose={this.handleClose}
+                  fullWidth
+                  maxWidth="sm">
+                    <MyButton
+                      tip="Cerrar"
+                      onClick={this.handleClose}
+                      tipClassName={classes.closeButton}
+                    >
+                      <CloseIcon />
+                    </MyButton>
+                    <DialogTitle>Lista de Seguidos</DialogTitle>
+                    <DialogContent>
+                      <MenuList>
+                        {seguidosMarkup}
+                      </MenuList>
+                    </DialogContent>
+                  </Dialog>
             </Grid>
           </Grid>
           
@@ -215,7 +438,7 @@ class StaticProfile extends Component {
           
         </div>
       </Grid>
-      <hr />
+      
     </Grid>
     
   );

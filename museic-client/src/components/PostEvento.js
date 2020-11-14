@@ -1,4 +1,4 @@
-import React, { Component, Fragment , useState} from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { DialogContent, withStyles } from "@material-ui/core";
 import MyButton from "../util/MyButton";
@@ -162,11 +162,11 @@ class PostEvento extends Component {
               />
               <TextField
                 variant="outlined"
-                name="Lugar"
+                name="lugar"
                 type="text"
                 multiline
                 rows="1"
-                placeholder="Lugar"
+                placeholder="lugar"
                 error={errors.lugar ? true : false}
                 helperText={errors.lugar}
                 onChange={this.handleChange}

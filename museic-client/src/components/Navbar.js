@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import MyButton from "../util/MyButton";
 import Notifications from './Notifications';
 //MUI stuff
+import { fade, makeStyles } from '@material-ui/core/styles';
+import withStyles from "@material-ui/core/styles/withStyles";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
@@ -11,17 +13,57 @@ import { connect } from 'react-redux';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
 import AlbumIcon from '@material-ui/icons/Album';
+import InputBase from '@material-ui/core/InputBase';
+import SearchIcon from '@material-ui/icons/Search';
 
 import { logoutUser } from "../redux/actions/userActions";
 
-
+const styles = ({
+    search: {
+        position: 'relative',
+        borderRadius: 3,
+        backgroundColor: fade("#FFFFFF", 0.15),
+        "&:hover": {
+            borderRadius: 3,
+            backgroundColor: fade("#FFFFFF", 0.25)
+        },
+        width: '100%'
+    },
+    searchIcon: {
+        padding: '0px 16px',
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: fade("#FFFFFF", 0.50),
+        backgroundColor: 'inherit',
+        borderRadius: 3,
+        padding: '4px 4px 4px 0',
+        paddingLeft: '46px',
+        width: '100%',
+    },
+    inputInput: {
+        
+        // vertical padding + font size from searchIcon
+        
+        //transition: theme.transitions.create('width'),
+        
+        //[theme.breakpoints.up('md')]: {
+        //  width: '20ch',
+        //},
+    },
+});
 
 class Navbar extends Component {
     handleLogout = () => {
         this.props.logoutUser();
       };
     render() {
-        const {authenticated} = this.props
+        const { authenticated, classes } = this.props;
         return (
           
             <AppBar>
@@ -29,13 +71,24 @@ class Navbar extends Component {
                 <Toolbar className="nav-container">
                     { authenticated ? (
                         <Fragment>
+                            <div className={classes.search}>
+                                <div className={classes.searchIcon}>
+                                    <SearchIcon />
+                                </div>
+                                <InputBase
+                                    placeholder="Buscar..."
+                                    className={classes.inputRoot}
+                                    inputProps={{ 'aria-label': 'search' }}
+                                />   
+                            </div>
+                            
                             <Link to="/">
                                 <MyButton tip="Home">
                                     <AlbumIcon style={{fill: "white"}}/>
                                 </MyButton>
                             </Link>
                             <Notifications />
-                            <Link to="/user">
+                            <Link to={`/usuarios/${this.props.user.credentials.username}`}>
                                 <MyButton tip="Perfil">
                                     <PersonIcon style={{fill: "white"}}/>
                                 </MyButton>
@@ -68,13 +121,15 @@ class Navbar extends Component {
 
 Navbar.propTypes = {
     logoutUser: PropTypes.func.isRequired,
-    authenticated: PropTypes.bool.isRequired
+    authenticated: PropTypes.bool.isRequired,
+    user: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({
-    authenticated: state.user.authenticated
+    authenticated: state.user.authenticated,
+    user: state.user,
 })
 const mapActionsToProps = { logoutUser };
 
 
-export default connect(mapStateToProps,mapActionsToProps )(Navbar);
+export default connect(mapStateToProps,mapActionsToProps )(withStyles(styles)(Navbar));

@@ -22,6 +22,8 @@ import artistlogin from "./pages/artistlogin";
 import intro from "./pages/intro";
 import user from "./pages/user";
 import ProfileUser from "./components/ProfileUser";
+import signupArt from "./pages/signupArtista";
+import chat from "./pages/chats";
 
 const theme = createMuiTheme({
   palette: {
@@ -73,6 +75,12 @@ function App() {
                   component={ProfileUser}
                  // authenticated={authenticated}
                 />
+                <Route
+                  exact
+                  path="/chat"
+                  component={chat}
+                // authenticated={authenticated}
+/>
                 <AuthRoute
                   exact
                   path="/intro"
@@ -89,6 +97,11 @@ function App() {
                   path="/usuarios/:username"
                   component={user}
                 />
+                <Route
+                  exact
+                  path="/usuarios/:username/publicacion/:postId"
+                  component={user}
+                />
                 <AuthRoute
                   exact
                   path="/artistLogin"
@@ -98,6 +111,11 @@ function App() {
                   exact
                   path="/signup"
                   component={signup}
+                />
+                <AuthRoute
+                  exact
+                  path="/signupA"
+                  component={signupArt}
                 />
               </Switch>
               </div>

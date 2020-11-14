@@ -29,7 +29,7 @@ class user extends Component {
         const username = this.props.match.params.username;
         const postId = this.props.match.params.postId;
         
-        if (postId) this.setState({postIdParam: postId})
+        if (postId) this.setState({postIdParam: postId});
 
         this.props.getUserData(username);
         axios.get(`/usuario/${username}`)
@@ -53,6 +53,7 @@ class user extends Component {
             publicaciones.map(publicacion => {
                 if(publicacion.postId !== postIdParam)
                     return <Publicacion key={publicacion.postId} publicacion={publicacion}/>
+                else return <Publicacion key={publicacion.postId} publicacion={publicacion} openDialog />
             })
         );
 

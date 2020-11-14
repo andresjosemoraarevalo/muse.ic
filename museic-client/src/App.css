@@ -6,7 +6,7 @@ body{
   background-color: rgb(245,245,245);
 }
 .container{
-  margin: 80px auto 0 auto;
+  margin: 80 auto 0 auto;
   /*max-width: 1000px;*/
 }
 .nav-container{
@@ -27,18 +27,26 @@ a{
 
 #homePublicaciones{
   /*margin: 0 auto;*/
-  width: 440px;
+  width: 550px;
   position: absolute;
   bottom: 20px;
-  top: 150px;
+  top: 100px;
   overflow: auto
 }
 
 #homePerfil{
-  /*margin: 0 auto;*/
-  width:320px;
+  /*margin: 0 au  to;*/
+  width: auto;
   position: absolute;
   bottom: 20px;
-  top: 70px;
+  /*top: 60px;*/
+  overflow: auto
+}
+
+#homeEventos{
+  width: 420px;
+  position: absolute;
+  bottom: 20px;
+  top: 100px;
   overflow: auto
 }

@@ -5,9 +5,10 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
 import MyButton from "../util/MyButton";
-import DeletePublicacion from './DeletePublicacion';
+import EditPublicacion from './EditPublicacion';
 import LikeButton from './LikeButtom';
 import ShareButtom from './ShareButtom';
+import PublicacionDialog from './PublicacionDialog';
 
 //MUI stuff
 import Card from "@material-ui/core/Card";
@@ -59,11 +60,11 @@ class Publicacion extends Component {
           credentials: {
               username
           }
-      }
+      },
     } = this.props;
     
-    const deleteButton = authenticated && postedBy === username ? (
-        <DeletePublicacion postId={postId}/>
+    const deleteButton = authenticated && postedBy === this.props.user.credentials.username ? (
+        <EditPublicacion postId={postId} publicacion={this.props.publicacion}/>
     ) : null
     return (
       <Card className={classes.card}>
@@ -114,6 +115,7 @@ class Publicacion extends Component {
           <span>{comentarios} Comentarios</span>
           <span >{remixeados} Remixeados</span>
           <ShareButtom postId = {postId}/>
+          <PublicacionDialog postId={postId} username={postedBy} openDialog={this.props.openDialog}/>
         </CardContent>
       </Card>
     );
@@ -126,6 +128,7 @@ Publicacion.propTypes = {
   user: PropTypes.object.isRequired,
   publicacion: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
+  openDialog: PropTypes.bool
 };
 
 const mapStateToProps = (state) => ({

@@ -25,6 +25,7 @@ import {
   unfollowProfile,
   followProfile,
 } from "../redux/actions/dataActions";
+import { logoutUser, uploadImage } from "../redux/actions/userActions";
 
 const styles = {
   paper: {
@@ -281,7 +282,11 @@ class StaticProfile extends Component {
           <div className={classes.profile}></div>
           <div className="image-wrapper">
             <img
-              src={Fotolink}
+              src={username !== this.props.user.credentials.username ? (
+                Fotolink
+              ) : (
+                this.props.user.credentials.Fotolink
+              )}
               alt="profile"
               className={classes.imagen}
               width="250"
@@ -418,23 +423,42 @@ class StaticProfile extends Component {
               <Typography variant="body1">{dayjs(fechaNacimiento).format("DD MMM YYYY")}</Typography>
             </Grid>
           </Grid>
-          
-          {gustos && (
-            <Grid container className={classes.boxDiv}>
-              {gustos.map((gusto) => (
-                <Box
-                  component="div"
-                  display="inline"
-                  borderRadius={8}
-                  p={1}
-                  color="primary"
-                  className={classes.box}
-                >
-                  {gusto}
-                </Box>
-              ))}
-            </Grid>
+          {username !== this.props.user.credentials.username ? (
+            gustos && (
+              <Grid container className={classes.boxDiv}>
+                {gustos.map((gusto) => (
+                  <Box
+                    component="div"
+                    display="inline"
+                    borderRadius={8}
+                    p={1}
+                    color="primary"
+                    className={classes.box}
+                  >
+                    {gusto}
+                  </Box>
+                ))}
+              </Grid>
+            )
+          ) : (
+            this.props.user.credentials.gustos && (
+              <Grid container className={classes.boxDiv}>
+                {this.props.user.credentials.gustos.map((gusto) => (
+                  <Box
+                    component="div"
+                    display="inline"
+                    borderRadius={8}
+                    p={1}
+                    color="primary"
+                    className={classes.box}
+                  >
+                    {gusto}
+                  </Box>
+                ))}
+              </Grid>
+            )
           )}
+          
           
         </div>
       </Grid>
@@ -451,6 +475,8 @@ StaticProfile.propTypes = {
   user: PropTypes.object.isRequired,
   followProfile: PropTypes.func.isRequired,
   unfollowProfile: PropTypes.func.isRequired,
+  logoutUser: PropTypes.func.isRequired,
+  uploadImage: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -460,6 +486,8 @@ const mapStateToProps = (state) => ({
 const mapActionsToProps = {
   followProfile,
   unfollowProfile,
+  logoutUser,
+  uploadImage
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(StaticProfile));

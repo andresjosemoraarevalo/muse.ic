@@ -12,6 +12,7 @@ const {
   likePublicacion,
   unlikePublicacion,
   deletePublicacion,
+  editPublicacion,
 } = require("./handlers/publicaciones");
 const {
   signupUsuario,
@@ -64,6 +65,7 @@ app.delete("/publicaciones/:postId", FBAuthUsuarios, deletePublicacion);
 app.get("/publicaciones/:postId/like", FBAuthUsuarios, likePublicacion);
 app.get("/publicaciones/:postId/unlike", FBAuthUsuarios, unlikePublicacion);
 app.post("/publicaciones/:postId/comentar", FBAuthUsuarios, comentarPublicacion);
+app.post("/editPublicacion/:postId", FBAuthUsuarios, editPublicacion);
 
 // Eventos
 app.post("/crearEvento", FBAuthUsuarios,crearEvento);

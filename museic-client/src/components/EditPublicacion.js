@@ -13,7 +13,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import { connect } from 'react-redux';
-import { deletePublicacion } from '../redux/actions/dataActions';
+import { deletePublicacion, editPublicacion } from '../redux/actions/dataActions';
 
 const styles = {
     TextField: {
@@ -60,14 +60,19 @@ class EditPublicacion extends Component {
         //console.log(this.state.postBody);
     };
     handleSubmit = () => {
-
+        const postDetails = {
+            postBody: this.state.postBody,
+            postedBy: this.props.publicacion.postedBy
+        };
+        this.props.editPublicacion(postDetails, this.props.postId);
+        this.handleClose();
     }
     render() {
         const { classes, publicacion } = this.props;
         const anchorEl = this.state.anchorEl;
         return (
             <Fragment> 
-                <MyButton tip="Borrar Publicacion" onClick={this.handleOpenMenu} btnClassName={classes.deleteButton}>
+                <MyButton tip="Opciones" onClick={this.handleOpenMenu} btnClassName={classes.deleteButton}>
                     <MoreVertIcon color="secondary"/>
                 </MyButton>
                 <Menu id="post-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={this.handleCloseMenu}>
@@ -133,10 +138,11 @@ class EditPublicacion extends Component {
 
 EditPublicacion.propTypes = {
     deletePublicacion: PropTypes.func.isRequired,
+    editPublicacion: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
     postId: PropTypes.string.isRequired,
     publicacion: PropTypes.object.isRequired,
 }
 
 
-export default connect(null , {deletePublicacion })(withStyles(styles)(EditPublicacion));
+export default connect(null , {deletePublicacion, editPublicacion })(withStyles(styles)(EditPublicacion));

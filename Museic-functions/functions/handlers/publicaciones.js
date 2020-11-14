@@ -306,3 +306,16 @@ exports.deletePublicacion = (req, res) => {
       return res.status(500).json({ error: err.code });
     })
 };
+
+exports.editPublicacion = (req, res) => {
+  let postDetails = req.body;
+  db.doc(`/Publicaciones/${req.params.postId}`)
+    .update(postDetails)
+    .then(() => {
+      return res.json({ message: "Detalles de post añadidos satisfactoriamente" });
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    }); 
+}

@@ -261,14 +261,32 @@ export const postPublicacion = (newPublicacion) => (dispatch) => {
       .catch((err) => console.log(err));
   };
 
-  /*export const editPostDetails = (postDetails, postId) => (dispatch) => {
+  export const editPublicacion = (postDetails, postId) => (dispatch) => {
     dispatch({ type: LOADING_DATA });
-    axios.post('/postDetails', postDetails)
+    axios.post(`/editPublicacion/${postId}`, postDetails)
       .then(() => {
         dispatch(getUserData(postDetails.postedBy));
       })
       .catch((err) => console.log(err));
-  };*/
+  };
+  export const uploadImage = (formData) => (dispatch) => {
+    dispatch({ type: LOADING_DATA });
+    axios
+      .post('/usuario/FotoPerfil', formData)
+      .then(() => {
+        dispatch(getUserData());
+      })
+      .catch((err) => console.log(err));
+  };
+  
+  export const editUserDetails = (userDetails) => (dispatch) => {
+    dispatch({ type: LOADING_DATA });
+    axios.post('/usuarioDetails',userDetails)
+      .then(() =>{
+        dispatch(getUserData());
+      })
+      .catch((err) => console.log(err));
+  }
 
   export const getUserData = (username) => (dispatch) => {
     dispatch({ type: LOADING_DATA });

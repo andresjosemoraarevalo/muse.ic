@@ -113,7 +113,6 @@ class Publicacion extends Component {
             <ChatIcon color="primary" />
           </MyButton>
           <span>{comentarios} Comentarios</span>
-          <span >{remixeados} Remixeados</span>
           <ShareButtom postId = {postId}/>
           <PublicacionDialog postId={postId} username={postedBy} openDialog={this.props.openDialog}/>
         </CardContent>

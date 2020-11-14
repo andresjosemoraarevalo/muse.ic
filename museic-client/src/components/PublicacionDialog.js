@@ -51,7 +51,7 @@ const styles = {
     },
     expandButton: {
         position: 'absolute',
-        marginLeft: 'auto'
+        marginLeft: 'auto',
     },
 };
 

@@ -23,6 +23,7 @@ import {
 
   const styles = {
     root: {
+      position: "relative",
       float: 'right',
       
     },
@@ -89,8 +90,8 @@ export class ShareButtom extends Component {
     } = this.props;
 
     return (
-      <div container className={classes.root} >
-        <Fragment className={classes.root}>
+      <div  className={classes.root} >
+        <Fragment >
         <MyButton tip="Remixear" onClick={this.handleOpen} >
             <ShareIcon color="primary" />
         </MyButton>

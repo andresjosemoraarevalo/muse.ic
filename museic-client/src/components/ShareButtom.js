@@ -23,7 +23,10 @@ import {
 
   const styles = {
     root: {
-      marginTop: 15
+      float: 'right',
+      
+    },
+    section1: {
     },
     submitButton: {
       position: "relative",
@@ -86,10 +89,10 @@ export class ShareButtom extends Component {
     } = this.props;
 
     return (
-      <div container className={classes.root}>
+      <div container className={classes.root} >
         <Fragment className={classes.root}>
-        <MyButton tip="Remixear" onClick={this.handleOpen}>
-            <ShareIcon color="primary"/>
+        <MyButton tip="Remixear" onClick={this.handleOpen} >
+            <ShareIcon color="primary" />
         </MyButton>
         
         <Dialog

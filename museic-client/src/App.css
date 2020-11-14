@@ -27,7 +27,7 @@ a{
 
 #homePublicaciones{
   /*margin: 0 auto;*/
-  width: 440px;
+  width: 550px;
   position: absolute;
   bottom: 20px;
   top: 100px;
@@ -35,10 +35,18 @@ a{
 }
 
 #homePerfil{
-  /*margin: 0 auto;*/
-  width:320px;
+  /*margin: 0 au  to;*/
+  width: auto;
   position: absolute;
   bottom: 20px;
   /*top: 60px;*/
+  overflow: auto
+}
+
+#homeEventos{
+  width: 420px;
+  position: absolute;
+  bottom: 20px;
+  top: 100px;
   overflow: auto
 }

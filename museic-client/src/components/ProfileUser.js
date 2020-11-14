@@ -98,8 +98,16 @@ const styles = {
 class ProfileUser extends Component {
   state = {
     openSeguidos: false,
-    openSeguidores: false
+    openSeguidores: false,
+    postIdParam: null
   };
+  componentDidMount(){
+    //const username = this.props.match.params.username;
+    const postId = this.props.match.params.postId;
+        
+    if (postId) this.setState({postIdParam: postId});
+    this.props.getUserData(this.props.user.credentials.username);
+  }
   followProfile = (nombreDeUsuario) => {
     this.props.followProfile(nombreDeUsuario);
     this.props.user.credentials.seguidos++;
@@ -150,11 +158,13 @@ class ProfileUser extends Component {
         },
         loading,
         authenticated,
-        publicaciones,
+        
         
       },
       user
     } = this.props;
+    const { postIdParam } = this.state;
+    const { publicaciones } = this.props.data;
     
     const seguidosMarkup = user.seguidos !== null ? (
       user.seguidos.map((seguido) => 
@@ -258,9 +268,16 @@ class ProfileUser extends Component {
       <p> </p>
     ) : publicaciones === null ? (
         <p>Sin publicaciones</p>
+    ) : !postIdParam ? (
+      publicaciones.map((publicacion) => <Publicacion key={publicacion.postId} publicacion={publicacion}/>)
     ) : (
-        publicaciones.map((publicacion) => <Publicacion key={publicacion.postId} publicacion={publicacion} />)
-    )
+      publicaciones.map(publicacion => {
+          if(publicacion.postId !== postIdParam)
+              return <Publicacion key={publicacion.postId} publicacion={publicacion}/>
+          else return <Publicacion key={publicacion.postId} publicacion={publicacion} openDialog />
+      })
+    );
+  
     let profileMarkup = !loading ? (
       authenticated ? (
         <div container className={classes.root}>
@@ -455,6 +472,7 @@ ProfileUser.propTypes = {
   getUserData: PropTypes.func.isRequired,
   followProfile: PropTypes.func.isRequired,
   unfollowProfile: PropTypes.func.isRequired,
+  openDialog: PropTypes.bool,
 };
 
 export default connect(

@@ -78,7 +78,7 @@ class Mensaje extends Component {
       mensaje:{
         postBody,
         postedBy,
-        postedFo,
+        postedFor,
         Fotolink,
         postDate,
       },

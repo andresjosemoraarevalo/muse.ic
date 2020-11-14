@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
 import MyButton from "../util/MyButton";
-import DeletePublicacion from './DeletePublicacion';
+import EditPublicacion from './EditPublicacion';
 import LikeButton from './LikeButtom';
 import PublicacionDialog from './PublicacionDialog';
 
@@ -57,11 +57,11 @@ class Publicacion extends Component {
           credentials: {
               username
           }
-      }
+      },
     } = this.props;
     
-    const deleteButton = authenticated && postedBy === username ? (
-        <DeletePublicacion postId={postId}/>
+    const deleteButton = authenticated && postedBy === this.props.user.credentials.username ? (
+        <EditPublicacion postId={postId} publicacion={this.props.publicacion}/>
     ) : null
     return (
       <Card className={classes.card}>
@@ -110,7 +110,7 @@ class Publicacion extends Component {
             <ChatIcon color="primary" />
           </MyButton>
           <span>{comentarios} Comentarios</span>
-          <PublicacionDialog postId={postId} username={username} openDialog={this.props.openDialog}/>
+          <PublicacionDialog postId={postId} username={postedBy} openDialog={this.props.openDialog}/>
         </CardContent>
       </Card>
     );

@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Link } from 'react-router-dom';
 import LikeButton from './LikeButtom';
-import DeletePublicacion from './DeletePublicacion';
+import EditPublicacion from './EditPublicacion';
 // MUI stuff
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -69,10 +69,10 @@ class PublicacionDialog extends Component {
     handleOpen = () => {
         let oldPath = window.location.pathname;
 
-        const { publicacion: {postedBy}, postId } = this.props;
-        const newPath = `/usuarios/${postedBy}/publicacion/${postId}`;
-
-        if (oldPath === newPath) oldPath = `/usuarios/${postedBy}`;
+        const { username, postId } = this.props;
+        let newPath = `/usuarios/${username}/publicacion/${postId}`;
+        
+        if (oldPath === newPath) oldPath = `/usuarios/${username}`;
 
         window.history.pushState(null, null, newPath);
         
@@ -108,12 +108,12 @@ class PublicacionDialog extends Component {
         } = this.props;
 
         const deleteButton = authenticated && postedBy === username ? (
-            <DeletePublicacion postId={postId}/>
+            <EditPublicacion postId={postId}/>
         ) : null
 
         const dialogMarkup = loading ? (
             <div className={classes.spinnerDiv}>
-                <CircularProgress size={200} thickness={2} />
+                <CircularProgress size={100} thickness={2} />
             </div>
         ) : (
             <Card className={classes.card}>

@@ -10,8 +10,7 @@ import Profile from '../components/Profile';
 import Menu from '../components/menu';
 import { connect } from "react-redux";
 import { getPublicaciones, getEventos } from "../redux/actions/dataActions";
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
+import CircularProgress from "@material-ui/core/CircularProgress";
 import PostEvento from '../components/PostEvento';
 //import Button from "@material-ui/core/Button";
  // <Menu />
@@ -21,6 +20,14 @@ const styles = {
   },
   posts: {
       overflow: 'scroll'
+  },
+  spinnerDiv: {
+    textAlign: 'center',
+    marginTop: 200,
+    marginBottom: 50
+  },
+  eventos: {
+    //padding: 10
   }
 };
 
@@ -64,7 +71,7 @@ class home extends Component {
       authenticated ?(
         artista ?(
           <Grid container className={classes.root} spacing={3}>
-          <Grid item sm={1}>
+          <Grid item sm={0}>
           </Grid>
           <Grid item sm={3}>
           <div >
@@ -74,13 +81,13 @@ class home extends Component {
             <PostEvento />
           </div>      
           </Grid>
-          <Grid item sm={4} >
+          <Grid item sm={5} >
           
           <div id="homePublicaciones" >
           {recentPublicacionesMarkup}
             </div>
           </Grid>
-          <Grid item sm={3}>
+          <Grid item sm={4}>
             <Typography
               variant="h5"
               color="primary"
@@ -91,13 +98,12 @@ class home extends Component {
               {recentEventosMarkup}
             </div>
           </Grid>
-          <Grid item sm={1}>
+          <Grid item sm={0}>
           </Grid>
         </Grid>
         ):(
           <Grid container className={classes.root} spacing={3}>
-          <Grid item sm={1}>
-          </Grid>
+          
           <Grid item sm={3}>
           <div >
             <Profile />
@@ -105,32 +111,35 @@ class home extends Component {
             <PostPublicacion />
           </div>      
           </Grid>
-          <Grid item sm={4} >
+          <Grid item sm={5} >
           
           <div id="homePublicaciones" >
           {recentPublicacionesMarkup}
             </div>
           </Grid>
-          <Grid item sm={3}>
+          <Grid item sm={4}>
           <Typography
             variant="h5"
             color="primary"
+            className={classes.eventos}
           >
             Eventos
           </Typography>
-          <div id="homePublicaciones">
+          <div id="homeEventos">
             {recentEventosMarkup}
           </div>
           </Grid>
-          <Grid item sm={1}>
-          </Grid>
+          
+          
         </Grid>
         )
       ):(
         <p>Loading...</p>
       )
     ):(
-      <p>Loading...</p>
+      <div className={classes.spinnerDiv}>
+                <CircularProgress size={150} thickness={2} />
+            </div>
     );
 
     return homes;

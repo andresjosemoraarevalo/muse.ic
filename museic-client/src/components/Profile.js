@@ -64,7 +64,7 @@ class Profile extends Component {
                 variant="h5"
                 color="primary"
                 component={Link}
-                to={'/user'}
+                to={`/usuarios/${username}`}
               >
                 {username}
               </Typography>

@@ -21,7 +21,7 @@ import {
   
   const initialState = {
     eventos:[],
-    chat:{},
+    chat: {},
     mensajes: [],
     publicaciones: [],
     publicacion: {},

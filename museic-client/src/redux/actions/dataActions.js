@@ -67,9 +67,9 @@ export const setChat =(chat) => (dispatch)=>{
   getMensajes(chat);
 }
 // get todos los mensajes de un usuario
-export const getMensajes = (chat) => (dispatch) => {
+export const getMensajes = (chatt) => (dispatch) => {
   dispatch({ type: LOADING_DATA });
-  axios.post(`/Mensajes`,{"chat":"DuaLipa"})
+  axios.post('/Mensajes', {chat: chatt} )
   .then(res => {
     dispatch({
       type: SET_MENSAJES,
@@ -260,6 +260,15 @@ export const postPublicacion = (newPublicacion) => (dispatch) => {
       })
       .catch((err) => console.log(err));
   };
+
+  /*export const editPostDetails = (postDetails, postId) => (dispatch) => {
+    dispatch({ type: LOADING_DATA });
+    axios.post('/postDetails', postDetails)
+      .then(() => {
+        dispatch(getUserData(postDetails.postedBy));
+      })
+      .catch((err) => console.log(err));
+  };*/
 
   export const getUserData = (username) => (dispatch) => {
     dispatch({ type: LOADING_DATA });

@@ -96,7 +96,7 @@ class Menu extends Component {
                     <Paper className={classes.paper}>
                     <MenuList>
                         <MenuItem component={Link}
-                                to={'/user'}>
+                                to={`/usuarios/${this.props.user.credentials.username}`}>
                             <MyButton>
                                 <PersonIcon style={{fill: "secondary"}}/>
                             </MyButton>

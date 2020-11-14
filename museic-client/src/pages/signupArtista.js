@@ -91,7 +91,7 @@ class signupArt extends Component {
           <div className={classes.paper}>
             <img src={AppIcon} alt="disco" width="200" heigth="150" />
             <Typography component="h1" variant="h4" className={classes.title}>
-              Regístrate Gratis
+              Regístrate Como Artista
             </Typography>
             <form
               className={classes.form}

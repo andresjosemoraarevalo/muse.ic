@@ -88,7 +88,7 @@ class Navbar extends Component {
                                 </MyButton>
                             </Link>
                             <Notifications />
-                            <Link to="/user">
+                            <Link to={`/usuarios/${this.props.user.credentials.username}`}>
                                 <MyButton tip="Perfil">
                                     <PersonIcon style={{fill: "white"}}/>
                                 </MyButton>
@@ -121,11 +121,13 @@ class Navbar extends Component {
 
 Navbar.propTypes = {
     logoutUser: PropTypes.func.isRequired,
-    authenticated: PropTypes.bool.isRequired
+    authenticated: PropTypes.bool.isRequired,
+    user: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({
-    authenticated: state.user.authenticated
+    authenticated: state.user.authenticated,
+    user: state.user,
 })
 const mapActionsToProps = { logoutUser };
 

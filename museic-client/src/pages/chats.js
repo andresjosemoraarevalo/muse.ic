@@ -1,7 +1,7 @@
 
 import React, { Component , Fragment} from "react";
 import Grid from "@material-ui/core/Grid";
-import { withStyles } from "@material-ui/core";
+import { CardHeader, withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import Usuario from "../components/Usuario";
@@ -9,6 +9,9 @@ import Evento from "../components/Evento";
 import PostPublicacion from '../components/PostPublicacion';
 import Profile from '../components/Profile';
 import Menu from '../components/menu';
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
+import Avatar from "@material-ui/core/Avatar";
 import { connect } from "react-redux";
 import { getPublicaciones, getEventos, getUsuarios } from "../redux/actions/dataActions";
 import SearchIcon from '@material-ui/icons/Search';
@@ -53,8 +56,16 @@ const styles = {
 
 
 class chat extends Component {
+  state = {
+    chatUser: ''
+  }
   componentDidMount() {
     this.props.getUsuarios();
+  }
+  handleClick = (username) => {
+    console.log(username);
+    this.props.getMensajes(username);
+    this.setState({ chatUser: username });
   }
   render() {
     const { 
@@ -72,11 +83,22 @@ class chat extends Component {
     const {usuarios,chat}= this.props.data;
     let recentUsuariosMarkup = !loading ? (
         usuarios.map((usuario) => (
-          <Usuario 
-          
-          key={usuario.username} usuario={usuario} 
-          
-          />
+          <MenuItem onClick={() => this.handleClick(usuario.username)}>
+            
+            <CardHeader
+              avatar={<Avatar alt={usuario.username} src={usuario.Fotolink}/>}
+              title={
+                <Typography
+                variant="h6"
+                color="primary"
+                name="chat"
+                //component={Link}
+                //to={`/usuarios/${username}`}
+              >
+                {usuario.username}
+              </Typography>
+              }/>
+          </MenuItem>
         ))
       ) : (
         <p>Loading...</p>
@@ -145,8 +167,7 @@ class chat extends Component {
         </Grid>
         ):(
           <Grid container className={classes.root} spacing={3}>
-          <Grid item sm={1}>
-          </Grid>
+          
           <Grid item sm={3}>
           <div >
             <Profile />
@@ -162,10 +183,12 @@ class chat extends Component {
             Usuarios
             </Typography>   
           <div className={classes.users}> 
-          {recentUsuariosMarkup}
+          <MenuList>
+            {recentUsuariosMarkup}
+          </MenuList>
             </div>
           </Grid>
-          <Grid item sm={4}>
+          <Grid item sm={5}>
           <Typography
             variant="h5"
             color="primary"
@@ -180,7 +203,7 @@ class chat extends Component {
             name="nombre"
             type="text"
             multiline
-            placeholder= {`Enviale un mensaje a ${chat}`}
+            placeholder= {`Enviale un mensaje a ${this.state.chatUser}`}
             //error={errors.nombre ? true : false}
             //helperText={errors.nombre}
             onChange={this.handleChange}
@@ -204,8 +227,7 @@ class chat extends Component {
             enviar 
             </Button>
           </Grid>
-          <Grid item sm={1}>
-          </Grid>
+          
         </Grid>
         )
       ):(

@@ -59,12 +59,12 @@ export const getUsuarios = () => (dispatch) => {
     });
 };
 
-export const setChat =(chat) => (dispatch)=>{
+export const setChat =(chatt) => (dispatch)=>{
   dispatch({
     type: SET_CHAT,
-    payload: chat
+    payload: {chat: chatt}
   });
-  getMensajes(chat);
+  
 }
 // get todos los mensajes de un usuario
 export const getMensajes = (chatt) => (dispatch) => {
@@ -85,7 +85,7 @@ export const getMensajes = (chatt) => (dispatch) => {
 } 
 //post un mensaje nuevo 
 export const postMensaje = (newMensaje) => (dispatch) => {
-  dispatch({ type: LOADING_UI });
+  dispatch({ type: LOADING_UI});
   axios
     .post('/crearMensaje', newMensaje)
     .then((res) => {

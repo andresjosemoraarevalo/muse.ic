@@ -4,6 +4,7 @@ const { db, admin } = require("../utilidades/administrador");
 exports.getMensajes = (req, res) => {
     let mensajes = [];
     db.collection("Mensajes")
+   
   .where("postedBy","==",req.user.username)
   .where("postedFor","==",req.body.chat)
   .get()
@@ -13,6 +14,7 @@ exports.getMensajes = (req, res) => {
       mensajes.push(doc.data());
     });
     return db.collection("Mensajes")
+    
     .where("postedFor","==",req.user.username)
     .where("postedBy","==",req.body.chat)
     .get()

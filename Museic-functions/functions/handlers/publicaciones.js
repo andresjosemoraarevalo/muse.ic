@@ -104,6 +104,8 @@ exports.crearPublicacion = (req, res) => {
     postBody: req.body.postBody,
     postedBy: req.user.username,
     Fotolink: req.user.Fotolink,
+    remix: req.body.remix,
+    remixeado: req.body.remixeado,
     postDate: new Date().toISOString(),
     likes: 0,
     comentarios: 0,

@@ -81,7 +81,7 @@ class home extends Component {
             <PostEvento />
           </div>      
           </Grid>
-          <Grid item sm={5} >
+          <Grid item sm={3} >
           
           <div id="homePublicaciones" >
           {recentPublicacionesMarkup}

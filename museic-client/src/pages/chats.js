@@ -16,7 +16,7 @@ import PostEvento from '../components/PostEvento';
 import Chatbox from "../components/chatbox";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import {setChat,getMensajes} from "../redux/actions/dataActions";
+import {setChat,getMensajes, postMensaje} from "../redux/actions/dataActions";
 //import Button from "@material-ui/core/Button";
  // <Menu />
 const styles = {
@@ -24,21 +24,24 @@ const styles = {
     marginTop: "90px",
   },
   chatbox:{
-    width: "550px",
-    height:"450px",
+    width: "450px",
+    height:"350px",
    
+    background: "white",
     
     top: "150px",
     overflow: "auto",
   },
   text:{
+    marginTop: "5px",
     width: "350px",
-    height:"450px",
+    height:"60px",
+    position: "relative",
   },
   submitButton: {
-    top: "4px",
+    top: "5px",
     position: "relative",
-    width: "70px",
+    width: "90px",
     height:"50px",
   },
   users:{
@@ -53,16 +56,31 @@ const styles = {
 
 class chat extends Component {
   state = {
-    chatUser: ''
+    chatUser: '',
+    postBody:'',
   }
   componentDidMount() {
     this.props.getUsuarios();
-  }
+    
+  };
   handleClick = (username) => {
     console.log(username);
     this.props.getMensajes(username);
+    this.props.setChat(username);
     this.setState({ chatUser: username });
-  }
+    
+  };
+  handleClick2 = ()=>{
+    this.props.postMensaje({username2: this.state.chatUser , postBody: this.state.postBody});
+    
+
+  };
+  handleChange = (event) => {
+    this.setState({ [event.target.name ]: event.target.value });
+    
+    
+    
+};
   render() {
     const { 
       user: {
@@ -102,66 +120,6 @@ class chat extends Component {
       const { classes } = this.props;
     let chats = ! loading ?(
       authenticated ?(
-        artista ?(
-          <Grid container className={classes.root} spacing={3}>
-          <Grid item sm={1}>
-          </Grid>
-          <Grid item sm={3}>
-          <div >
-            <Profile />
-            <Menu/>
-            <PostPublicacion/>
-            <PostEvento />
-          </div>      
-          </Grid>
-          <Grid item sm={4} >
-          <div id="homePublicaciones" >
-              {recentUsuariosMarkup}
-            </div>
-          </Grid>
-          <Grid item sm={4}>
-            <Typography
-              variant="h5"
-              color="primary"
-            >
-              Chat
-            </Typography>
-            <div className={classes.chatbox}>
-            <Chatbox />
-            </div>
-            <TextField
-            variant="outlined"
-            name="nombre"
-            type="text"
-            multiline
-            placeholder= {`Enviale un mensaje a ${username}`}
-            //error={errors.nombre ? true : false}
-            //helperText={errors.nombre}
-            onChange={this.handleChange}
-            className={classes.text}
-                    />
-            <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.submitButton}
-            disabled={loading}
-            >
-            {/*Publicar
-            {loading && (
-                <CircularProgress
-                size={30}
-                className={classes.progressSpinner}
-                />
-            )}*/}
-            enviar 
-  </Button>
-            
-          </Grid>
-          <Grid item sm={1}>
-          </Grid>
-        </Grid>
-        ):(
           <Grid container className={classes.root} spacing={3}>
           
           <Grid item sm={3}>
@@ -196,7 +154,7 @@ class chat extends Component {
           </div>
           <TextField
             variant="outlined"
-            name="nombre"
+            name="postBody"
             type="text"
             multiline
             placeholder= {`Enviale un mensaje a ${this.state.chatUser}`}
@@ -212,6 +170,7 @@ class chat extends Component {
             color="primary"
             className={classes.submitButton}
             disabled={loading}
+            onClick={() => this.handleClick2()}
             >
             {/*Publicar
             {loading && (
@@ -225,7 +184,7 @@ class chat extends Component {
           </Grid>
           
         </Grid>
-        )
+        
       ):(
         <p>Loading...</p>
       )
@@ -245,6 +204,7 @@ const mapStateToProps = (state) => ({
 chat.propTypes = {
   setChat: PropTypes.func.isRequired,
   getMensajes: PropTypes.func.isRequired,
+  postMensaje: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
  
@@ -252,6 +212,6 @@ chat.propTypes = {
   
   data: PropTypes.object.isRequired,
 };
-export default connect(mapStateToProps, { getUsuarios , setChat,getMensajes})(
+export default connect(mapStateToProps, { getUsuarios , setChat,getMensajes, postMensaje})(
   withStyles(styles)(chat)
 );

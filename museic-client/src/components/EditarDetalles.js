@@ -4,16 +4,11 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 import { connect } from 'react-redux';
 import { editUserDetails } from '../redux/actions/userActions';
-import { Dialog, DialogContent, DialogActions, DialogTitle, TextField, Tooltip } from '@material-ui/core';
+import { Dialog, DialogContent, DialogActions, DialogTitle, TextField } from '@material-ui/core';
 
-import IconButton from '@material-ui/core/IconButton';
 
 import Button from '@material-ui/core/Button';
-import Box from "@material-ui/core/Box";
-import EditIcon from '@material-ui/icons/Edit';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import Grid from "@material-ui/core/Grid";
-import AddIcon from '@material-ui/icons/Add';
 
 
 const styles = ({

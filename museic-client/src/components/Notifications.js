@@ -35,7 +35,7 @@ class Notifications extends Component {
         this.props.markNotificationsRead(unreadNotificationsIds);
     };
     render(){
-        const notificaciones = this .props.notificaciones;
+        const notificaciones = this.props.notificaciones;
         const anchorEl = this.state.anchorEl;
 
         dayjs.extend(relativeTime);

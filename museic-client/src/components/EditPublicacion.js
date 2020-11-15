@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -68,14 +67,23 @@ class EditPublicacion extends Component {
         this.handleClose();
     }
     render() {
-        const { classes, publicacion } = this.props;
+        const { classes } = this.props;
         const anchorEl = this.state.anchorEl;
         return (
             <Fragment> 
                 <MyButton tip="Opciones" onClick={this.handleOpenMenu} btnClassName={classes.deleteButton}>
                     <MoreVertIcon color="secondary"/>
                 </MyButton>
-                <Menu id="post-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={this.handleCloseMenu}>
+                <Menu 
+                    id="post-menu" 
+                    anchorEl={anchorEl} 
+                    keepMounted 
+                    open={Boolean(anchorEl)} 
+                    onClose={this.handleCloseMenu}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    transformOrigin={{ vertical: "top", horizontal: "right" }}
+                    >
                     <MenuItem onClick={this.handleOpenEdit}>Editar</MenuItem>
                     <MenuItem onClick={this.handleOpen}>Eliminar</MenuItem>
                 </Menu>

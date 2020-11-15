@@ -86,7 +86,7 @@ class PostPublicacion extends Component {
           onClick={this.handleOpen}
           startIcon={<PostAddIcon />}
         >
-          Crear Publicacion
+          Publicar
         </Button>
         <Dialog
           open={this.state.open}

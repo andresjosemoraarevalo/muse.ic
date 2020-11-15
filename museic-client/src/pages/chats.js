@@ -1,11 +1,9 @@
 
-import React, { Component , Fragment} from "react";
+import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import { CardHeader, withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
-import Usuario from "../components/Usuario";
-import Evento from "../components/Evento";
 import PostPublicacion from '../components/PostPublicacion';
 import Profile from '../components/Profile';
 import Menu from '../components/menu';
@@ -13,9 +11,7 @@ import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from "@material-ui/core/Avatar";
 import { connect } from "react-redux";
-import { getPublicaciones, getEventos, getUsuarios } from "../redux/actions/dataActions";
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
+import { getUsuarios } from "../redux/actions/dataActions";
 import PostEvento from '../components/PostEvento';
 import Chatbox from "../components/chatbox";
 import TextField from "@material-ui/core/TextField";

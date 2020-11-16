@@ -31,10 +31,10 @@ const styles = {
     borderRadius: "100px",
     maxWidth: "75%",
     margin: "0px", 
-  borderTopLeftRadius: "2px",
-  borderBottomLeftRadius: "2px",
-  borderTopRightRadius: "100px",
-  borderBottomRightRadius: "100px",
+    borderTopLeftRadius: "2px",
+    borderBottomLeftRadius: "2px",
+    borderTopRightRadius: "100px",
+    borderBottomRightRadius: "100px",
    
   },
   card2: {
@@ -43,10 +43,10 @@ const styles = {
     borderRadius: "100px",
     maxWidth: "75%",
     margin: "0px 0px 0px auto",
-  borderTopLeftRadius: "100px",
-  borderBottomLeftRadius: "100px",
-  borderTopRightRadius: "2px",
-  borderBottomRightRadius: "2px",
+    borderTopLeftRadius: "100px",
+    borderBottomLeftRadius: "100px",
+    borderTopRightRadius: "2px",
+    borderBottomRightRadius: "2px",
    
   },
   content: {

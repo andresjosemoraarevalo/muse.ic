@@ -40,12 +40,19 @@ const styles = {
     },
 };
 
-
-
+function ordenarAsc(p_array_json, p_key) {
+  p_array_json.sort(function (a, b) {
+     return a[p_key] > b[p_key];
+  });
+}
+function ordenarDesc(p_array_json, p_key) {
+  ordenarAsc(p_array_json, p_key); p_array_json.reverse(); 
+}
 class Chatbox extends Component {
     componentDidMount() {
     this.props.getMensajes();
     }
+    
       render(){
         const {
             classes, user:{
@@ -57,7 +64,9 @@ class Chatbox extends Component {
                 authenticated,
             },    
             } = this.props;
-            const {mensajes}=this.props.data;
+            let {mensajes}=this.props.data;
+            ordenarDesc(mensajes,'postDate');
+            console.log(mensajes);
             let recentMensajes = !loading ? (
                 mensajes.map((mensaje) => (
                   <Mensaje key={mensaje.postId} mensaje={mensaje} />

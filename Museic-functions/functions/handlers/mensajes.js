@@ -1,5 +1,14 @@
 const { db, admin } = require("../utilidades/administrador");
 
+
+function ordenarAsc(p_array_json, p_key) {
+  p_array_json.sort(function (a, b) {
+     return a[p_key] > b[p_key];
+  });
+}
+function ordenarDesc(p_array_json, p_key) {
+  ordenarAsc(p_array_json, p_key); p_array_json.reverse(); 
+}
 //get mensajes 
 exports.getMensajes = (req, res) => {
     let mensajes = [];
@@ -26,6 +35,7 @@ exports.getMensajes = (req, res) => {
             doc.data()
         );
     });
+    ordenarDesc(mensajes,'postDate');
     return res.json(mensajes);
   })
   

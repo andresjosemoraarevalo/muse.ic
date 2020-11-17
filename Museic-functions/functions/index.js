@@ -44,6 +44,11 @@ const{
   getMensajes
 }= require("./handlers/mensajes");
 
+const {
+  crearGrupo
+} = require("./handlers/grupos");
+
+
 const FBAuthUsuarios = require("./utilidades/fbauthUsuarios");
 const FBAuthArtistas = require("./utilidades/fbauthArtistas");
 const { admin } = require("./utilidades/administrador");
@@ -73,6 +78,9 @@ app.get("/getEventos",getEventos);
 app.get("/Eventos/:postId/like", FBAuthUsuarios, likeEvento);
 app.get("/Eventos/:postId/unlike", FBAuthUsuarios, unlikeEvento);
 app.delete("/Eventos/:postId", FBAuthUsuarios, deleteEvento);
+
+//Grupos
+app.post("/crearGrupo", FBAuthUsuarios, crearGrupo);
 
 // Mensajes 
 app.post("/crearMensaje", FBAuthUsuarios, crearMensaje);

@@ -96,7 +96,8 @@ class PublicacionDialog extends Component {
                 comentarios,
                 likes,
                 Fotolink,
-                postId
+                postId,
+                remixeado
               },
             user: {
                 authenticated,

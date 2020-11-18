@@ -247,6 +247,7 @@ export const postPublicacion = (newPublicacion) => (dispatch) => {
       }); 
   };
 
+
   // Share a publicacion
 export const sharePublicacion = (newPublicacion) => (dispatch) => {
   dispatch({ type: LOADING_UI });

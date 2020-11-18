@@ -9,6 +9,7 @@ import EditPublicacion from './EditPublicacion';
 import LikeButton from './LikeButtom';
 import ShareButtom from './ShareButtom';
 import PublicacionDialog from './PublicacionDialog';
+import { getPublicacion, clearErrors } from "../redux/actions/dataActions";
 
 //MUI stuff
 import Card from "@material-ui/core/Card";
@@ -39,6 +40,9 @@ const styles = {
 };
 
 class Publicacion extends Component {
+  actualizarRemixeado = () => {
+    this.props.getPublicacion(this.props.remixeado);
+  }
   
   render() {
     dayjs.extend(relativeTime);
@@ -52,8 +56,8 @@ class Publicacion extends Component {
         likes,
         Fotolink,
         postId,
-        remixeados,
-        remixeado
+        remixeado,
+        remix,
       },
       user: {
           authenticated,
@@ -67,10 +71,13 @@ class Publicacion extends Component {
         <EditPublicacion postId={postId} publicacion={this.props.publicacion}/>
     ) : null
     return (
-      <Card className={classes.card}>
+      remix  ? (
+        <Card className={classes.card}>
         <CardHeader
           avatar={<Avatar alt={postedBy} src={Fotolink}></Avatar>}
+          
           title={
+            
             postedBy === username ? (
               <Typography
               variant="h6"
@@ -91,17 +98,23 @@ class Publicacion extends Component {
             </Typography>
             )
             
+            
           }
           action={
             deleteButton
           }
+          
           subheader={
             <Typography variant="body2" color="textSecondary">
               {dayjs(postDate).fromNow()}
             </Typography>
           }
+          
+          
         />
-        <Divider variant="middle" />
+        
+        <Divider variant="middle"/>
+        
 
         <CardContent>
           <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
@@ -113,10 +126,76 @@ class Publicacion extends Component {
             <ChatIcon color="primary" />
           </MyButton>
           <span>{comentarios} Comentarios</span>
-          <ShareButtom postId = {postId}/>
+          <ShareButtom postId={postId} openDialog={this.props.openDialog}/>
+          <PublicacionDialog postId={postId} username={postedBy} openDialog={this.props.openDialog}/>
+
+          {this.actualizarRemixeado}
+          <Publicacion postId={postId} publicacion={this.props.publicacion} />
+          
+        </CardContent>
+      </Card>
+
+      ) : (
+        <Card className={classes.card}>
+        <CardHeader
+          avatar={<Avatar alt={postedBy} src={Fotolink}></Avatar>}
+          
+          title={
+            
+            postedBy === username ? (
+              <Typography
+              variant="h6"
+              color="primary"
+              component={Link}
+              to={'/user'}
+            >
+              {postedBy}
+            </Typography>
+            ) : (
+              <Typography
+              variant="h6"
+              color="primary"
+              component={Link}
+              to={`/usuarios/${postedBy}`}
+            >
+              {postedBy}
+            </Typography>
+            )
+            
+            
+          }
+          action={
+            deleteButton
+          }
+          
+          subheader={
+            <Typography variant="body2" color="textSecondary">
+              {dayjs(postDate).fromNow()}
+            </Typography>
+          }
+          
+          
+        />
+
+        <Divider variant="middle"/>
+        
+        <CardContent>
+          
+          <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
+            {postBody}
+          </Typography>
+          <LikeButton postId = {postId}/>
+          <span>{likes} Likes</span>
+          <MyButton tip="Comentarios">
+            <ChatIcon color="primary" />
+          </MyButton>
+          <span>{comentarios} Comentarios</span>
+          <ShareButtom postId={postId} openDialog={this.props.openDialog} username={postedBy}/>
           <PublicacionDialog postId={postId} username={postedBy} openDialog={this.props.openDialog}/>
         </CardContent>
       </Card>
+      )
+      
     );
   }
 }
@@ -127,15 +206,21 @@ Publicacion.propTypes = {
   user: PropTypes.object.isRequired,
   publicacion: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-  openDialog: PropTypes.bool
+  openDialog: PropTypes.bool,
+  data: PropTypes.object.isRequired,
+  getPublicacion: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  data: state.data,
 });
-
-
+const mapActionsToProps = {
+  getPublicacion,
+  clearErrors
+};
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapActionsToProps,
 )(withStyles(styles)(Publicacion));

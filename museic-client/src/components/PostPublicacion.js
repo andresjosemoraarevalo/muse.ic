@@ -64,7 +64,7 @@ class PostPublicacion extends Component {
   };
   handleSubmit = (event) => {
       event.preventDefault();
-      this.props.postPublicacion({ postBody: this.state.postBody })
+      this.props.postPublicacion({ postBody: this.state.postBody , remix: false, remixead:""})
   }
   render() {
     const { errors } = this.state;

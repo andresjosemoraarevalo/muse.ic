@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { CardHeader, DialogContent, withStyles } from "@material-ui/core";
+import { CardHeader, withStyles } from "@material-ui/core";
 import MyButton from "../util/MyButton";
 import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -8,14 +8,10 @@ import { Link } from 'react-router-dom';
 import LikeButton from './LikeButtom';
 import EditPublicacion from './EditPublicacion';
 // MUI stuff
-import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import PostAddIcon from "@material-ui/icons/PostAdd";
 import CloseIcon from "@material-ui/icons/Close";
 import UnfoldMore from "@material-ui/icons/UnfoldMore";
-import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -126,7 +122,7 @@ class PublicacionDialog extends Component {
                     variant="h6"
                     color="primary"
                     component={Link}
-                    to={'/user'}
+                    to={`/usuarios/${postedBy}`}
                     >
                     {postedBy}
                     </Typography>
@@ -143,7 +139,17 @@ class PublicacionDialog extends Component {
                     
                 }
                 action={
-                    deleteButton
+                    postedBy === username ? (
+                        deleteButton
+                    ) : (
+                        <MyButton
+                            tip="Cerrar"
+                            onClick={this.handleClose}
+                            tipClassName={classes.closeButton}
+                        >
+                            <CloseIcon />
+                        </MyButton>
+                    )
                 }
                 subheader={
                     <Typography variant="body2" color="textSecondary">
@@ -177,13 +183,7 @@ class PublicacionDialog extends Component {
                 onClose={this.handleClose}
                 fullWidth
                 maxWidth="sm">  
-                <MyButton
-                    tip="Cerrar"
-                    onClick={this.handleClose}
-                    tipClassName={classes.closeButton}
-                >
-                    <CloseIcon />
-                </MyButton>
+                
                 {dialogMarkup}
                 
             </Dialog>

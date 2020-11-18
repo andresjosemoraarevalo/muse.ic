@@ -104,6 +104,8 @@ exports.crearPublicacion = (req, res) => {
     postBody: req.body.postBody,
     postedBy: req.user.username,
     Fotolink: req.user.Fotolink,
+    remix: req.body.remix,
+    remixeado: req.body.remixeado,
     postDate: new Date().toISOString(),
     likes: 0,
     comentarios: 0,
@@ -306,3 +308,16 @@ exports.deletePublicacion = (req, res) => {
       return res.status(500).json({ error: err.code });
     })
 };
+
+exports.editPublicacion = (req, res) => {
+  let postDetails = req.body;
+  db.doc(`/Publicaciones/${req.params.postId}`)
+    .update(postDetails)
+    .then(() => {
+      return res.json({ message: "Detalles de post añadidos satisfactoriamente" });
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    }); 
+}

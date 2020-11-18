@@ -7,13 +7,12 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import { connect } from 'react-redux';
-import { deletePublicacion } from '../redux/actions/dataActions';
+import { deletePublicacion, editPublicacion } from '../redux/actions/dataActions';
 
 const styles = {
     TextField: {
@@ -60,17 +59,31 @@ class EditPublicacion extends Component {
         //console.log(this.state.postBody);
     };
     handleSubmit = () => {
-
+        const postDetails = {
+            postBody: this.state.postBody,
+            postedBy: this.props.publicacion.postedBy
+        };
+        this.props.editPublicacion(postDetails, this.props.postId);
+        this.handleClose();
     }
     render() {
-        const { classes, publicacion } = this.props;
+        const { classes } = this.props;
         const anchorEl = this.state.anchorEl;
         return (
             <Fragment> 
-                <MyButton tip="Borrar Publicacion" onClick={this.handleOpenMenu} btnClassName={classes.deleteButton}>
+                <MyButton tip="Opciones" onClick={this.handleOpenMenu} btnClassName={classes.deleteButton}>
                     <MoreVertIcon color="secondary"/>
                 </MyButton>
-                <Menu id="post-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={this.handleCloseMenu}>
+                <Menu 
+                    id="post-menu" 
+                    anchorEl={anchorEl} 
+                    keepMounted 
+                    open={Boolean(anchorEl)} 
+                    onClose={this.handleCloseMenu}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    transformOrigin={{ vertical: "top", horizontal: "right" }}
+                    >
                     <MenuItem onClick={this.handleOpenEdit}>Editar</MenuItem>
                     <MenuItem onClick={this.handleOpen}>Eliminar</MenuItem>
                 </Menu>
@@ -133,10 +146,11 @@ class EditPublicacion extends Component {
 
 EditPublicacion.propTypes = {
     deletePublicacion: PropTypes.func.isRequired,
+    editPublicacion: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
     postId: PropTypes.string.isRequired,
     publicacion: PropTypes.object.isRequired,
 }
 
 
-export default connect(null , {deletePublicacion })(withStyles(styles)(EditPublicacion));
+export default connect(null , {deletePublicacion, editPublicacion })(withStyles(styles)(EditPublicacion));

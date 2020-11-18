@@ -45,7 +45,7 @@ class Usuario extends Component {
         errors: {},
       };
     handleClick = (username) => {
-      console.log(username);
+     console.log(username);
     }
   render() {
     dayjs.extend(relativeTime);
@@ -74,7 +74,7 @@ class Usuario extends Component {
                 name="chat"
                 //component={Link}
                 //to={`/usuarios/${username}`}
-                onClick={ console.log(username)/*this.props.setChat(username)*/}
+                //onClick={ /*console.log(username)this.props.setChat(username)*/}
               >
                 {username}
               </Typography>

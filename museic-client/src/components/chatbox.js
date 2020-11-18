@@ -2,25 +2,12 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 //MUI stuff
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+
 import Grid from "@material-ui/core/Grid";
 //botones 
-import MyButton from "../util/MyButton";
-import PersonIcon from '@material-ui/icons/Person';
-import Notifications from '@material-ui/icons/Notifications';
-import HelpOutline from '@material-ui/icons/HelpOutline';
-import People from '@material-ui/icons/People';
-import MusicNote from '@material-ui/icons/MusicNote';
-import SendIcon from '@material-ui/icons/Send';
-import { ReactSlackChat } from 'react-slack-chat';
+
 //redux 
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import MuiLink from "@material-ui/core/Link"
 import Mensaje from "./Mensaje";
 import { getMensajes } from "../redux/actions/dataActions";
 const styles = {
@@ -40,12 +27,19 @@ const styles = {
     },
 };
 
-
-
+function ordenarAsc(p_array_json, p_key) {
+  p_array_json.sort(function (a, b) {
+     return a[p_key] > b[p_key];
+  });
+}
+function ordenarDesc(p_array_json, p_key) {
+  ordenarAsc(p_array_json, p_key); p_array_json.reverse(); 
+}
 class Chatbox extends Component {
     componentDidMount() {
     this.props.getMensajes();
     }
+    
       render(){
         const {
             classes, user:{
@@ -57,7 +51,9 @@ class Chatbox extends Component {
                 authenticated,
             },    
             } = this.props;
-            const {mensajes}=this.props.data;
+            let {mensajes}=this.props.data;
+            ordenarDesc(mensajes,'postDate');
+            console.log(mensajes);
             let recentMensajes = !loading ? (
                 mensajes.map((mensaje) => (
                   <Mensaje key={mensaje.postId} mensaje={mensaje} />

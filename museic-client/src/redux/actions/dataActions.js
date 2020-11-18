@@ -60,12 +60,12 @@ export const getUsuarios = () => (dispatch) => {
     });
 };
 
-export const setChat =(chat) => (dispatch)=>{
+export const setChat =(chatt) => (dispatch)=>{
   dispatch({
     type: SET_CHAT,
-    payload: chat
+    payload: {chat: chatt}
   });
-  getMensajes(chat);
+  
 }
 // get todos los mensajes de un usuario
 export const getMensajes = (chatt) => (dispatch) => {
@@ -86,7 +86,7 @@ export const getMensajes = (chatt) => (dispatch) => {
 } 
 //post un mensaje nuevo 
 export const postMensaje = (newMensaje) => (dispatch) => {
-  dispatch({ type: LOADING_UI });
+  dispatch({ type: LOADING_UI});
   axios
     .post('/crearMensaje', newMensaje)
     .then((res) => {
@@ -284,14 +284,32 @@ export const sharePublicacion = (newPublicacion) => (dispatch) => {
       .catch((err) => console.log(err));
   };
 
-  /*export const editPostDetails = (postDetails, postId) => (dispatch) => {
+  export const editPublicacion = (postDetails, postId) => (dispatch) => {
     dispatch({ type: LOADING_DATA });
-    axios.post('/postDetails', postDetails)
+    axios.post(`/editPublicacion/${postId}`, postDetails)
       .then(() => {
         dispatch(getUserData(postDetails.postedBy));
       })
       .catch((err) => console.log(err));
-  };*/
+  };
+  export const uploadImage = (formData) => (dispatch) => {
+    dispatch({ type: LOADING_DATA });
+    axios
+      .post('/usuario/FotoPerfil', formData)
+      .then(() => {
+        dispatch(getUserData());
+      })
+      .catch((err) => console.log(err));
+  };
+  
+  export const editUserDetails = (userDetails) => (dispatch) => {
+    dispatch({ type: LOADING_DATA });
+    axios.post('/usuarioDetails',userDetails)
+      .then(() =>{
+        dispatch(getUserData());
+      })
+      .catch((err) => console.log(err));
+  }
 
   export const getUserData = (username) => (dispatch) => {
     dispatch({ type: LOADING_DATA });

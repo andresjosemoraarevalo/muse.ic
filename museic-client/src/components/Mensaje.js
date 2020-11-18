@@ -4,17 +4,12 @@ import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
-import MyButton from "../util/MyButton";
 
 //MUI stuff
 import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
-import Divider from "@material-ui/core/Divider";
-import ChatIcon from "@material-ui/icons/ChatBubbleOutline";
-import ListItem from '@material-ui/core/ListItem';
-import MenuItem from '@material-ui/core/MenuItem';
+
 //redux
 import { connect } from "react-redux";
 
@@ -31,10 +26,10 @@ const styles = {
     borderRadius: "100px",
     maxWidth: "75%",
     margin: "0px", 
-  borderTopLeftRadius: "2px",
-  borderBottomLeftRadius: "2px",
-  borderTopRightRadius: "100px",
-  borderBottomRightRadius: "100px",
+    borderTopLeftRadius: "2px",
+    borderBottomLeftRadius: "2px",
+    borderTopRightRadius: "100px",
+    borderBottomRightRadius: "100px",
    
   },
   card2: {
@@ -43,10 +38,10 @@ const styles = {
     borderRadius: "100px",
     maxWidth: "75%",
     margin: "0px 0px 0px auto",
-  borderTopLeftRadius: "100px",
-  borderBottomLeftRadius: "100px",
-  borderTopRightRadius: "2px",
-  borderBottomRightRadius: "2px",
+    borderTopLeftRadius: "100px",
+    borderBottomLeftRadius: "100px",
+    borderTopRightRadius: "2px",
+    borderBottomRightRadius: "2px",
    
   },
   content: {
@@ -90,7 +85,7 @@ class Mensaje extends Component {
     } = this.props;
     return ( 
        
-        postedBy == username ?(
+        postedBy === username ?(
             <div>
             <Card className={classes.card2}>
             <CardHeader

@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 
@@ -22,7 +21,6 @@ import SendIcon from '@material-ui/icons/Send';
 //redux 
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import MuiLink from "@material-ui/core/Link"
 const styles = {
     paper: {
       padding: 20,

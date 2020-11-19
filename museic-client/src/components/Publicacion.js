@@ -8,6 +8,8 @@ import MyButton from "../util/MyButton";
 import EditPublicacion from './EditPublicacion';
 import LikeButton from './LikeButtom';
 import PublicacionDialog from './PublicacionDialog';
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 
 //MUI stuff
 import Card from "@material-ui/core/Card";
@@ -35,6 +37,11 @@ const styles = {
   section2: {
     margin: "16px",
   },
+  box: {
+    backgroundColor: "#373737",
+    color: "#FFFFFF",
+    marginRight: 10
+  },
 };
 
 class Publicacion extends Component {
@@ -50,7 +57,8 @@ class Publicacion extends Component {
         comentarios,
         likes,
         Fotolink,
-        postId
+        postId,
+        generos
       },
       user: {
           authenticated,
@@ -104,6 +112,22 @@ class Publicacion extends Component {
           <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
             {postBody}
           </Typography>
+          {generos && (
+              <Grid container className={classes.boxDiv}>
+                {generos.map((genero) => (
+                  <Box
+                    component="div"
+                    display="inline"
+                    borderRadius={8}
+                    p={1}
+                    color="primary"
+                    className={classes.box}
+                  >
+                    {genero}
+                  </Box>
+                ))}
+              </Grid>
+            )}
           <LikeButton postId = {postId}/>
           <span>{likes} Likes</span>
           <MyButton tip="Comentarios">
@@ -111,6 +135,7 @@ class Publicacion extends Component {
           </MyButton>
           <span>{comentarios} Comentarios</span>
           <PublicacionDialog postId={postId} username={postedBy} openDialog={this.props.openDialog}/>
+          
         </CardContent>
       </Card>
     );

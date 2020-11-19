@@ -84,6 +84,7 @@ exports.getPublicaciones = (req, res) => {
           postedBy: doc.data().postedBy,
           postDate: doc.data().postDate,
           comentarios: doc.data().comentarios,
+          generos: doc.data().generos,
           likes: doc.data().likes,
           Fotolink: doc.data().Fotolink,
           nombre: doc.data().nombre
@@ -102,6 +103,7 @@ exports.crearPublicacion = (req, res) => {
   }
   const newPublicacion = {
     postBody: req.body.postBody,
+    generos: req.body.generos,
     postedBy: req.user.username,
     Fotolink: req.user.Fotolink,
     remix: req.body.remix,

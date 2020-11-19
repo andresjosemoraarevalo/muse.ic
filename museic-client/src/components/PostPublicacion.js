@@ -14,7 +14,7 @@ import TextField from "@material-ui/core/TextField";
 //Reduc stuff
 import { connect } from "react-redux";
 import { postPublicacion, clearErrors } from "../redux/actions/dataActions";
-
+import Autocomplete from '@material-ui/lab/Autocomplete';
 const styles = {
   root: {
     marginTop: 15
@@ -34,13 +34,22 @@ const styles = {
     left: "91%",
     top: "6%",
   },
+  TextField: {
+    marginBottom: 20
+},
 };
+
+const options = ["Rock Alternativo", "Ambiente", "Clasica", "Country", "Cumbia", "Dance", "EDM", "Dancehall", "Deep House",
+                 "Disco", "Drum & Bass", "Dubstep", "Electrónica", "Folk", "Hip Hop y Rap", "House",
+                 "Indie", "Jazz y Blues", "Latina", "Metal", "Piano", "Pop", "R&B y Soul", "Reggae", 
+                 "Reguetón", "Rock", "Bandas Sonoras", "Techno", "Trance", "Trap", "Triphop", "Vallenato"];
 
 class PostPublicacion extends Component {
   state = {
     open: false,
     postBody: "",
     errors: {},
+    generos:[],
   };
   componentWillReceiveProps(nextProps){
       if(nextProps.UI.errors){
@@ -49,7 +58,7 @@ class PostPublicacion extends Component {
           });
       };
       if(!nextProps.UI.errors && !nextProps.UI.loading){
-          this.setState({ postBody: '', open: false, errors: {}});
+          this.setState({ postBody: '', open: false, errors: {}, generos:[]});
       }
   };
   handleOpen = () => {
@@ -64,7 +73,17 @@ class PostPublicacion extends Component {
   };
   handleSubmit = (event) => {
       event.preventDefault();
-      this.props.postPublicacion({ postBody: this.state.postBody , remix: false, remixead:""})
+      this.props.postPublicacion({ 
+        postBody: this.state.postBody, 
+        remix:false , 
+        remixeado:"" ,
+        generos: this.state.generos
+      })
+  }
+  onChangeGustos = (event, values) => {
+    this.setState({
+        generos: values
+    });
   }
   render() {
     const { errors } = this.state;
@@ -111,12 +130,23 @@ class PostPublicacion extends Component {
                 label="Escribe algo musical"
                 multiline
                 rows="3"
+                className={classes.TextField}
                 placeholder="Crea una nueva publicacion para tus seguidores"
                 error={errors.postBody ? true : false}
                 helperText={errors.postBody}
                 onChange={this.handleChange}
                 fullWidth
               />
+              <Autocomplete
+                multiple
+                id="combo-box-gustos"
+                options={options}
+                fullWidth
+                defaultValue={this.state.gustos}
+                filterSelectedOptions                             
+                onChange={this.onChangeGustos}
+                renderInput={(params) => <TextField {...params} label="Generos" placeholder="Generos" variant="outlined"/>}
+               />
               <Button
                 type="submit"
                 variant="contained"

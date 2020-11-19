@@ -470,6 +470,7 @@ exports.getUserDetails = (req, res) => {
           postDate: doc.data().postDate,
           username: doc.data().username,
           Fotolink: doc.data().Fotolink,
+          generos: doc.data().generos,
           nombre: doc.data().nombre,
           likes: doc.data().likes,
           comentarios: doc.data().comentarios,

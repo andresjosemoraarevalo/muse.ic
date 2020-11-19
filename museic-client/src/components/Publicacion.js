@@ -10,6 +10,8 @@ import LikeButton from './LikeButtom';
 import ShareButtom from './ShareButtom';
 import PublicacionDialog from './PublicacionDialog';
 import { getPublicacion, clearErrors } from "../redux/actions/dataActions";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 
 //MUI stuff
 import Card from "@material-ui/core/Card";
@@ -37,6 +39,11 @@ const styles = {
   section2: {
     margin: "16px",
   },
+  box: {
+    backgroundColor: "#373737",
+    color: "#FFFFFF",
+    marginRight: 10
+  },
 };
 
 class Publicacion extends Component {
@@ -58,6 +65,7 @@ class Publicacion extends Component {
         postId,
         remixeado,
         remix,
+        generos
       },
       user: {
           authenticated,
@@ -187,6 +195,22 @@ class Publicacion extends Component {
           <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
             {postBody}
           </Typography>
+          {generos && (
+              <Grid container className={classes.boxDiv}>
+                {generos.map((genero) => (
+                  <Box
+                    component="div"
+                    display="inline"
+                    borderRadius={8}
+                    p={1}
+                    color="primary"
+                    className={classes.box}
+                  >
+                    {genero}
+                  </Box>
+                ))}
+              </Grid>
+            )}
           <LikeButton postId = {postId}/>
           <span>{likes} Likes</span>
           <MyButton tip="Comentarios">
@@ -195,6 +219,7 @@ class Publicacion extends Component {
           <span>{comentarios} Comentarios</span>
           <ShareButtom postId={postId} openDialog={this.props.openDialog} username={postedBy}/>
           <PublicacionDialog postId={postId} username={postedBy} openDialog={this.props.openDialog}/>
+          
         </CardContent>
       </Card>
       )

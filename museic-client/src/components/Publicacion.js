@@ -130,6 +130,9 @@ class Publicacion extends Component {
           <PublicacionDialog postId={postId} username={postedBy} openDialog={this.props.openDialog}/>
 
           {this.actualizarRemixeado}
+          <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
+            {postBody}
+          </Typography>
           <Publicacion postId={postId} publicacion={this.props.publicacion} />
           
         </CardContent>

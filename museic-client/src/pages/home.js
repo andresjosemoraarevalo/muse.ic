@@ -59,7 +59,7 @@ class home extends Component {
       <p>Loading...</p>
     );
     let recentEventosMarkup = !loading ? (
-      eventos.map((evento) => (
+      Array.from(eventos).map((evento) => (
         <Evento key={evento.postId} evento={evento} />
       ))
     ) : (

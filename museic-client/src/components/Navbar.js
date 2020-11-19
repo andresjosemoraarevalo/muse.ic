@@ -92,8 +92,8 @@ class Navbar extends Component {
     render() {
         const { authenticated, classes } = this.props;
         const anchorEl = this.state.anchorEl;
-        const { usuarios } = this.props.data;
-        let filteredUsuarios = usuarios.filter((usuario) => (
+        const {usuarios} = this.props.data;
+        let filteredUsuarios = Array.from(usuarios).filter((usuario) => (
             usuario.username.toLowerCase().indexOf(this.state.buscar.trim().replace(/\s/g, "").toLowerCase()) !== -1
         ));
         return (

@@ -11,6 +11,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { connect } from 'react-redux';
 import { deletePublicacion, editPublicacion } from '../redux/actions/dataActions';
 
@@ -20,16 +21,23 @@ const styles = {
     }, 
 };
 
+const options = ["Rock Alternativo", "Ambiente", "Clasica", "Country", "Cumbia", "Dance", "EDM", "Dancehall", "Deep House",
+                 "Disco", "Drum & Bass", "Dubstep", "Electrónica", "Folk", "Hip Hop y Rap", "House",
+                 "Indie", "Jazz y Blues", "Latina", "Metal", "Piano", "Pop", "R&B y Soul", "Reggae", 
+                 "Reguetón", "Rock", "Bandas Sonoras", "Techno", "Trance", "Trap", "Triphop", "Vallenato"];
+
 class EditPublicacion extends Component {
     state = {
         postBody: '',
         open: false,
         anchorEl: null,
-        openEdit: false
+        openEdit: false,
+        generos:[]
     };
     mapPostDetailsToState = (publicacion) => {
         this.setState({
             postBody: publicacion.postBody,
+            generos: publicacion.generos,
         });
     }
     handleOpen = () => {
@@ -61,11 +69,17 @@ class EditPublicacion extends Component {
     handleSubmit = () => {
         const postDetails = {
             postBody: this.state.postBody,
-            postedBy: this.props.publicacion.postedBy
+            postedBy: this.props.publicacion.postedBy,
+            generos: this.state.generos
         };
         this.props.editPublicacion(postDetails, this.props.postId);
         this.handleClose();
     }
+    onChangeGustos = (event, values) => {
+        this.setState({
+            generos: values
+        });
+      }
     render() {
         const { classes } = this.props;
         const anchorEl = this.state.anchorEl;
@@ -111,6 +125,16 @@ class EditPublicacion extends Component {
                                     onChange={this.handleChange}
                                     fullWidth />
                             </form>
+                            <Autocomplete
+                                multiple
+                                id="combo-box-gustos"
+                                options={options}
+                                fullWidth
+                                defaultValue={this.state.generos}
+                                filterSelectedOptions                             
+                                onChange={this.onChangeGustos}
+                                renderInput={(params) => <TextField {...params} label="Generos" placeholder="Generos" variant="outlined"/>}
+                            />
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={this.handleClose} color="primary">

@@ -135,3 +135,6 @@
 [1120/161552.437:ERROR:exit_code_watcher_win.cc(87)] Failed to wait for process exit or stop event
 [1120/161552.443:ERROR:registration_protocol_win.cc(130)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
 [1120/161552.444:ERROR:crash_report_database_win.cc(606)] CreateDirectory C:\Program Files (x86)\Junemike\Reports\Dump: El sistema no puede encontrar la ruta especificada. (0x3)
+[1120/183815.393:ERROR:crash_report_database_win.cc(606)] CreateDirectory C:\Program Files (x86)\Junemike\Reports\Dump: El sistema no puede encontrar la ruta especificada. (0x3)
+[1120/183815.409:ERROR:registration_protocol_win.cc(130)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
+[1120/183815.409:ERROR:crash_report_database_win.cc(606)] CreateDirectory C:\Program Files (x86)\Junemike\Reports\Dump: El sistema no puede encontrar la ruta especificada. (0x3)

@@ -144,6 +144,7 @@ class PostEvento extends Component {
                 multiline
                 rows="1"
                 placeholder="Nombre del evento"
+                label="Nombre del evento"
                 error={errors.nombre ? true : false}
                 helperText={errors.nombre}
                 onChange={this.handleChange}
@@ -156,7 +157,8 @@ class PostEvento extends Component {
                 type="text"
                 multiline
                 rows="3"
-                placeholder="Crea una nuevo evento para tus seguidores"
+                placeholder="Descripción del evento"
+                label="Descripción del evento"
                 error={errors.postBody ? true : false}
                 helperText={errors.postBody}
                 onChange={this.handleChange}
@@ -170,7 +172,8 @@ class PostEvento extends Component {
                 type="text"
                 multiline
                 rows="1"
-                placeholder="precio"
+                placeholder="Precio"
+                label="Precio"
                 error={errors.precio ? true : false}
                 helperText={errors.precio}
                 onChange={this.handleChange}
@@ -183,7 +186,8 @@ class PostEvento extends Component {
                 type="text"
                 multiline
                 rows="1"
-                placeholder="lugar"
+                placeholder="Lugar"
+                label="Lugar"
                 error={errors.lugar ? true : false}
                 helperText={errors.lugar}
                 onChange={this.handleChange}
@@ -210,7 +214,7 @@ class PostEvento extends Component {
                 />
                 <TimePicker
                   margin="normal"
-                  label="hora"
+                  label="Hora"
                   value={selectedDate}
                   onChange={this.handleDateChange}
                 />

@@ -23,7 +23,8 @@ exports.getEventos = (req, res) => {
             fechaEvento: doc.data().fechaEvento,
             horaEvento: doc.data().horaEvento,
             precio: doc.data().precio,
-            lugar: doc.data().lugar
+            lugar: doc.data().lugar,
+            generos: doc.data().generos,
           });
         });
         return res.json(eventos);
@@ -47,6 +48,7 @@ exports.getEventos = (req, res) => {
       fechaEvento: req.body.fecha,
       nombre: req.body.nombre,
       precio: req.body.precio,
+      generos: req.body.generos,
       likes: 0,
       comentarios: 0,
     };
@@ -186,3 +188,15 @@ exports.likeEvento = (req, res) => {
       return res.status(500).json({ error: err.code });
     })
 };
+exports.editEvento = (req, res) => {
+  let postDetails = req.body;
+  db.doc(`/Eventos/${req.params.postId}`)
+    .update(postDetails)
+    .then(() => {
+      return res.json({ message: "Detalles de post añadidos satisfactoriamente" });
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    }); 
+}

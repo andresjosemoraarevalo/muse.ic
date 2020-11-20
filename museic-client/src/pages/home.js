@@ -71,8 +71,6 @@ class home extends Component {
       authenticated ?(
         artista ?(
           <Grid container className={classes.root} spacing={3}>
-          <Grid item sm={0}>
-          </Grid>
           <Grid item sm={3}>
           <div >
             <Profile />
@@ -81,7 +79,7 @@ class home extends Component {
             <PostEvento />
           </div>      
           </Grid>
-          <Grid item sm={3} >
+          <Grid item sm={5} >
           
           <div id="homePublicaciones" >
           {recentPublicacionesMarkup}
@@ -94,7 +92,7 @@ class home extends Component {
             >
               Eventos
             </Typography>
-            <div id="homePublicaciones">
+            <div id="homeEventos">
               {recentEventosMarkup}
             </div>
           </Grid>
@@ -103,7 +101,6 @@ class home extends Component {
         </Grid>
         ):(
           <Grid container className={classes.root} spacing={3}>
-          
           <Grid item sm={3}>
           <div >
             <Profile />

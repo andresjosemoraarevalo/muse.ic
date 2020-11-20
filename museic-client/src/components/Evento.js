@@ -15,7 +15,9 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
 import ChatIcon from "@material-ui/icons/ChatBubbleOutline";
-
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import EditEvento from './EditEvento';
 //redux
 import { connect } from "react-redux";
 
@@ -33,6 +35,11 @@ const styles = {
   },
   section2: {
     margin: "16px",
+  },
+  box: {
+    backgroundColor: "#373737",
+    color: "#FFFFFF",
+    marginRight: 10
   },
 };
 
@@ -53,7 +60,8 @@ class Evento extends Component {
         fechaEvento,
         lugar,
         nombre,
-        precio
+        precio,
+        generos
       },
       user: {
           authenticated,
@@ -64,7 +72,7 @@ class Evento extends Component {
     } = this.props;
     
     const deleteButton = authenticated && postedBy === username ? (
-        <DeleteEvento postId={postId}/>
+        <EditEvento postId={postId} evento={this.props.evento}/>
     ) : null 
     return (
       <Card className={classes.card}>
@@ -117,6 +125,22 @@ class Evento extends Component {
          <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
           {postBody}
         </Typography>
+        {generos && (
+              <Grid container className={classes.boxDiv}>
+                {generos.map((genero) => (
+                  <Box
+                    component="div"
+                    display="inline"
+                    borderRadius={8}
+                    p={1}
+                    color="primary"
+                    className={classes.box}
+                  >
+                    {genero}
+                  </Box>
+                ))}
+              </Grid>
+            )}
           <LikeButtonE postId = {postId}/>
           <span>{likes} Likes</span>
           <MyButton tip="Comentarios">

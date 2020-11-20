@@ -10,7 +10,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import CloseIcon from "@material-ui/icons/Close";
 import TextField from "@material-ui/core/TextField";
-
+import Autocomplete from '@material-ui/lab/Autocomplete';
 //Reduc stuff
 import { connect } from "react-redux";
 import { postEvento, clearErrors } from "../redux/actions/dataActions";
@@ -37,7 +37,16 @@ const styles = {
     left: "91%",
     top: "6%",
   },
+  TextField: {
+    marginBottom: 20
+},
 };
+
+const options = ["Rock Alternativo", "Ambiente", "Clasica", "Country", "Cumbia", "Dance", "EDM", "Dancehall", "Deep House",
+                 "Disco", "Drum & Bass", "Dubstep", "Electrónica", "Folk", "Hip Hop y Rap", "House",
+                 "Indie", "Jazz y Blues", "Latina", "Metal", "Piano", "Pop", "R&B y Soul", "Reggae", 
+                 "Reguetón", "Rock", "Bandas Sonoras", "Techno", "Trance", "Trap", "Triphop", "Vallenato"];
+
 class PostEvento extends Component {
   
   state = {
@@ -49,6 +58,7 @@ class PostEvento extends Component {
     lugar: "",
     selectedDate: "",
     errors: {},
+    generos:[]
   };
   componentWillReceiveProps(nextProps){
       if(nextProps.UI.errors){
@@ -57,7 +67,7 @@ class PostEvento extends Component {
           });
       };
       if(!nextProps.UI.errors && !nextProps.UI.loading){
-          this.setState({ postBody: '', open: false, errors: {}});
+          this.setState({ postBody: '', open: false, errors: {}, generos:[]});
       }
   };
   handleOpen = () => {
@@ -78,11 +88,17 @@ class PostEvento extends Component {
         precio : this.state.precio,
         nombre: this.state.nombre,
         lugar: this.state.lugar,
-        fecha: this.state.selectedDate
+        fecha: this.state.selectedDate,
+        generos: this.state.generos
       })
   };
   handleDateChange = date => {
     this.setState({ selectedDate: date });
+  };
+  onChangeGustos = (event, values) => {
+    this.setState({
+        generos: values
+    });
   };
   render() {
     const { selectedDate } = this.state;
@@ -134,6 +150,7 @@ class PostEvento extends Component {
                 helperText={errors.nombre}
                 onChange={this.handleChange}
                 fullWidth
+                className={classes.TextField}
               />
               <TextField
                 variant="outlined"
@@ -146,6 +163,7 @@ class PostEvento extends Component {
                 helperText={errors.postBody}
                 onChange={this.handleChange}
                 fullWidth
+                className={classes.TextField}
               />
 
               <TextField
@@ -159,6 +177,7 @@ class PostEvento extends Component {
                 helperText={errors.precio}
                 onChange={this.handleChange}
                 fullWidth
+                className={classes.TextField}
               />
               <TextField
                 variant="outlined"
@@ -171,7 +190,18 @@ class PostEvento extends Component {
                 helperText={errors.lugar}
                 onChange={this.handleChange}
                 fullWidth
+                className={classes.TextField}
               />
+              <Autocomplete
+                multiple
+                id="combo-box-gustos"
+                options={options}
+                fullWidth
+                defaultValue={this.state.gustos}
+                filterSelectedOptions                             
+                onChange={this.onChangeGustos}
+                renderInput={(params) => <TextField {...params} label="Generos" placeholder="Generos" variant="outlined"/>}
+               />
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid container className={classes.grid} justify="space-around">
                 <DatePicker
@@ -187,6 +217,7 @@ class PostEvento extends Component {
                   onChange={this.handleDateChange}
                 />
               </Grid>
+              
             </MuiPickersUtilsProvider>
               <Button
                 type="submit"

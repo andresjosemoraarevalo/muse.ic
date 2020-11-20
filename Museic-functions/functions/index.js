@@ -35,7 +35,8 @@ const {
   getEventos,
   likeEvento,
   unlikeEvento,
-  deleteEvento
+  deleteEvento,
+  editEvento,
 }= require("./handlers/eventos");
 
 const{
@@ -69,6 +70,7 @@ app.post("/editPublicacion/:postId", FBAuthUsuarios, editPublicacion);
 
 // Eventos
 app.post("/crearEvento", FBAuthUsuarios,crearEvento);
+app.post("/editEvento/:postId", FBAuthUsuarios, editEvento);
 app.get("/getEventos",getEventos);
 app.get("/Eventos/:postId/like", FBAuthUsuarios, likeEvento);
 app.get("/Eventos/:postId/unlike", FBAuthUsuarios, unlikeEvento);

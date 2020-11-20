@@ -25,6 +25,7 @@ import {
     mensajes: [],
     publicaciones: [],
     publicacion: {},
+    evento:{},
     seguidos: [],
     seguidores: [],
     usuarios:[],

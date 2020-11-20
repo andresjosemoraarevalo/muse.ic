@@ -71,12 +71,6 @@ class Menu extends Component {
                             <Typography variant="inherit">Mensajes</Typography>     
                         </MenuItem>
                         <MenuItem>
-                        <MyButton tip="Perfil">
-                            <Notifications style={{fill: "secondary"}} />
-                        </MyButton>
-                            <Typography variant="inherit">Notificaciones</Typography>     
-                        </MenuItem>
-                        <MenuItem>
                             <MyButton tip="Perfil">
                                 <MusicNote  style={{fill: "secondary"}} />
                             </MyButton>
@@ -109,12 +103,6 @@ class Menu extends Component {
                                 <SendIcon style={{fill: "secondary"}} />
                             </MyButton>
                                 <Typography variant="inherit">Mensajes</Typography>     
-                            </MenuItem>
-                            <MenuItem>
-                            <MyButton tip="Perfil">
-                                <Notifications style={{fill: "secondary"}} />
-                            </MyButton>
-                                <Typography variant="inherit">Notificaciones</Typography>     
                             </MenuItem>
                             <MenuItem>
                                 <MyButton tip="Perfil">

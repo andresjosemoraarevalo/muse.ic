@@ -269,6 +269,14 @@ export const postPublicacion = (newPublicacion) => (dispatch) => {
       })
       .catch((err) => console.log(err));
   };
+  export const editEvento = (postDetails, postId) => (dispatch) => {
+    dispatch({ type: LOADING_DATA });
+    axios.post(`/editEvento/${postId}`, postDetails)
+      .then(() => {
+        dispatch(getEventos());
+      })
+      .catch((err) => console.log(err));
+  };
   export const uploadImage = (formData) => (dispatch) => {
     dispatch({ type: LOADING_DATA });
     axios

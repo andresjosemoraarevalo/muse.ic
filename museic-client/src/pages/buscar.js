@@ -12,6 +12,10 @@ import { connect } from "react-redux";
 import { getPublicaciones, getEventos } from "../redux/actions/dataActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import PostEvento from '../components/PostEvento';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Box from "@material-ui/core/Box";
 //import Button from "@material-ui/core/Button";
  // <Menu />
 const styles = {
@@ -30,13 +34,48 @@ const styles = {
     //padding: 10
   }
 };
+function a11yProps(index) {
+  return {
+    id: `wrapped-tab-${index}`,
+    'aria-controls': `wrapped-tabpanel-${index}`,
+  };
+}
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
 
 
-class home extends Component {
+class buscar extends Component {
+  state = {
+    value: 0
+  }
   componentDidMount() {
     this.props.getPublicaciones();
     this.props.getEventos();
   }
+  handleChange = (value) => {
+    this.setState({
+      value
+    });
+    console.log(this.state.value);
+  };
+
   render() {
     const { 
       user: {
@@ -59,18 +98,20 @@ class home extends Component {
       <p>Loading...</p>
     );
     let recentEventosMarkup = !loading ? (
-      Array.from(eventos).map((evento) => (
+      eventos.map((evento) => (
         <Evento key={evento.postId} evento={evento} />
       ))
     ) : (
       <p>Loading...</p>
     );
     const { classes } = this.props;
-
+    
     let homes = ! loading ?(
       authenticated ?(
         artista ?(
           <Grid container className={classes.root} spacing={3}>
+          <Grid item sm={0}>
+          </Grid>
           <Grid item sm={3}>
           <div >
             <Profile />
@@ -79,7 +120,7 @@ class home extends Component {
             <PostEvento />
           </div>      
           </Grid>
-          <Grid item sm={5} >
+          <Grid item sm={3} >
           
           <div id="homePublicaciones" >
           {recentPublicacionesMarkup}
@@ -92,14 +133,16 @@ class home extends Component {
             >
               Eventos
             </Typography>
-            <div id="homeEventos">
+            <div id="homePublicaciones">
               {recentEventosMarkup}
             </div>
           </Grid>
-          
+          <Grid item sm={0}>
+          </Grid>
         </Grid>
         ):(
           <Grid container className={classes.root} spacing={3}>
+          
           <Grid item sm={3}>
           <div >
             <Profile />
@@ -107,24 +150,31 @@ class home extends Component {
             <PostPublicacion />
           </div>      
           </Grid>
-          <Grid item sm={5} >
+          <Grid item sm={9}>
+            <AppBar position="static" color="white">
+              <Tabs 
+                value={this.state.value} 
+                onChange={(e, v) => {this.handleChange(v)}} 
+                aria-label="wrapped label tabs example" 
+                indicatorColor="primary"
+                textColor="primary"
+                centered>
+                <Tab label="Publicaciones" {...a11yProps(0)} />
+                <Tab label="Eventos" {...a11yProps(1)} />
+                <Tab label="Usuarios" {...a11yProps(2)} />
+              </Tabs>
+            </AppBar>
+            <TabPanel value={this.state.value} index={0}>
+              Publicaciones
+            </TabPanel>
+            <TabPanel value={this.state.value} index={1}>
+              Eventos
+            </TabPanel>
+            <TabPanel value={this.state.value} index={2}>
+              Usuarios
+            </TabPanel>
+          </Grid>
           
-          <div id="homePublicaciones" >
-          {recentPublicacionesMarkup}
-            </div>
-          </Grid>
-          <Grid item sm={4}>
-          <Typography
-            variant="h5"
-            color="primary"
-            className={classes.eventos}
-          >
-            Eventos
-          </Typography>
-          <div id="homeEventos">
-            {recentEventosMarkup}
-          </div>
-          </Grid>
           
           
         </Grid>
@@ -147,7 +197,7 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-home.propTypes = {
+buscar.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   getPublicaciones: PropTypes.func.isRequired,
@@ -155,5 +205,5 @@ home.propTypes = {
   data: PropTypes.object.isRequired,
 };
 export default connect(mapStateToProps, { getPublicaciones, getEventos })(
-  withStyles(styles)(home)
+  withStyles(styles)(buscar)
 );

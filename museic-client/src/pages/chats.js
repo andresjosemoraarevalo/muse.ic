@@ -21,7 +21,7 @@ import {setChat,getMensajes, postMensaje} from "../redux/actions/dataActions";
  // <Menu />
 const styles = {
   root: {
-    marginTop: "90px",
+    marginTop: "60px",
   },
   chatbox:{
     width: "450px",

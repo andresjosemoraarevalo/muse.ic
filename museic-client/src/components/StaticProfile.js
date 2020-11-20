@@ -67,7 +67,8 @@ const styles = {
   box: {
     backgroundColor: "#800080",
     color: "#FFFFFF",
-    marginRight: 10
+    marginRight: 10,
+    marginBottom: 10
   },
   boxDiv: {
     marginTop: 20,

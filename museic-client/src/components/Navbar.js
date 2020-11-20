@@ -86,6 +86,8 @@ class Navbar extends Component {
     };
     handleKeyPress = (event) => {
         if(event.key === 'Enter'){
+            const { href } = window.location;
+            window.location.href = `/buscar/${this.state.buscar}`;
             this.setState({ anchorEl: event.target });
         }
     };

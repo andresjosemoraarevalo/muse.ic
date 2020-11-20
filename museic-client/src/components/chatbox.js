@@ -43,10 +43,7 @@ class Chatbox extends Component {
       render(){
         const {
             classes, user:{
-                credentials: {
-                    username,
-                    artista,    
-                },
+                
                 loading,
                 authenticated,
             },    

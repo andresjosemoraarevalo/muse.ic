@@ -61,7 +61,7 @@ import {
       case LIKE_EVENTO:
       case UNLIKE_EVENTO:
               let index3 = state.eventos.findIndex((evento) => evento.postId === action.payload.postId);
-              state.eventos[index] = action.payload;
+              state.eventos[index3] = action.payload;
               return {
                 ...state
               };

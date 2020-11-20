@@ -108,14 +108,14 @@ class StaticProfile extends Component {
       return true;
     else return false;
   };
-  followProfile = () => {
-    this.props.followProfile(this.props.profile.username);
-    this.props.profile.seguidores++;
+  followProfile = (usuario) => {
+    this.props.followProfile(usuario);
+    this.props.profile.seguidos++;
     this.props.user.credentials.seguidos++;
   };
-  unfollowProfile = () => {
-    this.props.unfollowProfile(this.props.profile.username);
-    this.props.profile.seguidores--;
+  unfollowProfile = (usuario) => {
+    this.props.unfollowProfile(usuario);
+    this.props.profile.seguidos--;
     this.props.user.credentials.seguidos--;
   }
   handleImageChange = (event) => {

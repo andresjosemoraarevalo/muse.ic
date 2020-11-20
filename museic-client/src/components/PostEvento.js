@@ -54,7 +54,6 @@ class PostEvento extends Component {
     postBody: "",
     nombre: "",
     precio: "",
-    nombre: "",
     lugar: "",
     selectedDate: "",
     errors: {},
@@ -86,7 +85,6 @@ class PostEvento extends Component {
         postBody: this.state.postBody ,
         nombre: this.state.nombre,
         precio : this.state.precio,
-        nombre: this.state.nombre,
         lugar: this.state.lugar,
         fecha: this.state.selectedDate,
         generos: this.state.generos

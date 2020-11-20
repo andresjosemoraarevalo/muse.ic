@@ -38,7 +38,6 @@ class EditEvento extends Component {
         postBody: "",
         nombre: "",
         precio: "",
-        nombre: "",
         lugar: "",
         selectedDate: "",
         errors: {},

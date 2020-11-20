@@ -5,7 +5,6 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
 import MyButton from "../util/MyButton";
-import DeleteEvento from './DeleteEvento';
 import LikeButtonE from './likeButtomE';
 
 //MUI stuff
@@ -31,7 +30,7 @@ const styles = {
     objectFit: "cover",
   },
   section1: {
-    margin: "24px 16px",
+    margin: "16px 16px",
   },
   section2: {
     margin: "16px",
@@ -112,19 +111,21 @@ class Evento extends Component {
         <Divider variant="middle" />
 
         <CardContent>
-        <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
+
+        <Typography variant="h6" color="textPrimary" weigth="bold" component="p" className={classes.section1}>
            {nombre}
          </Typography>
+         <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
+          {postBody}
+        </Typography>
+        <Divider variant="middle" />
           <Typography variant="body1" color="textSecondary"component="p" className={classes.section2}>
         {new Date(fechaEvento).toDateString()}{lugar} 
           </Typography>
           <Typography variant="body1" color="textSecondary" component="p" className={classes.section2}>
          {precio}
          </Typography>
-          <Divider variant="middle" />
-         <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
-          {postBody}
-        </Typography>
+        <div className={classes.section2}>
         {generos && (
               <Grid container className={classes.boxDiv}>
                 {generos.map((genero) => (
@@ -141,6 +142,7 @@ class Evento extends Component {
                 ))}
               </Grid>
             )}
+            </div>
           <LikeButtonE postId = {postId}/>
           <span>{likes} Likes</span>
           <MyButton tip="Comentarios">

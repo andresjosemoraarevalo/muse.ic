@@ -17,6 +17,7 @@ import PostEvento from '../components/PostEvento';
 const styles = {
   root: {
     marginTop: "60px",
+    marginRight: "10px"
   },
   posts: {
       overflow: 'scroll'
@@ -45,66 +46,47 @@ class home extends Component {
           artista,
         },
           loading,
-          authenticated
+          authenticated,
+          seguidos
       }
      // 
        
     } = this.props;
     const {publicaciones,eventos}= this.props.data;
+    var publicacionesQueSigo = publicaciones.filter(n => seguidos.some(n2 => n.postedBy === n2.follows || n.postedBy === username));
+    var eventosQueSigo = eventos.filter(n => seguidos.some(n2 => n.postedBy === n2.follows || n.postedBy === username));
     let recentPublicacionesMarkup = !loading ? (
-      publicaciones.map((publicacion) => (
+      publicacionesQueSigo.map((publicacion) => (
         <Publicacion key={publicacion.postId} publicacion={publicacion} />
       ))
     ) : (
-      <p>Loading...</p>
+      <Typography variant="h5" color="primary">
+        {"Empieza a seguir usuarios para ver sus publicaciones!"}
+      </Typography>
     );
     let recentEventosMarkup = !loading ? (
-      Array.from(eventos).map((evento) => (
+      Array.from(eventosQueSigo).map((evento) => (
         <Evento key={evento.postId} evento={evento} />
       ))
     ) : (
-      <p>Loading...</p>
+      <Typography variant="h5" color="primary">
+        {"Empieza a seguir Artistas para ver sus eventos!"}
+      </Typography>
     );
     const { classes } = this.props;
 
     let homes = ! loading ?(
       authenticated ?(
-        artista ?(
-          <Grid container className={classes.root} spacing={3}>
-          <Grid item sm={3}>
-          <div >
-            <Profile />
-            <Menu/>
-            <PostPublicacion/>
-            <PostEvento />
-          </div>      
-          </Grid>
-          <Grid item sm={5} >
-          
-          <div id="homePublicaciones" >
-          {recentPublicacionesMarkup}
-            </div>
-          </Grid>
-          <Grid item sm={4}>
-            <Typography
-              variant="h5"
-              color="primary"
-            >
-              Eventos
-            </Typography>
-            <div id="homeEventos">
-              {recentEventosMarkup}
-            </div>
-          </Grid>
-          
-        </Grid>
-        ):(
+        
           <Grid container className={classes.root} spacing={3}>
           <Grid item sm={3}>
           <div >
             <Profile />
             <Menu/>
             <PostPublicacion />
+            {artista ? (
+              <PostEvento />
+            ) : null}
           </div>      
           </Grid>
           <Grid item sm={5} >
@@ -128,7 +110,6 @@ class home extends Component {
           
           
         </Grid>
-        )
       ):(
         <p>Loading...</p>
       )

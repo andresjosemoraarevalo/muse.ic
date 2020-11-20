@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 //botones 
 import MyButton from "../util/MyButton";
 import PersonIcon from '@material-ui/icons/Person';
-import Notifications from '@material-ui/icons/Notifications';
+//import Notifications from '@material-ui/icons/Notifications';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import People from '@material-ui/icons/People';
 import MusicNote from '@material-ui/icons/MusicNote';
@@ -37,7 +37,7 @@ class Menu extends Component {
     const {
         classes, user:{
             credentials: {
-                username,
+                //username,
                 artista,    
             },
             loading,
@@ -54,7 +54,7 @@ class Menu extends Component {
                 <MenuList>
                     <MenuItem 
                         component={Link}
-                         to={'/user'}>
+                         to={`/usuarios/${this.props.user.credentials.username}`}>
                         <MyButton>
                             <PersonIcon style={{fill: "secondary"}}/>
                         </MyButton>

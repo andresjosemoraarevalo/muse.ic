@@ -118,6 +118,16 @@ class StaticProfile extends Component {
     this.props.profile.seguidos--;
     this.props.user.credentials.seguidos--;
   }
+  followUser = () => {
+    this.props.followProfile(this.props.profile.username);
+    this.props.profile.seguidores++;
+    this.props.user.credentials.seguidos++;
+  }
+  unfollowUser = () => {
+    this.props.unfollowProfile(this.props.profile.username);
+    this.props.profile.seguidores--;
+    this.props.user.credentials.seguidos--;
+  }
   handleImageChange = (event) => {
     const image = event.target.files[0];
     const formData = new FormData();
@@ -256,7 +266,7 @@ class StaticProfile extends Component {
       variant="outlined"
       color="primary"
       size="small"
-      onClick={this.unfollowProfile}
+      onClick={this.unfollowUser}
       buttonStyle={{ borderRadius: 5 }}
       style={{ borderRadius: 5 }}
       className={classes.boton}
@@ -268,7 +278,7 @@ class StaticProfile extends Component {
       variant="contained"
       color="primary"
       size="small"
-      onClick={this.followProfile}
+      onClick={this.followUser}
       buttonStyle={{ borderRadius: 5 }}
       style={{ borderRadius: 5 }}
       className={classes.boton}

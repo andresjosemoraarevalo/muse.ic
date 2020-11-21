@@ -49,17 +49,21 @@ const theme = createMuiTheme({
 });
 
 const token = localStorage.FBIdToken;
+console.log(token);
 if (token) {
   const decodedToken = jwtDecode(token);
+  console.log(decodedToken);
   if (decodedToken.exp * 1000 < Date.now()) {
+    console.log(decodedToken);
     store.dispatch(logoutUser());
-    window.location.href = "/intro";
+    window.location.href = '/';
   } else {
     store.dispatch({ type: SET_AUTHENTICATED });
     axios.defaults.headers.common['Authorization'] = token;
     store.dispatch(getUserData());
   }
-}
+} 
+
 
 function App() {
   return (
@@ -69,7 +73,7 @@ function App() {
               <Navbar />
               <div >
               <Switch>
-                <Route exact path="/" component={home} />
+                <Route exact path="/home" component={home} />
                 <Route
                   exact
                   path="/user"
@@ -84,7 +88,7 @@ function App() {
 />
                 <AuthRoute
                   exact
-                  path="/intro"
+                  path="/"
                   component={intro}
 
                 />

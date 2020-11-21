@@ -55,7 +55,7 @@ class intro extends Component {
             <div>
                 <Grid container className={classes.root}>
                     <CssBaseline />
-                    <Grid container xs={false} sm={4} md={7} className={classes.title}>
+                    <Grid item xs={false} sm={4} md={7} className={classes.title}>
                         <Typography component="h2" variant="h2" className={classes.introTitle}>
                             Bienvenido a Muse.ic
                         </Typography>
@@ -94,7 +94,7 @@ class intro extends Component {
                         </Grid>
                     </Grid>
                     
-                    <Grid container xs={12} sm={8} md={5} className={classes.title} square>
+                    <Grid item xs={12} sm={8} md={5} className={classes.title}>
                         <div className={classes.paper}>
                             <Typography component="h2" variant="h4" className={classes.introTitle}>
                                 ¡Empecemos!
@@ -110,7 +110,7 @@ class intro extends Component {
                                         color="primary"
                                         fullWidth
                                         component={Link}
-                                        buttonStyle={{ borderRadius: 25 }}
+                                        //buttonStyle={{ borderRadius: 25 }}
                                         style={{ borderRadius: 25 }}
                                         to="/login"
                                         >
@@ -124,7 +124,7 @@ class intro extends Component {
                                         variant="contained"
                                         color="primary"
                                         component={Link}
-                                        buttonStyle={{ borderRadius: 25 }}
+                                        //buttonStyle={{ borderRadius: 25 }}
                                         style={{ borderRadius: 25 }}
                                         to="/artistlogin"
                                         >

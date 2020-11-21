@@ -110,7 +110,7 @@ class Navbar extends Component {
 
                             </div>
                             
-                            <Link to="/">
+                            <Link to="/home">
                                 <MyButton tip="Home">
                                     <AlbumIcon style={{fill: "white"}}/>
                                 </MyButton>
@@ -121,7 +121,7 @@ class Navbar extends Component {
                                     <PersonIcon style={{fill: "white"}}/>
                                 </MyButton>
                             </Link>
-                            <Link to ="/intro">
+                            <Link to ="/">
                             <MyButton tip="Logout" onClick={this.handleLogout}>
                                 <ExitToAppIcon style={{fill: "white"}} />
                             </MyButton>

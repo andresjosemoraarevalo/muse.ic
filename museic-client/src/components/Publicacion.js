@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from 'axios';
 import { CardHeader, withStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
@@ -45,12 +46,24 @@ const styles = {
     marginRight: 10
   },
 };
-
+//{this.mostrarremixeado()}
 class Publicacion extends Component {
-  actualizarRemixeado = () => {
-    this.props.getPublicacion(this.props.remixeado);
+  state = {
+    postbody2 : ''
   }
-  
+
+  hadlePublicacion(publicacion){
+    const postId = publicacion.remixeado;
+    axios.get(`/publicaciones/${postId}`)
+        .then(res => {
+            this.setState({
+                postbody2: res.data.postBody
+            });
+        
+            console.log(this.state.postbody2)
+        })
+        .catch(err => console.log(err));
+}
   render() {
     dayjs.extend(relativeTime);
     const {
@@ -80,7 +93,9 @@ class Publicacion extends Component {
     ) : null
     return (
       remix  ? (
-        <Card className={classes.card}>
+        
+        <Card className={classes.card} open = {this.hadlePublicacion(this.props.publicacion)}>
+          
         <CardHeader
           avatar={<Avatar alt={postedBy} src={Fotolink}></Avatar>}
           
@@ -128,20 +143,28 @@ class Publicacion extends Component {
           <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
             {postBody}
           </Typography>
+
+          
+
           <LikeButton postId = {postId}/>
           <span>{likes} Likes</span>
+          
           <MyButton tip="Comentarios">
             <ChatIcon color="primary" />
           </MyButton>
           <span>{comentarios} Comentarios</span>
-          <ShareButtom postId={postId} openDialog={this.props.openDialog}/>
+          
           <PublicacionDialog postId={postId} username={postedBy} openDialog={this.props.openDialog}/>
 
-          {this.actualizarRemixeado}
+          <ShareButtom postId={postId} openDialog={this.props.openDialog}/>
+          
           <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
-            {postBody}
+            {this.state.postbody2}
+
           </Typography>
-          <Publicacion postId={postId} publicacion={this.props.publicacion} />
+
+          
+          
           
         </CardContent>
       </Card>

@@ -49,7 +49,7 @@ const styles = {
 //{this.mostrarremixeado()}
 class Publicacion extends Component {
   state = {
-    postbody2 : ''
+    publicacion2:{},
   }
 
   hadlePublicacion(publicacion){
@@ -57,7 +57,7 @@ class Publicacion extends Component {
     axios.get(`/publicaciones/${postId}`)
         .then(res => {
             this.setState({
-                postbody2: res.data.postBody
+                publicacion2: res.data
             });
         
             console.log(this.state.postbody2)
@@ -85,16 +85,41 @@ class Publicacion extends Component {
           credentials: {
               username
           }
+          
       },
     } = this.props;
     
     const deleteButton = authenticated && postedBy === this.props.user.credentials.username ? (
         <EditPublicacion postId={postId} publicacion={this.props.publicacion}/>
     ) : null
+    var mensajeRemixeado = remix ? (
+      <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
+        {this.hadlePublicacion(this.props.publicacion)}
+        <Typography
+              variant="h6"
+              color="primary"
+              component={Link}
+              to={`/${this.state.publicacion2.postedBy}`}
+              className={classes.section1}
+            >
+              {this.state.publicacion2.postedBy}
+          </Typography>
+
+          <Typography 
+            variant="body1" 
+            color="textPrimary" 
+            component={Link}
+            to={`/usuarios/${this.state.publicacion2.postedBy}/publicacion/${this.state.publicacion2.postId}`}
+            >
+              {this.state.publicacion2.postBody}
+        
+      </Typography>
+      </Typography>
+    ) : null
     return (
       remix  ? (
         
-        <Card className={classes.card} open = {this.hadlePublicacion(this.props.publicacion)}>
+        <Card className={classes.card}>
           
         <CardHeader
           avatar={<Avatar alt={postedBy} src={Fotolink}></Avatar>}
@@ -158,11 +183,7 @@ class Publicacion extends Component {
 
           <ShareButtom postId={postId} openDialog={this.props.openDialog}/>
           
-          <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
-            {this.state.postbody2}
-
-          </Typography>
-
+          {mensajeRemixeado}
           
           
           

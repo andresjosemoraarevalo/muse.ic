@@ -239,6 +239,8 @@ class Publicacion extends Component {
           <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
             {postBody}
           </Typography>
+          <div className={classes.section2}>
+
           {generos && (
               <Grid container className={classes.boxDiv}>
                 {generos.map((genero) => (
@@ -255,6 +257,7 @@ class Publicacion extends Component {
                 ))}
               </Grid>
             )}
+            </div>
           <LikeButton postId = {postId}/>
           <span>{likes} Likes</span>
           <MyButton tip="Comentarios">

@@ -50,3 +50,11 @@ a{
   top: 100px;
   overflow: auto
 }
+
+#paneles{
+  width: 1000px;
+  position: absolute;
+  bottom: 20px;
+  top: 130px;
+  overflow: auto
+}

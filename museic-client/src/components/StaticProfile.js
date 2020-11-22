@@ -67,7 +67,8 @@ const styles = {
   box: {
     backgroundColor: "#800080",
     color: "#FFFFFF",
-    marginRight: 10
+    marginRight: 10,
+    marginBottom: 10
   },
   boxDiv: {
     marginTop: 20,
@@ -107,12 +108,22 @@ class StaticProfile extends Component {
       return true;
     else return false;
   };
-  followProfile = () => {
+  followProfile = (usuario) => {
+    this.props.followProfile(usuario);
+    this.props.profile.seguidos++;
+    this.props.user.credentials.seguidos++;
+  };
+  unfollowProfile = (usuario) => {
+    this.props.unfollowProfile(usuario);
+    this.props.profile.seguidos--;
+    this.props.user.credentials.seguidos--;
+  }
+  followUser = () => {
     this.props.followProfile(this.props.profile.username);
     this.props.profile.seguidores++;
     this.props.user.credentials.seguidos++;
-  };
-  unfollowProfile = () => {
+  }
+  unfollowUser = () => {
     this.props.unfollowProfile(this.props.profile.username);
     this.props.profile.seguidores--;
     this.props.user.credentials.seguidos--;
@@ -255,7 +266,7 @@ class StaticProfile extends Component {
       variant="outlined"
       color="primary"
       size="small"
-      onClick={this.unfollowProfile}
+      onClick={this.unfollowUser}
       buttonStyle={{ borderRadius: 5 }}
       style={{ borderRadius: 5 }}
       className={classes.boton}
@@ -267,7 +278,7 @@ class StaticProfile extends Component {
       variant="contained"
       color="primary"
       size="small"
-      onClick={this.followProfile}
+      onClick={this.followUser}
       buttonStyle={{ borderRadius: 5 }}
       style={{ borderRadius: 5 }}
       className={classes.boton}

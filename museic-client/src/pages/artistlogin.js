@@ -46,7 +46,10 @@ const styles = {
     },
     submit: {
         margin: '24px 0px 16px'
-    }
+    },
+    progress: {
+        position: "absolute",
+      }
 }
 
 
@@ -139,6 +142,7 @@ class artistlogin extends Component {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            disabled={loading}
                             >
                             Ingresar
                             {loading && (

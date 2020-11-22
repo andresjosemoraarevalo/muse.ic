@@ -21,7 +21,7 @@ import {setChat,getMensajes, postMensaje} from "../redux/actions/dataActions";
  // <Menu />
 const styles = {
   root: {
-    marginTop: "90px",
+    marginTop: "60px",
   },
   chatbox:{
     width: "450px",
@@ -85,18 +85,21 @@ class chat extends Component {
     const { 
       user: {
         credentials: {
-          username,
-          artista,},
+          //username,
+          artista,
+        },
           loading,
-          authenticated
+          authenticated,
+          seguidos
       }
      // 
        
     } = this.props;
     
-    const {usuarios,chat}= this.props.data;
+    const {usuarios,/*chat*/}= this.props.data;
+    var usuariosQueSigo = usuarios.filter(n => seguidos.some(n2 => n.username === n2.follows));
     let recentUsuariosMarkup = !loading ? (
-        usuarios.map((usuario) => (
+        usuariosQueSigo.map((usuario) => (
           <MenuItem onClick={() => this.handleClick(usuario.username)}>
             
             <CardHeader
@@ -127,6 +130,9 @@ class chat extends Component {
             <Profile />
             <Menu/>
             <PostPublicacion />
+            {artista ? (
+              <PostEvento />
+            ) : null}
           </div>      
           </Grid>
           <Grid item sm={4} >

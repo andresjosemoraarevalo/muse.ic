@@ -24,6 +24,7 @@ import user from "./pages/user";
 import ProfileUser from "./components/ProfileUser";
 import signupArt from "./pages/signupArtista";
 import chat from "./pages/chats";
+import buscar from "./pages/buscar";
 
 const theme = createMuiTheme({
   palette: {
@@ -48,17 +49,21 @@ const theme = createMuiTheme({
 });
 
 const token = localStorage.FBIdToken;
+console.log(token);
 if (token) {
   const decodedToken = jwtDecode(token);
+  console.log(decodedToken);
   if (decodedToken.exp * 1000 < Date.now()) {
+    console.log(decodedToken);
     store.dispatch(logoutUser());
-    window.location.href = "/intro";
+    window.location.href = '/';
   } else {
     store.dispatch({ type: SET_AUTHENTICATED });
     axios.defaults.headers.common['Authorization'] = token;
     store.dispatch(getUserData());
   }
-}
+} 
+
 
 function App() {
   return (
@@ -68,7 +73,7 @@ function App() {
               <Navbar />
               <div >
               <Switch>
-                <Route exact path="/" component={home} />
+                <Route exact path="/home" component={home} />
                 <Route
                   exact
                   path="/user"
@@ -83,7 +88,7 @@ function App() {
 />
                 <AuthRoute
                   exact
-                  path="/intro"
+                  path="/"
                   component={intro}
 
                 />
@@ -101,6 +106,11 @@ function App() {
                   exact
                   path="/usuarios/:username/publicacion/:postId"
                   component={user}
+                />
+                <Route
+                  exact
+                  path="/buscar/:query"
+                  component={buscar}
                 />
                 <AuthRoute
                   exact

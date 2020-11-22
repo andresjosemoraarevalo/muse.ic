@@ -9,7 +9,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { connect } from 'react-redux';
 import { getUserData } from '../redux/actions/dataActions';
-import { SET_PUBLICACIONES } from '../redux/types';
 
 const styles = {
     root: {

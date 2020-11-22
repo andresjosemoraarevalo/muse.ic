@@ -42,6 +42,9 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'center',
         backgroundColor: 'transparent'
+    },
+    albums: {
+        margin: '10px'
     }
 }
 
@@ -52,17 +55,46 @@ class intro extends Component {
             <div>
                 <Grid container className={classes.root}>
                     <CssBaseline />
-                    <Grid container xs={false} sm={4} md={7} className={classes.title}>
+                    <Grid item xs={false} sm={4} md={7} className={classes.title}>
                         <Typography component="h2" variant="h2" className={classes.introTitle}>
                             Bienvenido a Muse.ic
                         </Typography>
                         <Typography component="h2" variant="h5" className={classes.subtitle}>
-                            Descubre un nuevo mundo musical :0
+                            La red social de musica que tanto esperabas
                         </Typography>
-
+                        <Grid container spacing={3} className={classes.albums}>
+                            <Grid item>
+                                <img 
+                                alt="Muse.ic"
+                                width="150"
+                                height="150" 
+                                src="https://f4.bcbits.com/img/a1342484953_10.jpg" />
+                            </Grid>
+                            <Grid item>
+                                <img 
+                                alt="Muse.ic"
+                                width="150"
+                                height="150"
+                                src="https://f4.bcbits.com/img/a1021729524_10.jpg" />
+                            </Grid>
+                            <Grid item>
+                                <img 
+                                alt="Muse.ic"
+                                width="150"
+                                height="150"
+                                src="https://www.mondosonoro.com/wp-content/uploads/2020/04/strokes-new-abnormal.jpg" />
+                            </Grid>
+                            <Grid item>
+                                <img 
+                                alt="Muse.ic"
+                                width="150"
+                                height="150"
+                                src="https://www.elquintobeatle.com/wp-content/uploads/2017/06/kendrick-lamar-to-pimp-a-butterfly-1-1068x1068.jpg" />
+                            </Grid>
+                        </Grid>
                     </Grid>
                     
-                    <Grid container xs={12} sm={8} md={5} className={classes.title} square>
+                    <Grid item xs={12} sm={8} md={5} className={classes.title}>
                         <div className={classes.paper}>
                             <Typography component="h2" variant="h4" className={classes.introTitle}>
                                 ¡Empecemos!
@@ -78,7 +110,7 @@ class intro extends Component {
                                         color="primary"
                                         fullWidth
                                         component={Link}
-                                        buttonStyle={{ borderRadius: 25 }}
+                                        //buttonStyle={{ borderRadius: 25 }}
                                         style={{ borderRadius: 25 }}
                                         to="/login"
                                         >
@@ -92,7 +124,7 @@ class intro extends Component {
                                         variant="contained"
                                         color="primary"
                                         component={Link}
-                                        buttonStyle={{ borderRadius: 25 }}
+                                        //buttonStyle={{ borderRadius: 25 }}
                                         style={{ borderRadius: 25 }}
                                         to="/artistlogin"
                                         >

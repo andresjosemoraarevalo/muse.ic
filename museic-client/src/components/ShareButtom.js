@@ -18,6 +18,7 @@ import CloseIcon from "@material-ui/icons/Close";
 
 //Redux
 import { connect } from 'react-redux';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
     sharePublicacion, 
     clearErrors,
@@ -51,54 +52,53 @@ import {
     },
   };
 
+  const options = ["Rock Alternativo", "Ambiente", "Clasica", "Country", "Cumbia", "Dance", "EDM", "Dancehall", "Deep House",
+  "Disco", "Drum & Bass", "Dubstep", "Electrónica", "Folk", "Hip Hop y Rap", "House",
+  "Indie", "Jazz y Blues", "Latina", "Metal", "Piano", "Pop", "R&B y Soul", "Reggae", 
+  "Reguetón", "Rock", "Bandas Sonoras", "Techno", "Trance", "Trap", "Triphop", "Vallenato"];
+
 export class ShareButtom extends Component {
   state = {
     open: false,
     errors: {},
     postBody2: "",
+    generos:[],
   };
   
-    /*componentWillReceiveProps(nextProps){
-      if(nextProps.UI.errors){
-          this.setState({
-              errors: nextProps.UI.errors
-          });
-      }
-      if(!nextProps.UI.errors && !nextProps.UI.loading){
-        this.setState({ postBody2: '', open: false, errors: {}});
-    }
-    };*/
-    componentDidMount() {
+    componentWillReceiveProps(nextProps){
       if (this.props.openDialog) {
         this.handleOpen();
       }
-  };
+      
+    };
     handleOpen = () => {
-      const { username, postId } = this.props;
+      const { username, postId, generos } = this.props;
       this.setState({ open: true });
       this.props.getPublicacion(this.props.postId);
     };
     handleClose = () => {
       this.props.clearErrors();
-      this.setState({ open: false, errors: {} });
+      this.setState({ open: false, errors: {}, generos:[]});
     };
-    /*sharePublicacion = () => {
+    sharePublicacion = () => {
       this.props.remixeado = `/usuarios/${this.props.username}/publicacion/${this.props.postId}`
-        this.props.sharePublicacion({ postBody: this.state.postBody });
-    }*/
+        this.props.sharePublicacion({ postBody: this.state.postBody, generos: this.state.generos});
+    }
     handleChange = (event) => {
         this.setState({ [event.target.name ]: event.target.value });
     };
     handleSubmit = (event) => {
         const { username, postId } = this.props;
         event.preventDefault();
-        this.props.sharePublicacion({ postBody: this.state.postBody2 , remix: true , remixeado:this.props.postId })
+        this.props.sharePublicacion({ postBody: this.state.postBody2 , remix: true , remixeado:this.props.postId, generos: this.state.generos })
     };
-    
-    
-    
- 
 
+    onChangeGustos = (event, values) => {
+      this.setState({
+          generos: values
+      });
+    }
+    
   render() {
     const { errors } = this.state;
     const { 
@@ -108,7 +108,8 @@ export class ShareButtom extends Component {
           postedBy,
           Fotolink,
           postId,
-          remixeado
+          remixeado,
+          generos,
         },
               username,
       UI: { loading }
@@ -156,7 +157,17 @@ export class ShareButtom extends Component {
                     onChange={this.handleChange}
                     fullWidth
                 />
-                
+
+                <Autocomplete
+                multiple
+                id="combo-box-gustos"
+                options={options}
+                fullWidth
+                defaultValue={this.state.gustos}
+                filterSelectedOptions                             
+                onChange={this.onChangeGustos}
+                renderInput={(params) => <TextField {...params} label="Generos" placeholder="Generos" variant="outlined"/>}
+               />
                   
                 
                 <Button

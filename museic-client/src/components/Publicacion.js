@@ -99,7 +99,7 @@ class Publicacion extends Component {
               variant="h6"
               color="primary"
               component={Link}
-              to={`/${this.state.publicacion2.postedBy}`}
+              to={`/usuarios/${this.state.publicacion2.postedBy}`}
               className={classes.section1}
             >
               {this.state.publicacion2.postedBy}
@@ -169,7 +169,27 @@ class Publicacion extends Component {
             {postBody}
           </Typography>
 
-          
+          {mensajeRemixeado}
+
+          <div className={classes.section2}>
+
+          {generos && (
+              <Grid container className={classes.boxDiv}>
+                {generos.map((genero) => (
+                  <Box
+                    component="div"
+                    display="inline"
+                    borderRadius={8}
+                    p={1}
+                    color="primary"
+                    className={classes.box}
+                  >
+                    {genero}
+                  </Box>
+                ))}
+              </Grid>
+            )}
+          </div>
 
           <LikeButton postId = {postId}/>
           <span>{likes} Likes</span>
@@ -183,7 +203,6 @@ class Publicacion extends Component {
 
           <ShareButtom postId={postId} openDialog={this.props.openDialog}/>
           
-          {mensajeRemixeado}
           
           
           

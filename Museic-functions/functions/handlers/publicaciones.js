@@ -170,7 +170,7 @@ exports.comentarPublicacion = (req, res) => {
     nombre: req.user.nombre,
     Fotolink: req.user.Fotolink,
   };
-  db.doc(`/Publicaciones/${req.params.postId}`)
+  db.doc(`/Publicaciones/${req.params.postId}/`)
     .get()
     .then((doc) => {
       if (!doc.exists) {
@@ -239,6 +239,58 @@ exports.likePublicacion = (req, res) => {
       res.status(500).json({ error: err.code });
     });
 };
+
+
+//dar Nolike a publicacion
+exports.dontLikePublicacion = (req, res) => {
+  const dontLikeDocument = db
+    .collection("noLikes")
+    .where("username", "==", req.user.username)
+    .where("postId", "==", req.params.postId)
+    .limit(1);
+
+  const postDocument = db.doc(`/Publicaciones/${req.params.postId}`);
+
+  let postData;
+
+  postDocument
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        postData = doc.data();
+        postData.postId = doc.id;
+        return dontLikeDocument.get();
+      } else {
+        return res.status(404).json({ error: "Publicacion no encontrada" });
+      }
+    })
+    .then((data) => {
+      if (data.empty) {
+        return db
+          .collection("dontLikes")
+          .add({
+            postId: req.params.postId,
+            username: req.user.username,
+          })
+          .then(() => {
+            postData.noLikes++;
+            return postDocument.update({ likes: postData.dontLikes });
+          })
+          .then(() => {
+            return res.json(postData);
+          });
+      } else {
+        return res
+          .status(400)
+          .json({ error: "Ya le diste dontlike a esta publicacion" });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
+};
+
 
 //unlike una publicacion
 exports.unlikePublicacion = (req, res) => {

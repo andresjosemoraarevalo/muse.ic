@@ -7,6 +7,8 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { Link } from 'react-router-dom';
 import LikeButton from './LikeButtom';
 import EditPublicacion from './EditPublicacion';
+import CommentForm from './CommentForm';
+import Comments from './Comments';
 // MUI stuff
 import Dialog from "@material-ui/core/Dialog";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -48,6 +50,15 @@ const styles = {
     expandButton: {
         position: 'absolute',
         marginLeft: 'auto'
+    },
+    invisibleSeparator: {
+        border: 'none',
+        margin: 4
+        },
+    visibleSeparator: {
+        width: '100%',
+        borderBottom: '1px solid rgba(0,0,0,0.1)',
+        marginBottom: 20
     },
 };
 
@@ -92,7 +103,8 @@ class PublicacionDialog extends Component {
                 comentarios,
                 likes,
                 Fotolink,
-                postId
+                postId,
+                comments
               },
             user: {
                 authenticated,
@@ -168,8 +180,10 @@ class PublicacionDialog extends Component {
                     <ChatIcon color="primary" />
                 </MyButton>
                 <span>{comentarios} Comentarios</span>
-                
                 </CardContent>
+                <hr className= {classes.visibleSeparator}/>
+                <CommentForm postId={postId} />
+                <Comments comments={comments} />
             </Card>
         )
         return (

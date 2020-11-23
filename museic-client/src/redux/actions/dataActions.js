@@ -206,6 +206,25 @@ export const unlikeEvento = (postId) => (dispatch) => {
     .catch(err => console.log(err));
 };
 
+//Realizar Comentarios:
+export const comentarPublicacion = (postId , dataComentario) => (dispatch) => {
+  axios.post(`/publicacion/${postId}/listacomentarios`, dataComentario)
+  .then(res => {
+    dispatch({
+      type: SUBMIT_COMMENT,
+      payload: res.data,
+    });
+    dispatch(clearErrors());
+  })
+  .catch(err => {
+    dispatch({
+      type: SET_ERRORS,
+      payload: err.response.data
+    })
+  })
+  
+}
+
 // post a evento 
 export const postEvento = (newEvento) => (dispatch) => {
   dispatch({ type: LOADING_UI });

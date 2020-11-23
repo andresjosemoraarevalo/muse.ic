@@ -16,7 +16,8 @@ import {
     SET_USUARIOS,
     SET_CHAT,
     SET_MENSAJES,
-    POST_MENSAJE
+    POST_MENSAJE,
+    SUBMIT_COMMENT
   } from '../types';
   
   const initialState = {
@@ -128,6 +129,15 @@ import {
         return {
           ...state
         };
+      case SUBMIT_COMMENT:
+        return {
+          ...state,
+          publicacion:{
+            ...state.publicacion, 
+            listacomentarios: [action.payload, ...state.publicacion.listacomentarios] 
+          }
+            
+        }
       default:
         return state;
     }

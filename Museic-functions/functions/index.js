@@ -31,6 +31,7 @@ const {
   getUserDetails,
   marcarNotificacionLeida,
   resetContrasena
+  agregarPerfilMusical,
 } = require("./handlers/usuarios");
 
 const {
@@ -75,8 +76,6 @@ app.get("/publicaciones/:postId/like", FBAuthUsuarios, likePublicacion);
 app.get("/publicaciones/:postId/unlike", FBAuthUsuarios, unlikePublicacion);
 app.post("/publicaciones/:postId/comentar", FBAuthUsuarios, comentarPublicacion);
 app.post("/editPublicacion/:postId", FBAuthUsuarios, editPublicacion);
-app.post("/publicaciones/:postId/dontlike", FBAuthUsuarios, dontLikePublicacion);
-app.post("/publicaciones/:postId/undodontlike", FBAuthArtistas, undoDontlikePublicacion);
 
 // Eventos
 app.post("/crearEvento", FBAuthUsuarios,crearEvento);

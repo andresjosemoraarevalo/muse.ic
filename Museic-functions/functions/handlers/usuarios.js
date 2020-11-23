@@ -79,7 +79,43 @@ exports.signupUsuario = (request, response) => {
         userId,
         seguidores: newUsuario.seguidores,
         seguidos: newUsuario.seguidos,
-        artista: newUsuario.artista
+        artista: newUsuario.artista,
+        numPerfilMusical:0,
+        perfilMusical:{
+          "Rock Alternativo": [0,0] ,
+          "Ambiente": [0,0],
+          "Clasica": [0,0], 
+          "Country": [0,0],
+          "Cumbia": [0,0],
+          "Dance": [0,0],
+          "EDM": [0,0], 
+          "Dancehall": [0,0],
+          "Deep House": [0,0],
+          "Disco": [0,0], 
+          "Drum & Bass": [0,0],
+          "Dubstep": [0,0],
+          "Electrónica": [0,0], 
+          "Folk": [0,0],
+          "Hip Hop y Rap": [0,0],
+          "House": [0,0],
+          "Indie": [0,0],
+          "Jazz y Blues": [0,0],
+          "Latina": [0,0],
+          "Metal": [0,0],
+          "Piano": [0,0],
+          "Pop": [0,0],
+          "R&B y Soul": [0,0],
+          "Reggae": [0,0], 
+          "Reguetón": [0,0],
+          "Rock": [0,0],
+          "Bandas Sonoras": [0,0],
+          "Techno": [0,0],
+          "Trance": [0,0],
+          "Trap": [0,0],
+          "Triphop": [0,0],
+          "Vallenato": [0,0]}
+    
+        
       };
       return db.doc(`/Usuarios/${newUsuario.username}`).set(userCredentials);
     })
@@ -160,7 +196,43 @@ exports.signupArtista = (request, response) => {
         userId,
         seguidores: newArtista.seguidores,
         seguidos: newArtista.seguidos,
-        artista: newArtista.artista
+        artista: newArtista.artista,
+        numPerfilMusical:0,
+        perfilMusical:{
+          "Rock Alternativo": [0,0],
+          "Ambiente": [0,0],
+          "Clasica": [0,0], 
+          "Country": [0,0],
+          "Cumbia": [0,0],
+          "Dance": [0,0],
+          "EDM": [0,0], 
+          "Dancehall": [0,0],
+          "Deep House": [0,0],
+          "Disco": [0,0], 
+          "Drum & Bass": [0,0],
+          "Dubstep": [0,0],
+          "Electrónica": [0,0], 
+          "Folk": [0,0],
+          "Hip Hop y Rap": [0,0],
+          "House": [0,0],
+          "Indie": [0,0],
+          "Jazz y Blues": [0,0],
+          "Latina": [0,0],
+          "Metal": [0,0],
+          "Piano": [0,0],
+          "Pop": [0,0],
+          "R&B y Soul": [0,0],
+          "Reggae": [0,0], 
+          "Reguetón": [0,0],
+          "Rock": [0,0],
+          "Bandas Sonoras": [0,0],
+          "Techno": [0,0],
+          "Trance": [0,0],
+          "Trap": [0,0],
+          "Triphop": [0,0],
+          "Vallenato": [0,0]
+    
+        }
       
       };
       return db.doc(`/Usuarios/${newArtista.username}`).set(userCredentials);
@@ -717,5 +789,69 @@ exports.marcarNotificacionLeida =(req, res)=>{
     console.error(err);
     return res.status(500).json({error: err.code});
   });
+
+}
+
+exports.agregarPerfilMusical =(req, res) =>{
+  const imagenInicial = "foto_perfil_basica.jpg";
+  let perfilmusical = {
+    username: "",
+        email: "",
+        Fotolink:`https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imagenInicial}?alt=media`,
+        userId: null,
+        seguidores: 0,
+        seguidos: 0,
+        artista: false,
+    perfilMusical:{
+      "Rock Alternativo": [0,0] ,
+      "Ambiente": [0,0],
+      "Clasica": [0,0], 
+      "Country": [0,0],
+      "Cumbia": [0,0],
+      "Dance": [0,0],
+      "EDM": [0,0], 
+      "Dancehall": [0,0],
+      "Deep House": [0,0],
+      "Disco": [0,0], 
+      "Drum & Bass": [0,0],
+      "Dubstep": [0,0],
+      "Electrónica": [0,0], 
+      "Folk": [0,0],
+      "Hip Hop y Rap": [0,0],
+      "House": [0,0],
+      "Indie": [0,0],
+      "Jazz y Blues": [0,0],
+      "Latina": [0,0],
+      "Metal": [0,0],
+      "Piano": [0,0],
+      "Pop": [0,0],
+      "R&B y Soul": [0,0],
+      "Reggae": [0,0], 
+      "Reguetón": [0,0],
+      "Rock": [0,0],
+      "Bandas Sonoras": [0,0],
+      "Techno": [0,0],
+      "Trance": [0,0],
+      "Trap": [0,0],
+      "Triphop": [0,0],
+      "Vallenato": [0,0]
+
+    }
+  };
+  // return db.doc(`/Usuarios/${newUsuario.username}`).set(userCredentials);
+  db.collection("Usuarios")
+  .get()
+  .then((data)=> {
+    data.forEach((doc)=>{
+      perfilmusical.username= doc.data().username;
+      return db.doc(`/Usuarios/${doc.data().username}`).set(perfilmusical);
+    })
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).json({ error: err.code });
+  });
+
+
 
 }

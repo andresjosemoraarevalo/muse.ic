@@ -47,7 +47,7 @@ const styles = {
     },
     expandButton: {
         position: 'absolute',
-        marginLeft: 'auto'
+        marginLeft: 'auto',
     },
 };
 
@@ -92,7 +92,8 @@ class PublicacionDialog extends Component {
                 comentarios,
                 likes,
                 Fotolink,
-                postId
+                postId,
+                remixeado
               },
             user: {
                 authenticated,

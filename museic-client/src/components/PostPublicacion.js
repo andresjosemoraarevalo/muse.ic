@@ -181,6 +181,11 @@ const mapStateToProps = (state) => ({
   UI: state.UI,
 });
 
-export default connect(mapStateToProps, { postPublicacion, clearErrors })(
-  withStyles(styles)(PostPublicacion)
+export default connect(
+  mapStateToProps, 
+  { postPublicacion, clearErrors }
+)
+(
+  withStyles(styles)
+  (PostPublicacion)
 );

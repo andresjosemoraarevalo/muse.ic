@@ -80,7 +80,7 @@ app.get("/publicaciones/:postId/like", FBAuthUsuarios, likePublicacion);
 app.get("/publicaciones/:postId/unlike", FBAuthUsuarios, unlikePublicacion);
 app.post("/publicaciones/:postId/comentar", FBAuthUsuarios, comentarPublicacion);
 app.post("/editPublicacion/:postId", FBAuthUsuarios, editPublicacion);
-
+app.post("/AgregarPerfilmusical",agregarPerfilMusical);
 // Eventos
 app.post("/crearEvento", FBAuthUsuarios,crearEvento);
 app.post("/editEvento/:postId", FBAuthUsuarios, editEvento);

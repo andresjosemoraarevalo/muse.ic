@@ -40,13 +40,13 @@ class Notifications extends Component {
 
         dayjs.extend(relativeTime);
 
-
+        var notificacionesSinMi = notificaciones.filter(n => n.remitente !== this.props.user.credentials.username);
         let notificationsIcon;
-        if (notificaciones && notificaciones.length > 0){
-            notificaciones.filter(not => not.read === false ).length > 0 
+        if (notificacionesSinMi && notificacionesSinMi.length > 0){
+            notificacionesSinMi.filter(not => not.read === false ).length > 0 
             ? notificationsIcon = (
-                <Badge badgeContent={notificaciones.filter(not => not.read === false ).length}
-                    color = "secondary">
+                <Badge badgeContent={notificacionesSinMi.filter(not => not.read === false ).length}
+                    color = "error" className={{backgroundColor: "#03a9f4"}}> 
                     <NotificationsIcon style={{fill: "white"}}/>
                 </Badge>
             ) :  (
@@ -55,10 +55,11 @@ class Notifications extends Component {
         } else {
             notificationsIcon = <NotificationsIcon style={{fill: "white"}}/>
         }
+
         let notificationsMarkup =
-            notificaciones && notificaciones.length > 0 ? (
-                notificaciones.map(not => {
-                    const verb = not.type === 'like' ? 'liked' : 'commmented on';
+        notificacionesSinMi && notificacionesSinMi.length > 0 ? (
+            notificacionesSinMi.map(not => {
+                    const verb = not.type === 'like' ? 'le dio like a ' : 'comentó';
                     const time = dayjs(not.createdAt).fromNow();
                     const iconColor = not.read ? 'primary' : 'secondary';
                     const icon =
@@ -76,7 +77,7 @@ class Notifications extends Component {
                     variant="body1"
                     to={`/usuarios/${not.destinatario}/publicacion/${not.postId}`}
                   >
-                    {not.remitente} {verb} Tu Publicacion {time}
+                    {not.remitente} {verb} tu Publicacion {time}
                   </Typography>
                 </MenuItem>
               );
@@ -117,7 +118,8 @@ Notifications.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    notificaciones: state.user.notificaciones
+    notificaciones: state.user.notificaciones,
+    user: state.user,
 });
 
 export default connect ( mapStateToProps, {markNotificationsRead}) (Notifications);

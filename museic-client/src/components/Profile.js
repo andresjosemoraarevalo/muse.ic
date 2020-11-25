@@ -56,10 +56,10 @@ class Profile extends Component {
       authenticated ? (
           <div className={classes.profile}>
             <Grid container>
-              <Grid item sm={4}>
+              <Grid item sm={3}>
               <Avatar alt={username} src={Fotolink}></Avatar>
               </Grid>
-              <Grid item sm={8}>
+              <Grid item sm={9}>
                 <Typography
                 variant="h5"
                 color="primary"

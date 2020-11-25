@@ -25,6 +25,7 @@ import ProfileUser from "./components/ProfileUser";
 import signupArt from "./pages/signupArtista";
 import chat from "./pages/chats";
 import buscar from "./pages/buscar";
+import eventos from "./pages/eventos";
 
 const theme = createMuiTheme({
   palette: {
@@ -101,6 +102,11 @@ function App() {
                   exact
                   path="/usuarios/:username"
                   component={user}
+                />
+                <Route
+                  exact
+                  path="/eventos"
+                  component={eventos}
                 />
                 <Route
                   exact

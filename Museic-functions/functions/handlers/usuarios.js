@@ -242,6 +242,29 @@ exports.ObtenerUserName= (request, response) =>{
 
 }
 
+const isEmail = (email) => {
+  const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (email.match(regEx)) return true;
+  else return false;
+};
+
+exports.resetContrasena = (req, res) => {
+  const user = {
+    email: req.body.email
+  }
+  if(!isEmail(user.email)) return res.status(400).json({ error: 'Email invalido' });
+  firebase 
+    .auth()
+    .sendPasswordResetEmail(user.email)
+    .then(() => {
+      return res.json({ email: "Se mandó el correo de cambio de contraseña" });
+    })
+    .catch((err) => {
+      return res.status(400).json({ error: "Usuario no encontrado" });
+    })
+
+}
+
 exports.loginArtista = (request, response) => {
   const user = {
     email: request.body.email,
@@ -249,23 +272,7 @@ exports.loginArtista = (request, response) => {
   };
   const { valido, errors } = validarDatosdeLogin(user);
   if (!valido) return response.status(400).json(errors);
-  /*var userData = {};
-  db.collection("Artistas")
-    .where("email", "==", request.body.email)
-    .get()
-    .then((data)=>{
-          data.forEach((doc) => {
-            userData.username =doc.data().username;
-          });
-          return response.json(userData);
-    });
-
-  if(userData.username != request.body.email){
-    return response.json(userData);
-    //return response
-  //.status(403)
-  //.json({ general: "Datos incorrectos, por favor intente nuevamente" });  
-  }*/
+  
   
   firebase
   .auth()

@@ -111,7 +111,7 @@ class Publicacion extends Component {
             variant="body1" 
             color="textPrimary" 
             component={Link}
-            to={`/usuarios/${username}/publicacion/${remixId}`}
+            to={`/usuarios/${remixUsername}/publicacion/${remixId}`}
             >
               {remixBody}
         

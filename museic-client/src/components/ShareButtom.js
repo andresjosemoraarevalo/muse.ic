@@ -31,7 +31,8 @@ const styles = {
     float: "right",
   },
   section1: {
-    margin: 30,
+    margin: 5,
+    marginLeft: 24
   },
   submitButton: {
     position: "relative",
@@ -165,15 +166,6 @@ export class ShareButtom extends Component {
             </MyButton>
             <DialogTitle>Remixea esta publicacion</DialogTitle>
             <Typography
-              variant="body1"
-              color="textPrimary"
-              component="p"
-              className={classes.section1}
-              variant="body1"
-              component={Link}
-              to={`/usuarios/${username}/publicacion/${postId}`}
-            >
-              <Typography
                 variant="h6"
                 color="primary"
                 component={Link}
@@ -182,8 +174,18 @@ export class ShareButtom extends Component {
               >
                 {this.props.remixUsername}
               </Typography>
+            <Typography
+              variant="body1"
+              color="textPrimary"
+              component="p"
+              className={classes.section1}
+              variant="body1"
+              component={Link}
+              to={`/usuarios/${this.props.remixUsername}/publicacion/${postId}`}
+            >
               {postBody}
             </Typography>
+            
             <DialogContent>
               <form onSubmit={this.handleSubmit}>
                 <TextField

@@ -3,13 +3,12 @@ import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
-import Publicacion from "../components/Publicacion";
 import Evento from "../components/Evento";
 import PostPublicacion from '../components/PostPublicacion';
 import Profile from '../components/Profile';
 import Menu from '../components/menu';
 import { connect } from "react-redux";
-import { getPublicaciones, getEventos } from "../redux/actions/dataActions";
+import { getEventos } from "../redux/actions/dataActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import PostEvento from '../components/PostEvento';
 //import Button from "@material-ui/core/Button";
@@ -28,19 +27,15 @@ const styles = {
     marginBottom: 50
   },
   eventos: {
-    //padding: 10
-  },
-  sineventos: {
-    display: "flex",
-    flexDirection: "column",
-    text: "center"
+    marginTop: 10,
+    marginBottom: 10
+
   }
 };
 
 
-class home extends Component {
+class eventos extends Component {
   componentDidMount() {
-    this.props.getPublicaciones();
     this.props.getEventos();
   }
   render() {
@@ -57,38 +52,18 @@ class home extends Component {
      // 
        
     } = this.props;
-    const {publicaciones,eventos}= this.props.data;
-    const { classes } = this.props;
-
-    var publicacionesQueSigo = publicaciones.filter(n => seguidos.some(n2 => n.postedBy === n2.follows ) || n.postedBy === username);
-    var eventosQueSigo = eventos.filter(n => seguidos.some(n2 => n.postedBy === n2.follows || n.postedBy === username));
-    let recentPublicacionesMarkup = !loading ? (
-      publicacionesQueSigo.length > 0 ? (
-        publicacionesQueSigo.map((publicacion) => (
-          <Publicacion key={publicacion.postId} publicacion={publicacion} />
-        ))
-      ) : (
-        <Typography variant="h6" color="textPrimary">
-          {"Empieza a seguir usuarios para ver sus publicaciones!"}
-        </Typography>
-      )
-    ) : (
-      null
-    );
-    let recentEventosMarkup = !loading ? (
-      eventosQueSigo.length > 0 ? (
-        Array.from(eventosQueSigo).map((evento) => (
-          <Evento key={evento.postId} evento={evento} />
-        ))
-      ) : (
-        <Typography variant="h6" color="textPrimary" className={classes.sineventos}>
-          {"Empieza a seguir Artistas para ver sus eventos!"}
-        </Typography>
-      ) 
-    ) : (
-      null
-    );
+    const {eventos}= this.props.data;
     
+    let recentEventosMarkup = !loading ? (
+      Array.from(eventos).map((evento) => (
+        <Evento key={evento.postId} evento={evento} />
+      ))
+    ) : (
+      <Typography variant="h5" color="primary">
+        {"Empieza a seguir Artistas para ver sus eventos!"}
+      </Typography>
+    );
+    const { classes } = this.props;
 
     let homes = ! loading ?(
       authenticated ?(
@@ -104,13 +79,8 @@ class home extends Component {
             ) : null}
           </div>      
           </Grid>
-          <Grid item sm={5} >
           
-          <div id="homePublicaciones" >
-          {recentPublicacionesMarkup}
-            </div>
-          </Grid>
-          <Grid item sm={4}>
+          <Grid item sm={9}>
           <Typography
             variant="h5"
             color="primary"
@@ -118,7 +88,7 @@ class home extends Component {
           >
             Eventos
           </Typography>
-          <div id="homeEventos">
+          <div id="soloEventos">
             {recentEventosMarkup}
           </div>
           </Grid>
@@ -143,13 +113,12 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-home.propTypes = {
+eventos.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  getPublicaciones: PropTypes.func.isRequired,
   getEventos: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
 };
-export default connect(mapStateToProps, { getPublicaciones, getEventos })(
-  withStyles(styles)(home)
+export default connect(mapStateToProps, { getEventos })(
+  withStyles(styles)(eventos)
 );

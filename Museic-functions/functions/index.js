@@ -27,7 +27,8 @@ const {
   followUsuario,
   unfollowUsuario,
   getUserDetails,
-  marcarNotificacionLeida
+  marcarNotificacionLeida,
+  resetContrasena
 } = require("./handlers/usuarios");
 
 const {
@@ -95,6 +96,7 @@ app.post("/loginUsuario", loginUsuario);
 app.post("/loginArtista", loginArtista);
 app.post("/signupArtista", signupArtista);
 app.post("/ObtenerUsername", ObtenerUserName);
+app.post("/resetContrasena", resetContrasena);
 app.post("/usuario/FotoPerfil", FBAuthUsuarios, subirFotoPerfilUsuario);
 app.post("/artista/FotoPerfil", FBAuthArtistas, subirFotoPerfilArtista);
 app.post("/usuarioDetails", FBAuthUsuarios, addUserDetails);

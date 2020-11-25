@@ -70,7 +70,9 @@ class Menu extends Component {
                         </MyButton>
                             <Typography variant="inherit">Mensajes</Typography>     
                         </MenuItem>
-                        <MenuItem>
+                        <MenuItem
+                            component={Link}
+                            to={'/eventos'}>
                             <MyButton tip="Perfil">
                                 <MusicNote  style={{fill: "secondary"}} />
                             </MyButton>
@@ -110,7 +112,10 @@ class Menu extends Component {
                                 </MyButton>
                                     <Typography variant="inherit">Grupos de interes</Typography>     
                             </MenuItem>
-                            <MenuItem>
+                            <MenuItem
+                                component={Link}
+                                to={'/eventos'}
+                            >
                                 <MyButton tip="Perfil">
                                     <MusicNote  style={{fill: "secondary"}} />
                                 </MyButton>

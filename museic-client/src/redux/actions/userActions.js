@@ -19,6 +19,21 @@ export const loginUser = (userData, history) => (dispatch) => {
     });
 };
 
+export const resetContrasena = (email) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .post("/resetContrasena", {email: email})
+    .then((res => {
+      dispatch({ type: CLEAR_ERRORS });
+    }))
+    .catch((err) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data
+      })
+    })
+}
+
 export const signupUser = (newUserData, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios

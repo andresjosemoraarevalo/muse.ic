@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 // MUI
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Avatar from "@material-ui/core/Avatar";
 
 const styles = (theme) => ({
     invisibleSeparator: {
@@ -19,11 +20,12 @@ const styles = (theme) => ({
     },
     commentImage: {
         maxWidth: '100%',
-        height: 50,
+        width: 80,
+        height: 80,
         objectFit: 'cover',
         borderRadius: '50%',
-        marginLeft: 35,
-        marginTop: 20
+        marginLeft: 20,
+        marginTop: 6
     },
     commentData: {
         marginLeft: 20
@@ -42,7 +44,7 @@ class Comments extends Component {
                 <Grid item sm ={12}>
                   <Grid container>
                     <Grid item sm = {2}>
-                      <img src = {Fotolink} alt = 'comentario' className = {classes.commentImage}/> 
+                      <Avatar alt={username} src={Fotolink} className={classes.commentImage}></Avatar>
                     </Grid>
                     <Grid item sm = {10}>
                       <div className ={classes.commentData}>

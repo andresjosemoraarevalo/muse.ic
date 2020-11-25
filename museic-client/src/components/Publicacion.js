@@ -49,10 +49,10 @@ const styles = {
 //{this.mostrarremixeado()}
 class Publicacion extends Component {
   state = {
-    publicacion2:{},
+    publicacion2: {},
   }
-
-  hadlePublicacion(publicacion){
+  
+  /*hadlePublicacion(publicacion){
     const postId = publicacion.remixeado;
     axios.get(`/publicaciones/${postId}`)
         .then(res => {
@@ -60,10 +60,11 @@ class Publicacion extends Component {
                 publicacion2: res.data
             });
         
-            console.log(this.state.postbody2)
+            //console.log(this.state.publicacion2);
         })
         .catch(err => console.log(err));
-}
+
+}*/
   render() {
     dayjs.extend(relativeTime);
     const {
@@ -76,7 +77,9 @@ class Publicacion extends Component {
         likes,
         Fotolink,
         postId,
-        remixeado,
+        remixBody,
+        remixUsername,
+        remixId,
         remix,
         generos
       },
@@ -92,136 +95,44 @@ class Publicacion extends Component {
     const deleteButton = authenticated && postedBy === this.props.user.credentials.username ? (
         <EditPublicacion postId={postId} publicacion={this.props.publicacion}/>
     ) : null
-    var mensajeRemixeado = remix ? (
+    const mensajeRemixeado = remix ? ( 
       <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
-        {this.hadlePublicacion(this.props.publicacion)}
         <Typography
               variant="h6"
               color="primary"
               component={Link}
-              to={`/usuarios/${this.state.publicacion2.postedBy}`}
+              to={`/usuarios/${remixUsername}`}
               className={classes.section1}
             >
-              {this.state.publicacion2.postedBy}
+              {remixUsername}
           </Typography>
 
           <Typography 
             variant="body1" 
             color="textPrimary" 
             component={Link}
-            to={`/usuarios/${this.state.publicacion2.postedBy}/publicacion/${this.state.publicacion2.postId}`}
+            to={`/usuarios/${username}/publicacion/${remixId}`}
             >
-              {this.state.publicacion2.postBody}
+              {remixBody}
         
       </Typography>
       </Typography>
     ) : null
+
     return (
-      remix  ? (
-        
+      
         <Card className={classes.card}>
-          
         <CardHeader
           avatar={<Avatar alt={postedBy} src={Fotolink}></Avatar>}
           
           title={
             
             postedBy === username ? (
-              <Typography
-              variant="h6"
-              color="primary"
-              component={Link}
-              to={'/user'}
-            >
-              {postedBy}
-            </Typography>
-            ) : (
               <Typography
               variant="h6"
               color="primary"
               component={Link}
               to={`/usuarios/${postedBy}`}
-            >
-              {postedBy}
-            </Typography>
-            )
-            
-            
-          }
-          action={
-            deleteButton
-          }
-          
-          subheader={
-            <Typography variant="body2" color="textSecondary">
-              {dayjs(postDate).fromNow()}
-            </Typography>
-          }
-          
-          
-        />
-        
-        <Divider variant="middle"/>
-        
-
-        <CardContent>
-          <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
-            {postBody}
-          </Typography>
-
-          {mensajeRemixeado}
-
-          <div className={classes.section2}>
-
-          {generos && (
-              <Grid container className={classes.boxDiv}>
-                {generos.map((genero) => (
-                  <Box
-                    component="div"
-                    display="inline"
-                    borderRadius={8}
-                    p={1}
-                    color="primary"
-                    className={classes.box}
-                  >
-                    {genero}
-                  </Box>
-                ))}
-              </Grid>
-            )}
-          </div>
-
-          <LikeButton postId = {postId}/>
-          <span>{likes} Likes</span>
-          
-          <MyButton tip="Comentarios">
-            <ChatIcon color="primary" />
-          </MyButton>
-          <span>{comentarios} Comentarios</span>
-          
-          <PublicacionDialog postId={postId} username={postedBy} openDialog={this.props.openDialog}/>
-
-          <ShareButtom postId={postId} openDialog={this.props.openDialog}/>
-          
-          
-          
-          
-        </CardContent>
-      </Card>
-
-      ) : (
-        <Card className={classes.card}>
-        <CardHeader
-          avatar={<Avatar alt={postedBy} src={Fotolink}></Avatar>}
-          
-          title={
-            
-            postedBy === username ? (
-              <Typography
-              variant="h6"
-              color="primary"
-              component={Link}
-              to={'/user'}
             >
               {postedBy}
             </Typography>
@@ -258,6 +169,11 @@ class Publicacion extends Component {
           <Typography variant="body1" color="textPrimary" component="p" className={classes.section1}>
             {postBody}
           </Typography>
+
+          {remix ? (
+            mensajeRemixeado
+          ) : null}
+
           <div className={classes.section2}>
 
           {generos && (
@@ -283,14 +199,12 @@ class Publicacion extends Component {
             <ChatIcon color="primary" />
           </MyButton>
           <span>{comentarios} Comentarios</span>
-          <ShareButtom postId={postId} openDialog={this.props.openDialog} username={postedBy}/>
+          <ShareButtom publicacion={this.props.publicacion} remixId={postId} remixUsername={postedBy} remixBody={postBody}/>
           <PublicacionDialog postId={postId} username={postedBy} openDialog={this.props.openDialog}/>
           
         </CardContent>
       </Card>
       )
-      
-    );
   }
 }
 

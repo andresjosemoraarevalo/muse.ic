@@ -75,8 +75,10 @@ class PostPublicacion extends Component {
       event.preventDefault();
       this.props.postPublicacion({ 
         postBody: this.state.postBody, 
-        remix:false , 
-        remixeado:"" ,
+        remix:false, 
+        remixBody:"" ,
+        remixUsername: "",
+        remixId: "",
         generos: this.state.generos
       })
   }

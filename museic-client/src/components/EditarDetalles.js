@@ -78,6 +78,8 @@ export class EditarDetalles extends Component {
             gustos: this.state.gustos
         };
         this.props.editUserDetails(userDetails);
+        this.props.credentials.bio = this.state.bio;
+        this.props.credentials.gustos = this.state.gustos;
         this.handleClose();
     }
     addGusto = () => {

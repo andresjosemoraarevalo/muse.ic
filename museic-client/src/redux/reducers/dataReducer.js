@@ -132,7 +132,7 @@ import {
       case SUBMIT_COMMENT:
         return {
           ...state,
-          publicacion:{
+          publicacion: {
             ...state.publicacion, 
             listacomentarios: [action.payload, ...state.publicacion.listacomentarios] 
           }

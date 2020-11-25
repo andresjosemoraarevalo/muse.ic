@@ -49,12 +49,12 @@ const theme = createMuiTheme({
 });
 
 const token = localStorage.FBIdToken;
-console.log(token);
+//console.log(token);
 if (token) {
   const decodedToken = jwtDecode(token);
-  console.log(decodedToken);
+  //console.log(decodedToken);
   if (decodedToken.exp * 1000 < Date.now()) {
-    console.log(decodedToken);
+    //console.log(decodedToken);
     store.dispatch(logoutUser());
     window.location.href = '/';
   } else {

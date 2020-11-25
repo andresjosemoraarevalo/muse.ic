@@ -11,7 +11,7 @@ import { comentarPublicacion } from '../redux/actions/dataActions';
 
 const styles = (theme) => ({
     TextField: {
-        marginBottom: 20
+        marginLeft: 20
     },
     visibleSeparator: {
         width: '100%',
@@ -21,6 +21,15 @@ const styles = (theme) => ({
     invisibleSeparator: {
         border: 'none',
         margin: 4
+     },
+     form: {
+       margin: 20
+     },
+     button: {
+      position: "relative",
+      marginTop: 10,
+      marginBottom: 10,
+      float: 'right',
      }
 });
 
@@ -53,8 +62,9 @@ class CommentForm extends Component {
 
     const CommentFormMarkup = authenticated ? (
       <Grid item sm={12} style={{ textAlign: 'center' }}>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} className={classes.form}>
           <TextField
+            variant="outlined"
             name="body"
             type="text"
             label="Comenta en la publicación"
@@ -74,7 +84,7 @@ class CommentForm extends Component {
             Comentar
           </Button>
         </form>
-        <hr className={classes.visibleSeparator} />
+        
       </Grid>
     ) : null;
     return CommentFormMarkup;

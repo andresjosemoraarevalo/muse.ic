@@ -209,7 +209,7 @@ export const unlikeEvento = (postId) => (dispatch) => {
 
 //Realizar Comentarios:
 export const comentarPublicacion = (postId , dataComentario) => (dispatch) => {
-  axios.post(`/publicacion/${postId}/listacomentarios`, dataComentario)
+  axios.post(`/publicaciones/${postId}/comentar`, dataComentario)
   .then(res => {
     dispatch({
       type: SUBMIT_COMMENT,

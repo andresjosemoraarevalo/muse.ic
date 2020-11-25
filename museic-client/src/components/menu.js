@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 
 
 //botones 
-import MyButton from "../util/MyButton";
+import MyButton from '@material-ui/core/IconButton';
 import PersonIcon from '@material-ui/icons/Person';
 //import Notifications from '@material-ui/icons/Notifications';
 import HelpOutline from '@material-ui/icons/HelpOutline';

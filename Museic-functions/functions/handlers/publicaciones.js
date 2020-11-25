@@ -87,7 +87,10 @@ exports.getPublicaciones = (req, res) => {
           generos: doc.data().generos,
           likes: doc.data().likes,
           Fotolink: doc.data().Fotolink,
-          nombre: doc.data().nombre
+          remix: doc.data().remix,
+          remixUsername: doc.data().remixUsername,
+          remixBody: doc.data().remixBody,
+          remixId: doc.data().remixId
         });
       });
       return res.json(publicaciones);
@@ -107,7 +110,9 @@ exports.crearPublicacion = (req, res) => {
     postedBy: req.user.username,
     Fotolink: req.user.Fotolink,
     remix: req.body.remix,
-    remixeado: req.body.remixeado,
+    remixBody: req.body.remixBody,
+    remixUsername: req.body.remixUsername,
+    remixId: req.body.remixId,
     postDate: new Date().toISOString(),
     likes: 0,
     comentarios: 0,
@@ -132,7 +137,7 @@ exports.crearPublicacion = (req, res) => {
 exports.getPublicacion = (req, res) => {
   let publicacionData = {};
   db.doc(`/Publicaciones/${req.params.postId}`)
-    .get()
+    .get()  
     .then((doc) => {
       if (!doc.exists) {
         return res.status(404).json({ error: "Publicacion no encontrada" });
@@ -148,7 +153,7 @@ exports.getPublicacion = (req, res) => {
     .then((data) => {
       publicacionData.listacomentarios = [];
       data.forEach((doc) => {
-        publicacionData.comentarios.push(doc.data());
+        publicacionData.listacomentarios.push(doc.data());
       });
       return res.json(publicacionData);
     })
@@ -167,7 +172,6 @@ exports.comentarPublicacion = (req, res) => {
     postDate: new Date().toISOString(),
     postId: req.params.postId,
     username: req.user.username,
-    nombre: req.user.nombre,
     Fotolink: req.user.Fotolink,
   };
   db.doc(`/Publicaciones/${req.params.postId}/`)

@@ -53,7 +53,7 @@ class home extends Component {
        
     } = this.props;
     const {publicaciones,eventos}= this.props.data;
-    var publicacionesQueSigo = publicaciones.filter(n => seguidos.some(n2 => n.postedBy === n2.follows || n.postedBy === username));
+    var publicacionesQueSigo = publicaciones.filter(n => seguidos.some(n2 => n.postedBy === n2.follows ) || n.postedBy === username);
     var eventosQueSigo = eventos.filter(n => seguidos.some(n2 => n.postedBy === n2.follows || n.postedBy === username));
     let recentPublicacionesMarkup = !loading ? (
       publicacionesQueSigo.map((publicacion) => (

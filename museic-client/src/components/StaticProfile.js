@@ -173,6 +173,7 @@ class StaticProfile extends Component {
               color="primary"
               component={Link}
               to={`/usuarios/${seguido.follows}`}
+              onClick={this.handleClose}
             >
               {seguido.follows}
             </Typography>
@@ -221,6 +222,7 @@ class StaticProfile extends Component {
               color="primary"
               component={Link}
               to={`/usuarios/${seguidor.username}`}
+              onClick={this.handleClose}
             >
               {seguidor.username}
             </Typography>
@@ -425,10 +427,17 @@ class StaticProfile extends Component {
               <div container></div>
             </Fragment>
           )}
-          {bio && <Typography variant="body1" className={classes.bio}>{bio}</Typography>}
+          {username !== this.props.user.credentials.username ? (
+            <Typography variant="body1" className={classes.bio}>{bio}</Typography>
+          ) : (
+            this.props.user.credentials.bio && (
+              <Typography variant="body1" className={classes.bio}>{this.props.user.credentials.bio}</Typography>
+            )
+          )
+          }
           <Grid container spacing={1}>
             <Grid item>
-              <CalendarToday color="primary" />{" "}
+              <CalendarToday color="secondary" />{" "}
             </Grid>
             <Grid item>
               <Typography variant="body1">{dayjs(fechaNacimiento).format("DD MMM YYYY")}</Typography>

@@ -475,6 +475,10 @@ exports.getUserDetails = (req, res) => {
           likes: doc.data().likes,
           comentarios: doc.data().comentarios,
           postId: doc.id,
+          remix: doc.data().remix,
+          remixId: doc.data().remixId,
+          remixBody: doc.data().remixBody,
+          remixUsername: doc.data().remixUsername
         });
       });
       return res.json(userData);

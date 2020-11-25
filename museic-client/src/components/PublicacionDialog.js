@@ -100,10 +100,10 @@ class PublicacionDialog extends Component {
                 postBody,
                 postedBy,
                 postDate,
-                comentarios,
+                listacomentarios,
                 likes,
                 Fotolink,
-                comments
+                comentarios,
                 postId,
                 remixeado
               },
@@ -125,6 +125,7 @@ class PublicacionDialog extends Component {
                 <CircularProgress size={100} thickness={2} />
             </div>
         ) : (
+            <div>
             <Card className={classes.card}>
                 <CardHeader
                 avatar={<Avatar alt={postedBy} src={Fotolink}></Avatar>}
@@ -182,10 +183,13 @@ class PublicacionDialog extends Component {
                 </MyButton>
                 <span>{comentarios} Comentarios</span>
                 </CardContent>
-                <hr className= {classes.visibleSeparator}/>
-                <CommentForm postId={postId} />
-                <Comments comments={comments} />
+                
+                
             </Card>
+            
+            <Comments listacomentarios={listacomentarios} />
+            <CommentForm postId={postId} />
+            </div>
         )
         return (
         <Fragment>

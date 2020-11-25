@@ -22,23 +22,39 @@ const styles = {
 class user extends Component {
     state = {
         profile: null,
-        postIdParam: null
+        postIdParam: null,
+        userId: null
     }
     componentDidMount(){
         const username = this.props.match.params.username;
         const postId = this.props.match.params.postId;
-        
+        this.setState({ userId: username});
         if (postId) this.setState({postIdParam: postId});
 
-        this.props.getUserData(username);
-        axios.get(`/usuario/${username}`)
+        this.fetchUser(this.props.match.params.username);
+    }
+    fetchUser(userId){
+        this.props.getUserData(userId);
+        axios.get(`/usuario/${userId}`)
             .then(res => {
                 this.setState({
-                    profile: res.data.user 
+                    profile: res.data.user,
+                    userId: userId
                 })
             })
             .catch(err => console.log(err));
     }
+    componentDidUpdate(){
+        const userId = this.props.match.params.username;
+        console.log(userId);
+        console.log(this.state.userId);
+        //window.location.href = `/usuarios/${userId}`;
+        if(userId !== this.state.userId){
+            this.setState({ userId: userId });
+            this.fetchUser(this.props.match.params.username);
+        }
+    }
+
     render() {
         const { publicaciones, loading } = this.props.data;
         const { postIdParam } = this.state;

@@ -19,9 +19,11 @@ const styles = (theme) => ({
     },
     commentImage: {
         maxWidth: '100%',
-        height: 100,
+        height: 50,
         objectFit: 'cover',
-        borderRadius: '50%'
+        borderRadius: '50%',
+        marginLeft: 35,
+        marginTop: 20
     },
     commentData: {
         marginLeft: 20
@@ -30,35 +32,35 @@ const styles = (theme) => ({
 
 class Comments extends Component {
   render(){
-    const { listaComentarios, classes } = this.props;
+    const { listacomentarios, classes } = this.props;
     return(
       <Grid container>
-        {listaComentarios.map((comment, index)=> {
-            const { cuerpo, creadoPor, imagenUsuario, userHandler } = comment;
+        {listacomentarios.map((comment, index)=> {
+            const { username, Fotolink, postDate, body } = comment;
             return(
-              <Fragment key = {creadoPor}>
+              <Fragment key = {postDate}>
                 <Grid item sm ={12}>
                   <Grid container>
                     <Grid item sm = {2}>
-                      <img src = {imagenUsuario} alt = 'comentario' className = {classes.commentImage}/> 
+                      <img src = {Fotolink} alt = 'comentario' className = {classes.commentImage}/> 
                     </Grid>
-                    <Grid item sm = {9}>
+                    <Grid item sm = {10}>
                       <div className ={classes.commentData}>
                         <Typography
                           variant = "h5"
                           component = {Link}
-                          to = {`/usuarios/${userHandler}`}
+                          to = {`/usuarios/${username}`}
                           color = 'primary'>
-                            {userHandler}
+                            {username}
                         </Typography>
                         <Typography 
                           variant = "body2"
                           color = "textSecondary">
-                          {dayjs(creadoPor).format('h:mm a, MMMM DD YYYY')}
+                          {dayjs(postDate).format('h:mm a, MMMM DD YYYY')}
                         </Typography>
                         <hr className = {classes.invisibleSeparator}/>
                         <Typography variant = "body1">
-                          {cuerpo}
+                          {body}
                         </Typography>
                       </div>
                     </Grid>
@@ -76,7 +78,7 @@ class Comments extends Component {
 }
 
 Comments.propTypes = {
-  comments: PropTypes.array.isRequired
+  listacomentarios: PropTypes.array.isRequired
 };
 
 export default withStyles(styles)(Comments);

@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Link } from 'react-router-dom';
 import LikeButton from './LikeButtom';
+import DontLikeButtom from './DontLikeButtom';
 import EditPublicacion from './EditPublicacion';
 import CommentForm from './CommentForm';
 import Comments from './Comments';
@@ -102,6 +103,7 @@ class PublicacionDialog extends Component {
                 postDate,
                 listacomentarios,
                 likes,
+                dislikes,
                 Fotolink,
                 comentarios,
                 postId,
@@ -178,6 +180,8 @@ class PublicacionDialog extends Component {
                 </Typography>
                 <LikeButton postId = {postId}/>
                 <span>{likes} Likes</span>
+                <DontLikeButtom postId = {postId}/>
+                <span>{dislikes} Dislikes</span>
                 <MyButton tip="Comentarios">
                     <ChatIcon color="primary" />
                 </MyButton>

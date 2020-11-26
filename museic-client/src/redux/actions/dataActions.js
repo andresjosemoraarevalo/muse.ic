@@ -4,6 +4,8 @@ import {
     LOADING_DATA,
     LIKE_PUBLICACION,
     UNLIKE_PUBLICACION,
+    DONTLIKE_PUBLICACION,
+    UNDODONTLIKE_PUBLICACION,
     DELETE_PUBLICACION,
     LIKE_EVENTO,
     UNLIKE_EVENTO,
@@ -182,6 +184,31 @@ export const unlikePublicacion = (postId) => (dispatch) => {
     .catch(err => console.log(err));
 };
 
+//like publicacion
+export const DontlikePublicacion = (postId) => (dispatch) => {
+  axios.get(`/publicaciones/${postId}/dislike`)
+    .then(res => {
+      dispatch({
+        type: DONTLIKE_PUBLICACION,
+        payload: res.data
+      })
+    })
+    .catch(err => console.log(err));
+};
+
+
+//unlike publicacion
+export const undoDontlikePublicacion = (postId) => (dispatch) => {
+  axios.get(`/publicaciones/${postId}/undodislike`)
+    .then(res => {
+      dispatch({
+        type: UNDODONTLIKE_PUBLICACION,
+        payload: res.data
+      })
+    })
+    .catch(err => console.log(err));
+};
+
 //like evento
 export const likeEvento = (postId) => (dispatch) => {
   axios.get(`/Eventos/${postId}/like`)
@@ -195,7 +222,7 @@ export const likeEvento = (postId) => (dispatch) => {
 };
 
 
-//unlike publicacion
+//unlike evento
 export const unlikeEvento = (postId) => (dispatch) => {
   axios.get(`/Eventos/${postId}/unlike`)
     .then(res => {

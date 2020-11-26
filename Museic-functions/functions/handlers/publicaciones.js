@@ -1,5 +1,6 @@
 const { db, admin } = require("../utilidades/administrador");
 
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
@@ -86,6 +87,7 @@ exports.getPublicaciones = (req, res) => {
           comentarios: doc.data().comentarios,
           generos: doc.data().generos,
           likes: doc.data().likes,
+          dislikes: doc.data().dislikes,
           Fotolink: doc.data().Fotolink,
           remix: doc.data().remix,
           remixUsername: doc.data().remixUsername,
@@ -115,6 +117,7 @@ exports.crearPublicacion = (req, res) => {
     remixId: req.body.remixId,
     postDate: new Date().toISOString(),
     likes: 0,
+    dislikes: 0,
     comentarios: 0,
   };
 
@@ -244,58 +247,6 @@ exports.likePublicacion = (req, res) => {
     });
 };
 
-
-//dar Nolike a publicacion
-exports.dontLikePublicacion = (req, res) => {
-  const dontLikeDocument = db
-    .collection("noLikes")
-    .where("username", "==", req.user.username)
-    .where("postId", "==", req.params.postId)
-    .limit(1);
-
-  const postDocument = db.doc(`/Publicaciones/${req.params.postId}`);
-
-  let postData;
-
-  postDocument
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        postData = doc.data();
-        postData.postId = doc.id;
-        return dontLikeDocument.get();
-      } else {
-        return res.status(404).json({ error: "Publicacion no encontrada" });
-      }
-    })
-    .then((data) => {
-      if (data.empty) {
-        return db
-          .collection("dontLikes")
-          .add({
-            postId: req.params.postId,
-            username: req.user.username,
-          })
-          .then(() => {
-            postData.noLikes++;
-            return postDocument.update({ likes: postData.dontLikes });
-          })
-          .then(() => {
-            return res.json(postData);
-          });
-      } else {
-        return res
-          .status(400)
-          .json({ error: "Ya le diste dontlike a esta publicacion" });
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({ error: err.code });
-    });
-};
-
-
 //unlike una publicacion
 exports.unlikePublicacion = (req, res) => {
   const likeDocument = db
@@ -343,6 +294,106 @@ exports.unlikePublicacion = (req, res) => {
       res.status(500).json({ error: err.code });
     });
 };
+
+
+//dar Nolike a publicacion
+exports.dontLikePublicacion = (req, res) => {
+  const dontLikeDocument = db
+    .collection("Dislikes")
+    .where("username", "==", req.user.username)
+    .where("postId", "==", req.params.postId)
+    .limit(1);
+
+  const postDocument = db.doc(`/Publicaciones/${req.params.postId}`);
+
+  let postData;
+
+  postDocument
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        postData = doc.data();
+        postData.postId = doc.id;
+        return dontLikeDocument.get();
+      } else {
+        return res.status(404).json({ error: "Publicacion no encontrada" });
+      }
+    })
+    .then((data) => {
+      if (data.empty) {
+        return db
+          .collection("Dislikes")
+          .add({
+            postId: req.params.postId,
+            username: req.user.username,
+          })
+          .then(() => {
+            postData.noLikes++;
+            return postDocument.update({ likes: postData.dontLikes });
+          })
+          .then(() => {
+            return res.json(postData);
+          });
+      } else {
+        return res
+          .status(400)
+          .json({ error: "Ya le diste dontlike a esta publicacion" });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
+};
+
+//Quitar DontLike a la publicación
+exports.undoDontlikePublicacion = (req, res) => {
+  const DontlikeDocument = db
+    .collection("Dislikes")
+    .where("username", "==", req.user.username)
+    .where("postId", "==", req.params.postId)
+    .limit(1);
+
+  const postDocument = db.doc(`/Publicaciones/${req.params.postId}`);
+
+  let postData;
+
+  postDocument
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        postData = doc.data();
+        postData.postId = doc.id;
+        return DontlikeDocument.get();
+      } else {
+        return res.status(404).json({ error: "Publicacion no encontrada" });
+      }
+    })
+    .then((data) => {
+      if (data.empty) {
+        return res
+          .status(400)
+          .json({ errror: "Publicacion sin noLike" });
+        
+      } else {
+        return db
+          .doc(`/Dislikes/${data.docs[0].id}`).delete()
+          .then(() => {
+            postData.noLikes--;
+            return postDocument.update({ likes: postData.noLikes });
+          })
+          .then(() => {
+            res.json(postData);
+
+          });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
+};
+
 
 //borrar publicacion
 exports.deletePublicacion = (req, res) => {

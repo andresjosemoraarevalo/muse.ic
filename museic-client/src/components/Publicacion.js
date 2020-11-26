@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import MyButton from "../util/MyButton";
 import EditPublicacion from './EditPublicacion';
 import LikeButton from './LikeButtom';
+import DontLikeButton from './DontLikeButtom'
 import ShareButtom from './ShareButtom';
 import PublicacionDialog from './PublicacionDialog';
 import { getPublicacion, clearErrors } from "../redux/actions/dataActions";
@@ -24,6 +25,7 @@ import ChatIcon from "@material-ui/icons/ChatBubbleOutline";
 
 //redux
 import { connect } from "react-redux";
+import DontLikeButtom from "./DontLikeButtom";
 
 
 const styles = {
@@ -75,6 +77,7 @@ class Publicacion extends Component {
         postDate,
         comentarios,
         likes,
+        dislikes,
         Fotolink,
         postId,
         remixBody,
@@ -195,6 +198,8 @@ class Publicacion extends Component {
             </div>
           <LikeButton postId = {postId}/>
           <span>{likes} Likes</span>
+          <DontLikeButtom postId = {postId}/>
+          <span>{dislikes} Dislikes</span>
           <MyButton tip="Comentarios">
             <ChatIcon color="primary" />
           </MyButton>

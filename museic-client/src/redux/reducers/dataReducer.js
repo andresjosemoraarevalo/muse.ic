@@ -2,6 +2,8 @@ import {
     SET_PUBLICACIONES,
     LIKE_PUBLICACION,
     UNLIKE_PUBLICACION,
+    DONTLIKE_PUBLICACION,
+    UNDODONTLIKE_PUBLICACION,
     LOADING_DATA,
     DELETE_PUBLICACION,
     POST_PUBLICACION,
@@ -99,6 +101,16 @@ import {
         return {
           ...state
         };
+        case DONTLIKE_PUBLICACION:
+        case UNDODONTLIKE_PUBLICACION:
+          let index4 = state.publicaciones.findIndex((publicacion) => publicacion.postId === action.payload.postId);
+          state.publicaciones[index4] = action.payload;
+          if (state.publicacion.postId === action.payload.postId){
+            state.publicacion = action.payload;
+          }
+          return{
+            ...state
+          };
         case POST_EVENTO:
           return {
             ...state,

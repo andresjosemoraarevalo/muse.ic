@@ -1,6 +1,8 @@
 const { db, admin } = require("../utilidades/administrador");
 
-
+const {
+  actualizarPMLikePublicacion
+} = require("./recomendaciones");
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
@@ -233,6 +235,7 @@ exports.likePublicacion = (req, res) => {
             return postDocument.update({ likes: postData.likes });
           })
           .then(() => {
+            actualizarPMLikePublicacion(req);
             return res.json(postData);
           });
       } else {

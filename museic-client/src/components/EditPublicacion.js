@@ -72,6 +72,12 @@ class EditPublicacion extends Component {
             postedBy: this.props.publicacion.postedBy,
             generos: this.state.generos
         };
+        this.props.publicacion.postBody = this.state.postBody;
+        this.props.publicacion.generos = this.state.generos;
+        if(this.props.data !== null){
+            this.props.data.publicacion.postBody = this.state.postBody;
+            this.props.data.publicacion.generos = this.state.generos;
+        }
         this.props.editPublicacion(postDetails, this.props.postId);
         this.handleClose();
     }
@@ -176,5 +182,9 @@ EditPublicacion.propTypes = {
     publicacion: PropTypes.object.isRequired,
 }
 
+const mapStateToProps = (state) => ({
+    data: state.data
+  });
 
-export default connect(null , {deletePublicacion, editPublicacion })(withStyles(styles)(EditPublicacion));
+
+export default connect(mapStateToProps , {deletePublicacion, editPublicacion })(withStyles(styles)(EditPublicacion));

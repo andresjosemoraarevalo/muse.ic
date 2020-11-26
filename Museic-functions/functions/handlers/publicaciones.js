@@ -204,10 +204,31 @@ exports.likePublicacion = (req, res) => {
     .where("username", "==", req.user.username)
     .where("postId", "==", req.params.postId)
     .limit(1);
+  const like2Document = db
+    .collection("Dislikes")
+    .where("username", "==", req.user.username)
+    .where("postId", "==", req.params.postId)
+    .limit(1);
 
   const postDocument = db.doc(`/Publicaciones/${req.params.postId}`);
 
   let postData;
+
+  like2Document
+    .get()
+    .then(data => {
+      if(!data.empty){
+        db.doc(`/Dislikes/${data.docs[0].id}`).delete()
+        .then(() => {
+          postData.dislikes--;
+          postDocument.update({ dislikes: postData.dislikes });
+        });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
 
   postDocument
     .get()
@@ -298,8 +319,14 @@ exports.unlikePublicacion = (req, res) => {
 
 //dar Nolike a publicacion
 exports.dontLikePublicacion = (req, res) => {
-  const dontLikeDocument = db
+
+  const likeDocument = db
     .collection("Dislikes")
+    .where("username", "==", req.user.username)
+    .where("postId", "==", req.params.postId)
+    .limit(1);
+  const like2Document = db
+    .collection("Likes")
     .where("username", "==", req.user.username)
     .where("postId", "==", req.params.postId)
     .limit(1);
@@ -307,6 +334,21 @@ exports.dontLikePublicacion = (req, res) => {
   const postDocument = db.doc(`/Publicaciones/${req.params.postId}`);
 
   let postData;
+  like2Document
+    .get()
+    .then(data => {
+      if(!data.empty){
+        db.doc(`/Likes/${data.docs[0].id}`).delete()
+        .then(() => {
+          postData.likes--;
+          postDocument.update({ likes: postData.likes });
+        });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
 
   postDocument
     .get()
@@ -314,7 +356,7 @@ exports.dontLikePublicacion = (req, res) => {
       if (doc.exists) {
         postData = doc.data();
         postData.postId = doc.id;
-        return dontLikeDocument.get();
+        return likeDocument.get();
       } else {
         return res.status(404).json({ error: "Publicacion no encontrada" });
       }
@@ -328,8 +370,8 @@ exports.dontLikePublicacion = (req, res) => {
             username: req.user.username,
           })
           .then(() => {
-            postData.noLikes++;
-            return postDocument.update({ likes: postData.dontLikes });
+            postData.dislikes++;
+            return postDocument.update({ dislikes: postData.dislikes });
           })
           .then(() => {
             return res.json(postData);
@@ -337,7 +379,7 @@ exports.dontLikePublicacion = (req, res) => {
       } else {
         return res
           .status(400)
-          .json({ error: "Ya le diste dontlike a esta publicacion" });
+          .json({ error: "Ya le diste dislike a esta publicacion" });
       }
     })
     .catch((err) => {
@@ -348,7 +390,7 @@ exports.dontLikePublicacion = (req, res) => {
 
 //Quitar DontLike a la publicación
 exports.undoDontlikePublicacion = (req, res) => {
-  const DontlikeDocument = db
+  const likeDocument = db
     .collection("Dislikes")
     .where("username", "==", req.user.username)
     .where("postId", "==", req.params.postId)
@@ -364,7 +406,7 @@ exports.undoDontlikePublicacion = (req, res) => {
       if (doc.exists) {
         postData = doc.data();
         postData.postId = doc.id;
-        return DontlikeDocument.get();
+        return likeDocument.get();
       } else {
         return res.status(404).json({ error: "Publicacion no encontrada" });
       }
@@ -373,14 +415,14 @@ exports.undoDontlikePublicacion = (req, res) => {
       if (data.empty) {
         return res
           .status(400)
-          .json({ errror: "Publicacion sin noLike" });
+          .json({ errror: "Publicacion sin dislike" });
         
       } else {
         return db
           .doc(`/Dislikes/${data.docs[0].id}`).delete()
           .then(() => {
-            postData.noLikes--;
-            return postDocument.update({ likes: postData.noLikes });
+            postData.dislikes--;
+            return postDocument.update({ dislikes: postData.dislikes });
           })
           .then(() => {
             res.json(postData);

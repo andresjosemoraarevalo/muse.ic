@@ -17,8 +17,8 @@ export class DontLikeButton extends Component {
 
     DontlikedPublicacion = () => {
         if (
-          this.props.user.nolikes &&
-          this.props.user.nolikes.find(
+          this.props.user.dislikes &&
+          this.props.user.dislikes.find(
             (nolike) => nolike.postId === this.props.postId
           )
         )

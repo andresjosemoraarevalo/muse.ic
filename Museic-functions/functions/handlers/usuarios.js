@@ -480,6 +480,7 @@ exports.getUserDetails = (req, res) => {
           generos: doc.data().generos,
           nombre: doc.data().nombre,
           likes: doc.data().likes,
+          dislikes: doc.data().dislikes,
           comentarios: doc.data().comentarios,
           postId: doc.id,
           remix: doc.data().remix,
@@ -519,13 +520,22 @@ exports.getUsuarioAutenticado = (req, res) => {
       .collection("LikesEventos")
       .where("username", "==", req.user.username)
       .get();
-    }
-    )
+    })
     .then((data) => {
       userData.likesE = [];
     data.forEach((doc) => {
       userData.likesE.push(doc.data());
     });
+      return db
+      .collection("Dislikes")
+      .where("username", "==", req.user.username)
+      .get();
+    })
+    .then((data) => {
+      userData.dislikes = [];
+      data.forEach((doc) => {
+        userData.dislikes.push(doc.data());
+      });
       return db
           .collection("Notificaciones")
           .where('destinatario', "==", req.user.username)

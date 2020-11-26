@@ -2,6 +2,9 @@ const functions = require("firebase-functions");
 
 const app = require("express")();
 
+const cors = require('cors');
+app.use(cors());
+
 const {
   getUsuarios,
   postUsuario,
@@ -75,8 +78,8 @@ app.get("/publicaciones/:postId/like", FBAuthUsuarios, likePublicacion);
 app.get("/publicaciones/:postId/unlike", FBAuthUsuarios, unlikePublicacion);
 app.post("/publicaciones/:postId/comentar", FBAuthUsuarios, comentarPublicacion);
 app.post("/editPublicacion/:postId", FBAuthUsuarios, editPublicacion);
-app.post("/publicaciones/:postId/dontlike", FBAuthUsuarios, dontLikePublicacion);
-app.post("/publicaciones/:postId/undodontlike", FBAuthArtistas, undoDontlikePublicacion);
+app.get("/publicaciones/:postId/dontlike", FBAuthUsuarios, dontLikePublicacion);
+app.get("/publicaciones/:postId/undodontlike", FBAuthUsuarios, undoDontlikePublicacion);
 
 // Eventos
 app.post("/crearEvento", FBAuthUsuarios,crearEvento);

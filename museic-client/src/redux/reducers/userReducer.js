@@ -9,7 +9,9 @@ import {
   UNLIKE_EVENTO,
   FOLLOW_USER,
   UNFOLLOW_USER,
-  MARK_NOTIFICATIONS_READ
+  MARK_NOTIFICATIONS_READ,
+  DONTLIKE_PUBLICACION,
+  UNDODONTLIKE_PUBLICACION
 } from "../types";
 
 const initialState = {
@@ -18,6 +20,7 @@ const initialState = {
   credentials: {},
   likes: [],
   likesE:[],
+  dislikes: [],
   seguidos: [],
   seguidores: [],
   publicaciones: [],
@@ -47,6 +50,9 @@ export default function (state = initialState, action) {
     case LIKE_PUBLICACION:
       return {
         ...state,
+        dislikes: state.dislikes.filter(
+          (dislike) => dislike.postId !== action.payload.postId
+        ),
         likes: [
           ...state.likes,
           {
@@ -62,6 +68,27 @@ export default function (state = initialState, action) {
           (like) => like.postId !== action.payload.postId
         ),
       };
+    case DONTLIKE_PUBLICACION:
+      return {
+        ...state,
+        likes: state.likes.filter(
+          (like) => like.postId !== action.payload.postId 
+        ),
+        dislikes: [
+          ...state.dislikes,
+          {
+            username: state.credentials.username,
+            postId: action.payload.postId,
+          },
+        ],
+      };
+    case UNDODONTLIKE_PUBLICACION:
+      return {
+        ...state,
+        dislikes: state.dislikes.filter(
+          (dislike) => dislike.postId !== action.payload.postId
+        ),
+      }
       case LIKE_EVENTO:
         return {
           ...state,

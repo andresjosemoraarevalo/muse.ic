@@ -119,7 +119,7 @@ class PublicacionDialog extends Component {
         } = this.props;
 
         const deleteButton = authenticated && postedBy === username ? (
-            <EditPublicacion postId={postId}/>
+            <EditPublicacion postId={postId} publicacion={this.props.publicacion}/>
         ) : null
 
         const dialogMarkup = loading ? (

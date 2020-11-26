@@ -186,7 +186,7 @@ export const unlikePublicacion = (postId) => (dispatch) => {
 
 //like publicacion
 export const DontlikePublicacion = (postId) => (dispatch) => {
-  axios.get(`/publicaciones/${postId}/dislike`)
+  axios.get(`/publicaciones/${postId}/dontlike`)
     .then(res => {
       dispatch({
         type: DONTLIKE_PUBLICACION,
@@ -199,7 +199,7 @@ export const DontlikePublicacion = (postId) => (dispatch) => {
 
 //unlike publicacion
 export const undoDontlikePublicacion = (postId) => (dispatch) => {
-  axios.get(`/publicaciones/${postId}/undodislike`)
+  axios.get(`/publicaciones/${postId}/undodontlike`)
     .then(res => {
       dispatch({
         type: UNDODONTLIKE_PUBLICACION,
@@ -334,7 +334,8 @@ export const sharePublicacion = (newPublicacion) => (dispatch) => {
     dispatch({ type: LOADING_DATA });
     axios.post(`/editPublicacion/${postId}`, postDetails)
       .then(() => {
-        dispatch(getUserData(postDetails.postedBy));
+        //dispatch(getUserData());
+        
       })
       .catch((err) => console.log(err));
   };

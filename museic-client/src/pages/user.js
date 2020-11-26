@@ -46,8 +46,6 @@ class user extends Component {
     }
     componentDidUpdate(){
         const userId = this.props.match.params.username;
-        console.log(userId);
-        console.log(this.state.userId);
         //window.location.href = `/usuarios/${userId}`;
         if(userId !== this.state.userId){
             this.setState({ userId: userId });

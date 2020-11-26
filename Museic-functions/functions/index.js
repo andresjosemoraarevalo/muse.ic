@@ -34,7 +34,7 @@ const {
   getUserDetails,
   agregarPerfilMusical,
   marcarNotificacionLeida,
-  resetContrasena
+  resetContrasena,
   agregarPerfilMusical,
 } = require("./handlers/usuarios");
 
@@ -69,6 +69,7 @@ const {db}=require('./utilidades/administrador');
 
 //funciones trasladada a publicaciones.js
 //funciones publicaciones
+
 
 app.get("/getUsuarios", getUsuarios);
 app.post("/publicaciones", postUsuario);

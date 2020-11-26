@@ -142,11 +142,16 @@ import {
           ...state
         };
       case SUBMIT_COMMENT:
+        let com = state.publicacion.comentarios;
+        com = com + 1;
+        let indexP = state.publicaciones.findIndex((pub) => pub.postId === state.publicacion.postId);
+        state.publicaciones[indexP].comentarios = com;
         return {
           ...state,
           publicacion: {
             ...state.publicacion, 
-            listacomentarios: [action.payload, ...state.publicacion.listacomentarios] 
+            listacomentarios: [action.payload, ...state.publicacion.listacomentarios],
+            comentarios: com
           }
             
         }

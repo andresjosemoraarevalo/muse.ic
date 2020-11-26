@@ -335,7 +335,8 @@ export const sharePublicacion = (newPublicacion) => (dispatch) => {
     axios.post(`/editPublicacion/${postId}`, postDetails)
       .then(() => {
         //dispatch(getUserData());
-        
+        window.location.reload(true);
+        //window.location.href = `/usuarios/${postDetails.postedBy}`;
       })
       .catch((err) => console.log(err));
   };
@@ -343,7 +344,7 @@ export const sharePublicacion = (newPublicacion) => (dispatch) => {
     dispatch({ type: LOADING_DATA });
     axios.post(`/editEvento/${postId}`, postDetails)
       .then(() => {
-        dispatch(getEventos());
+        window.location.reload(true);
       })
       .catch((err) => console.log(err));
   };

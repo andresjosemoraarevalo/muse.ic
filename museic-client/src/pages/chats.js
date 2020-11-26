@@ -43,6 +43,7 @@ const styles = {
     position: "relative",
     width: "90px",
     height:"50px",
+    textTransform: "none"
   },
   users:{
   width: "440px",
@@ -185,7 +186,7 @@ class chat extends Component {
                 className={classes.progressSpinner}
                 />
             )}*/}
-            enviar 
+            Enviar 
             </Button>
           </Grid>
           

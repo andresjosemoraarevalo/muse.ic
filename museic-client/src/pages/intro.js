@@ -111,7 +111,7 @@ class intro extends Component {
                                         fullWidth
                                         component={Link}
                                         //buttonStyle={{ borderRadius: 25 }}
-                                        style={{ borderRadius: 25 }}
+                                        style={{ borderRadius: 25, textTransform: "none", fontSize: '18px' }}
                                         to="/login"
                                         >
                                         Usuario
@@ -125,7 +125,7 @@ class intro extends Component {
                                         color="primary"
                                         component={Link}
                                         //buttonStyle={{ borderRadius: 25 }}
-                                        style={{ borderRadius: 25 }}
+                                        style={{ borderRadius: 25, textTransform: "none",  fontSize: '18px' }}
                                         to="/artistlogin"
                                         >
                                         Artista

@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import imagenLogin from '../images/artistloginimage.jpg';
 import { Link } from "react-router-dom";
+import ResetContrasena from '../components/ResetContrasena';
 //MUI stuff
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -17,7 +18,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { connect } from 'react-redux';
-import { loginUser } from '../redux/actions/userActions';
+import { loginUser, resetContrasena } from '../redux/actions/userActions';
 
 const styles = {
     root: {
@@ -143,6 +144,7 @@ class artistlogin extends Component {
                             color="primary"
                             className={classes.submit}
                             disabled={loading}
+                            style={{textTransform: "none"}}
                             >
                             Ingresar
                             {loading && (
@@ -151,9 +153,7 @@ class artistlogin extends Component {
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                    Olvidaste tu contraseña?
-                                    </Link>
+                                    <ResetContrasena />
                                 </Grid>
                                 <Grid item>
                                     <Link href="#" to="/signupA"variant="body2">
@@ -181,6 +181,7 @@ const mapStateToProps = (state) => ({
   });
   
   const mapActionsToProps = {
-    loginUser
+    loginUser,
+    resetContrasena
   }
 export default connect(mapStateToProps, mapActionsToProps) (withStyles(styles)(artistlogin));

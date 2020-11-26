@@ -80,6 +80,7 @@ class CommentForm extends Component {
             variant="contained"
             color="primary"
             className={classes.button}
+            style={{textTransform: "none"}}
           >
             Comentar
           </Button>

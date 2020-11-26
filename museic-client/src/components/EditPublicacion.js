@@ -72,8 +72,6 @@ class EditPublicacion extends Component {
             postedBy: this.props.publicacion.postedBy,
             generos: this.state.generos
         };
-        this.props.publicacion.postBody = this.state.postBody;
-        this.props.publicacion.generos = this.state.generos;
         if(this.props.data !== null){
             this.props.data.publicacion.postBody = this.state.postBody;
             this.props.data.publicacion.generos = this.state.generos;

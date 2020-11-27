@@ -73,6 +73,7 @@ class chat extends Component {
   handleClick2 = ()=>{
     this.props.postMensaje({username2: this.state.chatUser , postBody: this.state.postBody});
     
+    
 
   };
   handleChange = (event) => {

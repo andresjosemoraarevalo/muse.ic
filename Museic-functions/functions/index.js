@@ -35,7 +35,6 @@ const {
   agregarPerfilMusical,
   marcarNotificacionLeida,
   resetContrasena,
-  agregarPerfilMusical,
 } = require("./handlers/usuarios");
 
 const {
@@ -57,6 +56,9 @@ const {
   crearGrupo
 } = require("./handlers/grupos");
 
+const {
+  actualizarPMunLikePublicacion
+}= require("./handlers/recomendaciones");
 
 const FBAuthUsuarios = require("./utilidades/fbauthUsuarios");
 const FBAuthArtistas = require("./utilidades/fbauthArtistas");
@@ -69,7 +71,7 @@ const {db}=require('./utilidades/administrador');
 
 //funciones trasladada a publicaciones.js
 //funciones publicaciones
-
+app.get("/getRecomendacion", actualizarPMunLikePublicacion);
 
 app.get("/getUsuarios", getUsuarios);
 app.post("/publicaciones", postUsuario);

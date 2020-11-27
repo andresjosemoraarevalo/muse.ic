@@ -17,6 +17,7 @@ import HelpOutline from '@material-ui/icons/HelpOutline';
 import People from '@material-ui/icons/People';
 import MusicNote from '@material-ui/icons/MusicNote';
 import SendIcon from '@material-ui/icons/Send';
+import EmojiObjectsSharpIcon from '@material-ui/icons/EmojiObjectsSharp';
 
 //redux 
 import { connect } from "react-redux";
@@ -106,11 +107,14 @@ class Menu extends Component {
                             </MyButton>
                                 <Typography variant="inherit">Mensajes</Typography>     
                             </MenuItem>
-                            <MenuItem>
+                            <MenuItem
+                            component={Link}
+                            to={'/recomendaciones'}>
+                            
                                 <MyButton tip="Perfil">
-                                    <People style={{fill: "secondary"}} />
+                                    <EmojiObjectsSharpIcon style={{fill: "secondary"}} />
                                 </MyButton>
-                                    <Typography variant="inherit">Grupos de interes</Typography>     
+                                    <Typography variant="inherit">Recomendaciones</Typography>     
                             </MenuItem>
                             <MenuItem
                                 component={Link}

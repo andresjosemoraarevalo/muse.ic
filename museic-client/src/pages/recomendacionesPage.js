@@ -3,15 +3,20 @@ import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
-import Publicacion from "../components/Publicacion";
+import Recomendacion from "../components/Recomendacion";
+import RecomendacionE from "../components/RecomendacionE";
 import Evento from "../components/Evento";
 import PostPublicacion from '../components/PostPublicacion';
 import Profile from '../components/Profile';
 import Menu from '../components/menu';
 import { connect } from "react-redux";
-import { getPublicaciones, getEventos } from "../redux/actions/dataActions";
+import { getRecomendaciones, getRecomendacionesE } from "../redux/actions/dataActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import PostEvento from '../components/PostEvento';
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Box from "@material-ui/core/Box";
 //import Button from "@material-ui/core/Button";
  // <Menu />
 const styles = {
@@ -36,13 +41,43 @@ const styles = {
     text: "center"
   }
 };
+function a11yProps(index) {
+  return {
+    id: `wrapped-tab-${index}`,
+    "aria-controls": `wrapped-tabpanel-${index}`,
+  };
+}
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box p={3}>{children}</Box>}
+    </div>
+  );
+}
 
 class recomendacionesPage extends Component {
+  state = {
+    value: 0,
+    buscar: ''
+  };
   componentDidMount() {
-    this.props.getPublicaciones();
-    this.props.getEventos();
+    this.props.getRecomendaciones(this.props.user.credentials.username);
+    this.props.getRecomendacionesE(this.props.user.credentials.username);
   }
+  handleChange = (value) => {
+    this.setState({
+      value,
+    });
+    console.log(this.state.value);
+  };
   render() {
     const { 
       user: {
@@ -57,38 +92,35 @@ class recomendacionesPage extends Component {
      // 
        
     } = this.props;
-    const {publicaciones,eventos}= this.props.data;
+    const {recomendaciones, recomendacionese}= this.props.data;
     const { classes } = this.props;
 
-    var publicacionesQueSigo = publicaciones.filter(n => seguidos.some(n2 => n.postedBy === n2.follows ) || n.postedBy === username);
-    var eventosQueSigo = eventos.filter(n => seguidos.some(n2 => n.postedBy === n2.follows || n.postedBy === username));
-    let recentPublicacionesMarkup = !loading ? (
-      publicacionesQueSigo.length > 0 ? (
-        publicacionesQueSigo.map((publicacion) => (
-          <Publicacion key={publicacion.postId} publicacion={publicacion} />
+    let recentRecomendaciones = !loading ? (
+      recomendaciones.length > 0 ? (
+        recomendaciones.map((recomendacion) => (
+          <Recomendacion key={recomendacion.postId} recomendacion={recomendacion} />
         ))
       ) : (
         <Typography variant="h6" color="textPrimary">
-          {"Empieza a seguir usuarios para ver sus publicaciones!"}
+          {"Hoy no tienes recomendaciones"}
         </Typography>
       )
     ) : (
       null
     );
-    let recentEventosMarkup = !loading ? (
-      eventosQueSigo.length > 0 ? (
-        Array.from(eventosQueSigo).map((evento) => (
-          <Evento key={evento.postId} evento={evento} />
+    let recentRecomendacionesE = !loading ? (
+      recomendacionese.length > 0 ? (
+        recomendacionese.map((recomendacion) => (
+          <RecomendacionE key={recomendacion.postId} recomendacion={recomendacion} />
         ))
       ) : (
-        <Typography variant="h6" color="textPrimary" className={classes.sineventos}>
-          {"Empieza a seguir Artistas para ver sus eventos!"}
+        <Typography variant="h6" color="textPrimary">
+          {"Hoy no tienes recomendaciones"}
         </Typography>
-      ) 
+      )
     ) : (
       null
     );
-    
 
     let homes = ! loading ?(
       authenticated ?(
@@ -104,24 +136,34 @@ class recomendacionesPage extends Component {
             ) : null}
           </div>      
           </Grid>
-          <Grid item sm={5} >
+          <Grid item sm={9} >
+          <AppBar position="static" color="white">
+                <Tabs
+                  value={this.state.value}
+                  onChange={(e, v) => {
+                    this.handleChange(v);
+                  }}
+                  aria-label="wrapped label tabs example"
+                  indicatorColor="primary"
+                  textColor="primary"
+                  centered
+                >
+                  <Tab label="Publicaciones" {...a11yProps(0)} />
+                  <Tab label="Eventos" {...a11yProps(1)} />
+                  <Tab label="Usuarios" {...a11yProps(2)} />
+                  <Tab label="Artistas" {...a11yProps(3)} />
+                </Tabs>
+              </AppBar>
+              <div id="paneles" >
+              <TabPanel value={this.state.value} index={0}>
+              {recentRecomendaciones}
+              </TabPanel>
+              <TabPanel value={this.state.value} index={1}>
+              {recentRecomendacionesE}
+              </TabPanel>
+              </div>
+          </Grid>
           
-          <div id="homePublicaciones" >
-          {/*recentPublicacionesMarkup*/}
-            </div>
-          </Grid>
-          <Grid item sm={4}>
-          <Typography
-            variant="h5"
-            color="primary"
-            className={classes.eventos}
-          >
-            Eventos
-          </Typography>
-          <div id="homeEventos">
-            {/*recentEventosMarkup*/}
-          </div>
-          </Grid>
           
           
         </Grid>
@@ -146,10 +188,10 @@ const mapStateToProps = (state) => ({
 recomendacionesPage.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  getPublicaciones: PropTypes.func.isRequired,
-  getEventos: PropTypes.func.isRequired,
+  getRecomendaciones: PropTypes.func.isRequired,
+  getRecomendacionesE: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
 };
-export default connect(mapStateToProps, { getPublicaciones, getEventos })(
+export default connect(mapStateToProps, { getRecomendaciones,getRecomendacionesE})(
   withStyles(styles)(recomendacionesPage)
 );

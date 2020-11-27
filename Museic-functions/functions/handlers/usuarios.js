@@ -17,6 +17,10 @@ const {
   soloDetails,
 } = require("../utilidades/validadores");
 
+const{
+  actualizarPMgustosPerfil,
+}= require("./recomendaciones");
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 /*
@@ -516,6 +520,7 @@ exports.addUserDetails = (req, res) => {
   db.doc(`/Usuarios/${req.user.username}`)
     .update(userDetails)
     .then(() => {
+      actualizarPMgustosPerfil(req)
       return res.json({ message: "Detalles añadidos satisfactoriamente" });
     })
     .catch((err) => {

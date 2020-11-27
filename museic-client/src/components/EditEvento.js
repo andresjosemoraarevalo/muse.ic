@@ -50,7 +50,7 @@ class EditEvento extends Component {
             nombre: evento.nombre,
             precio: evento.precio,
             lugar: evento.lugar,
-            selectedDate: evento.selectedDate,
+            selectedDate: evento.fechaEvento
 
         });
     }

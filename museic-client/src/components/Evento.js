@@ -6,6 +6,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
 import MyButton from "../util/MyButton";
 import LikeButtonE from './likeButtomE';
+import DislikeButtonE from './DislikeButtonE';
 
 //MUI stuff
 import Card from "@material-ui/core/Card";
@@ -54,6 +55,7 @@ class Evento extends Component {
         postDate,
         comentarios,
         likes,
+        dislikes,
         Fotolink,
         postId,
         fechaEvento,
@@ -145,10 +147,8 @@ class Evento extends Component {
             </div>
           <LikeButtonE postId = {postId}/>
           <span>{likes} Likes</span>
-          <MyButton tip="Comentarios">
-            <ChatIcon color="primary" />
-          </MyButton>
-          <span>{comentarios} Comentarios</span>
+          <DislikeButtonE postId = {postId} />
+          <span>{dislikes} Dislikes</span>
         </CardContent>
       </Card>
     );

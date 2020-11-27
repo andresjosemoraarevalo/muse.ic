@@ -17,6 +17,7 @@ exports.getEventos = (req, res) => {
             postDate: doc.data().postDate,
             comentarios: doc.data().comentarios,
             likes: doc.data().likes,
+            dislikes: doc.data().dislikes,
             Fotolink: doc.data().Fotolink,
             nombre: doc.data().nombre,
             precio: doc.data().precio,
@@ -50,6 +51,7 @@ exports.getEventos = (req, res) => {
       precio: req.body.precio,
       generos: req.body.generos,
       likes: 0,
+      dislikes: 0,
       comentarios: 0,
     };
     admin
@@ -72,7 +74,12 @@ exports.getEventos = (req, res) => {
   //dar like a un evento
 exports.likeEvento = (req, res) => {
     const likeDocument = db
-      .collection("LikesE")
+      .collection("LikesEventos")
+      .where("username", "==", req.user.username)
+      .where("postId", "==", req.params.postId)
+      .limit(1);
+    const like2Document = db
+      .collection("DislikeEvento")
       .where("username", "==", req.user.username)
       .where("postId", "==", req.params.postId)
       .limit(1);
@@ -80,6 +87,22 @@ exports.likeEvento = (req, res) => {
     const postDocument = db.doc(`/Eventos/${req.params.postId}`);
   
     let postData;
+
+    like2Document
+    .get()
+    .then(data => {
+      if(!data.empty){
+        db.doc(`/DislikeEvento/${data.docs[0].id}`).delete()
+        .then(() => {
+          postData.dislikes--;
+          postDocument.update({ dislikes: postData.dislikes });
+        });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
   
     postDocument
       .get()
@@ -166,6 +189,124 @@ exports.likeEvento = (req, res) => {
         res.status(500).json({ error: err.code });
       });
   };
+
+  exports.dislikeEvento = (req, res) => {
+  const likeDocument = db
+    .collection("DislikeEvento")
+    .where("username", "==", req.user.username)
+    .where("postId", "==", req.params.postId)
+    .limit(1);
+
+  const like2Document = db
+    .collection("LikesEventos")
+    .where("username", "==", req.user.username)
+    .where("postId", "==", req.params.postId)
+    .limit(1);
+
+  const postDocument = db.doc(`/Eventos/${req.params.postId}`);
+
+  let postData;
+
+  like2Document
+    .get()
+    .then(data => {
+      if(!data.empty){
+        db.doc(`/LikesEventos/${data.docs[0].id}`).delete()
+        .then(() => {
+          postData.likes--;
+          postDocument.update({ likes: postData.likes });
+        });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
+
+  postDocument
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        postData = doc.data();
+        postData.postId = doc.id;
+        return likeDocument.get();
+      } else {
+        return res.status(404).json({ error: "Evento no encontrada" });
+      }
+    })
+    .then((data) => {
+      if (data.empty) {
+        return db
+          .collection("DislikeEvento")
+          .add({
+            postId: req.params.postId,
+            username: req.user.username,
+          })
+          .then(() => {
+            postData.dislikes++;
+            return postDocument.update({ dislikes: postData.dislikes });
+          })
+          .then(() => {
+            return res.json(postData);
+          });
+      } else {
+        return res
+          .status(400)
+          .json({ error: "Ya le diste like a este evento" });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
+  }
+
+  exports.undislikesEvento = (req, res) => {
+    const likeDocument = db
+    .collection("DislikeEvento")
+    .where("username", "==", req.user.username)
+    .where("postId", "==", req.params.postId)
+    .limit(1);
+
+  const postDocument = db.doc(`/Eventos/${req.params.postId}`);
+
+  let postData;
+
+  postDocument
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        postData = doc.data();
+        postData.postId = doc.id;
+        return likeDocument.get();
+      } else {
+        return res.status(404).json({ error: "Evento no encontrada" });
+      }
+    })
+    .then((data) => {
+      if (data.empty) {
+        return res
+          .status(400)
+          .json({ errror: "Evento sin dislike" });
+        
+      } else {
+        return db
+          .doc(`/DislikeEvento/${data.docs[0].id}`).delete()
+          .then(() => {
+            postData.dislikes--;
+            return postDocument.update({ dislikes: postData.dislikes });
+          })
+          .then(() => {
+            res.json(postData);
+
+          });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
+  }
 
   exports.deleteEvento = (req, res) => {
   const document = db.doc(`/Eventos/${req.params.postId}`);

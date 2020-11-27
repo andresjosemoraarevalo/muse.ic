@@ -11,7 +11,9 @@ import {
   UNFOLLOW_USER,
   MARK_NOTIFICATIONS_READ,
   DONTLIKE_PUBLICACION,
-  UNDODONTLIKE_PUBLICACION
+  UNDODONTLIKE_PUBLICACION,
+  DISLIKE_EVENTO,
+  UNDISLIKE_EVENTO,
 } from "../types";
 
 const initialState = {
@@ -19,8 +21,9 @@ const initialState = {
   loading: false,
   credentials: {},
   likes: [],
-  likesE:[],
+  likesE: [],
   dislikes: [],
+  dislikesE: [],
   seguidos: [],
   seguidores: [],
   publicaciones: [],
@@ -40,7 +43,7 @@ export default function (state = initialState, action) {
       return {
         authenticated: true,
         loading: false,
-        ...action.payload
+        ...action.payload,
       };
     case LOADING_USER:
       return {
@@ -72,7 +75,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         likes: state.likes.filter(
-          (like) => like.postId !== action.payload.postId 
+          (like) => like.postId !== action.payload.postId
         ),
         dislikes: [
           ...state.dislikes,
@@ -88,30 +91,54 @@ export default function (state = initialState, action) {
         dislikes: state.dislikes.filter(
           (dislike) => dislike.postId !== action.payload.postId
         ),
-      }
-      case LIKE_EVENTO:
-        return {
-          ...state,
-          likesE: [
-            ...state.likesE,
-            {
-              username: state.credentials.username,
-              postId: action.payload.postId,
-            },
-          ],
-        };
-      case UNLIKE_EVENTO:
-        return {
-          ...state,
-          likesE: state.likes.filter(
-            (like) => like.postId !== action.payload.postId
-          ),
-        };
+      };
+    case LIKE_EVENTO:
+      return {
+        ...state,
+        dislikesE: state.dislikesE.filter(
+          (dislike) => dislike.postId !== action.payload.postId
+        ),
+        likesE: [
+          ...state.likesE,
+          {
+            username: state.credentials.username,
+            postId: action.payload.postId,
+          },
+        ],
+      };
+    case UNLIKE_EVENTO:
+      return {
+        ...state,
+        likesE: state.likesE.filter(
+          (like) => like.postId !== action.payload.postId
+        ),
+      };
+    case DISLIKE_EVENTO:
+      return {
+        ...state,
+        likesE: state.likesE.filter(
+          (like) => like.postId !== action.payload.postId
+        ),
+        dislikesE: [
+          ...state.dislikesE,
+          {
+            username: state.credentials.username,
+            postId: action.payload.postId,
+          },
+        ],
+      };
+    case UNDISLIKE_EVENTO:
+      return {
+        ...state,
+        dislikesE: state.dislikesE.filter(
+          (dislike) => dislike.postId !== action.payload.postId
+        ),
+      };
     case MARK_NOTIFICATIONS_READ:
-        state.notificaciones.array.forEach(not => not.read = true );
-        return {
-          ...state
-        };
+      state.notificaciones.array.forEach((not) => (not.read = true));
+      return {
+        ...state,
+      };
     case FOLLOW_USER:
       return {
         ...state,

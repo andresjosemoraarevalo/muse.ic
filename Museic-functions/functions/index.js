@@ -44,6 +44,8 @@ const {
   unlikeEvento,
   deleteEvento,
   editEvento,
+  dislikeEvento,
+  undislikesEvento,
 }= require("./handlers/eventos");
 
 const{
@@ -91,6 +93,8 @@ app.post("/editEvento/:postId", FBAuthUsuarios, editEvento);
 app.get("/getEventos",getEventos);
 app.get("/Eventos/:postId/like", FBAuthUsuarios, likeEvento);
 app.get("/Eventos/:postId/unlike", FBAuthUsuarios, unlikeEvento);
+app.get("/Eventos/:postId/dislike", FBAuthUsuarios, dislikeEvento);
+app.get("/Eventos/:postId/undislike", FBAuthUsuarios, undislikesEvento);
 app.delete("/Eventos/:postId", FBAuthUsuarios, deleteEvento);
 
 //Grupos

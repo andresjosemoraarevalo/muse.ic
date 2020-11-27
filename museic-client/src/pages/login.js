@@ -192,6 +192,7 @@ class login extends Component {
                 color="primary"
                 className={classes.submit}
                 disabled={loading}
+                style={{textTransform: "none"}}
               >
                 Ingresar
                 {loading && (

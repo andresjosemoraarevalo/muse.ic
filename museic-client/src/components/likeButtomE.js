@@ -3,8 +3,8 @@ import MyButton from '../util/MyButton';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 //Iconos
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 //Redux
 import { connect } from 'react-redux';
 import {
@@ -37,17 +37,17 @@ export class LikeButtonE extends Component {
     const likeButton = !authenticated ? (
         <Link to="/login">
             <MyButton tip="Like">
-                    <FavoriteBorder color="primary"/>
+                    <ThumbUpOutlinedIcon color="primary"/>
             </MyButton>
         </Link>
     ) : (
         this.likedEvento() ? (
             <MyButton tip="Undo like" onClick={this.unlikeEvento}>
-                <FavoriteIcon color="primary"/>
+                <ThumbUpIcon color="primary"/>
             </MyButton>
         ) : (
             <MyButton tip="Like" onClick={this.likeEvento}>
-                <FavoriteBorder color="primary"/>
+                <ThumbUpOutlinedIcon color="primary"/>
             </MyButton>
         )
     );

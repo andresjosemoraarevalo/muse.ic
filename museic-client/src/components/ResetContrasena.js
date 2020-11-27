@@ -23,6 +23,7 @@ import CloseIcon from "@material-ui/icons/Close";
 //redux stuff
 import { connect } from 'react-redux';
 import { loginUser, resetContrasena } from '../redux/actions/userActions';
+import { clearErrors } from '../redux/actions/dataActions';
 
 
 const styles = {
@@ -62,6 +63,11 @@ class ResetContrasena extends Component {
         emailReset: "",
         open: false
     }
+    componentWillReceiveProps(nextProps){
+      if(nextProps.UI.errors){
+        this.setState({errors: nextProps.UI.errors });
+      }
+    }
     handleOpen = () => {
       this.setState({
         open: true,
@@ -72,11 +78,13 @@ class ResetContrasena extends Component {
     };
     handleSubmitReset = (event) => {
       event.preventDefault();
+      this.props.clearErrors();
       this.props.resetContrasena(this.state.emailReset);
     }
     handleChange = (event) => {
         this.setState({
         [event.target.name]: event.target.value,
+        errors: {}
         });
     };
     render() {
@@ -127,13 +135,14 @@ class ResetContrasena extends Component {
                           error={errors.error ? true : false}
                           value={this.state.emailReset}
                           onChange={this.handleChange}
-                        />
+                        />  
                         
                         <Button
                           variant="contained"
                           color="primary"
                           className={classes.submitButton}
                           disabled={loading}
+                          style={{textTransform: "none"}}
                           onClick={this.handleSubmitReset}
                         >
                           Enviar
@@ -153,6 +162,7 @@ class ResetContrasena extends Component {
 ResetContrasena.propTypes = {
     classes: PropTypes.object.isRequired,
     loginUser: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     UI: PropTypes.object.isRequired
   };
@@ -164,7 +174,8 @@ ResetContrasena.propTypes = {
   
   const mapActionsToProps = {
     loginUser,
-    resetContrasena
+    resetContrasena,
+    clearErrors,
   }
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(ResetContrasena));

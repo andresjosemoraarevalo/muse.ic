@@ -22,7 +22,7 @@ const styles = {
 class user extends Component {
     state = {
         profile: null,
-        postIdParam: null,
+        postIdParam: undefined,
         userId: null
     }
     componentDidMount(){
@@ -46,9 +46,15 @@ class user extends Component {
     }
     componentDidUpdate(){
         const userId = this.props.match.params.username;
+        const postIdd = this.props.match.params.postId;
+
         //window.location.href = `/usuarios/${userId}`;
         if(userId !== this.state.userId){
             this.setState({ userId: userId });
+            this.fetchUser(this.props.match.params.username);
+        }
+        if(postIdd !== this.state.postIdParam){
+            this.setState({ postIdParam: postIdd });
             this.fetchUser(this.props.match.params.username);
         }
     }

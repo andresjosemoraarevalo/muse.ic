@@ -212,6 +212,10 @@ exports.likePublicacion = (req, res) => {
     .where("username", "==", req.user.username)
     .where("postId", "==", req.params.postId)
     .limit(1);
+  const listacomentarios = db
+    .collection("Comentarios")
+    .orderBy("postDate", "desc")
+    .where("postId", "==", req.params.postId);
 
   const postDocument = db.doc(`/Publicaciones/${req.params.postId}`);
 
@@ -240,6 +244,7 @@ exports.likePublicacion = (req, res) => {
         postData = doc.data();
         postData.postId = doc.id;
         return likeDocument.get();
+        
       } else {
         return res.status(404).json({ error: "Publicacion no encontrada" });
       }
@@ -257,6 +262,17 @@ exports.likePublicacion = (req, res) => {
             return postDocument.update({ likes: postData.likes });
           })
           .then(() => {
+            return db
+              .collection("Comentarios")
+              .orderBy("postDate", "desc")
+              .where("postId", "==", req.params.postId)
+              .get();
+          })
+          .then((data) => {
+            postData.listacomentarios = [];
+            data.forEach((doc) => {
+              postData.listacomentarios.push(doc.data());
+            });
             return res.json(postData);
           });
       } else {
@@ -308,8 +324,18 @@ exports.unlikePublicacion = (req, res) => {
             return postDocument.update({ likes: postData.likes });
           })
           .then(() => {
-            res.json(postData);
-
+            return db
+              .collection("Comentarios")
+              .orderBy("postDate", "desc")
+              .where("postId", "==", req.params.postId)
+              .get();
+          })
+          .then((data) => {
+            postData.listacomentarios = [];
+            data.forEach((doc) => {
+              postData.listacomentarios.push(doc.data());
+            });
+            return res.json(postData);
           });
       }
     })
@@ -377,6 +403,17 @@ exports.dontLikePublicacion = (req, res) => {
             return postDocument.update({ dislikes: postData.dislikes });
           })
           .then(() => {
+            return db
+              .collection("Comentarios")
+              .orderBy("postDate", "desc")
+              .where("postId", "==", req.params.postId)
+              .get();
+          })
+          .then((data) => {
+            postData.listacomentarios = [];
+            data.forEach((doc) => {
+              postData.listacomentarios.push(doc.data());
+            });
             return res.json(postData);
           });
       } else {
@@ -428,7 +465,18 @@ exports.undoDontlikePublicacion = (req, res) => {
             return postDocument.update({ dislikes: postData.dislikes });
           })
           .then(() => {
-            res.json(postData);
+            return db
+              .collection("Comentarios")
+              .orderBy("postDate", "desc")
+              .where("postId", "==", req.params.postId)
+              .get();
+          })
+          .then((data) => {
+            postData.listacomentarios = [];
+            data.forEach((doc) => {
+              postData.listacomentarios.push(doc.data());
+            });
+            return res.json(postData);
 
           });
       }

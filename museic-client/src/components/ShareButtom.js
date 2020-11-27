@@ -39,6 +39,7 @@ const styles = {
     marginTop: 20,
     marginBottom: 10,
     float: "right",
+    textTransform: "none"
   },
   progressSpinner: {
     position: "absolute",

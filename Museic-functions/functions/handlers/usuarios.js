@@ -607,7 +607,18 @@ exports.getUsuarioAutenticado = (req, res) => {
       userData.dislikes = [];
       data.forEach((doc) => {
         userData.dislikes.push(doc.data());
-      });
+    });
+      return db
+      .collection("DislikeEvento")
+      .where("username", "==", req.user.username)
+      .get();
+    })
+    .then((data) => {
+      userData.dislikesE = [];
+      data.forEach((doc) => {
+        userData.dislikesE.push(doc.data());
+      
+    });
       return db
           .collection("Notificaciones")
           .where('destinatario', "==", req.user.username)

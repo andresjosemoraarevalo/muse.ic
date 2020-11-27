@@ -43,6 +43,7 @@ const styles = {
     position: "relative",
     width: "90px",
     height:"50px",
+    textTransform: "none"
   },
   users:{
   width: "440px",
@@ -72,8 +73,11 @@ class chat extends Component {
   };
   handleClick2 = ()=>{
     this.props.postMensaje({username2: this.state.chatUser , postBody: this.state.postBody});
+
     
     
+
+    this.setState({ postBody: ''});
 
   };
   handleChange = (event) => {
@@ -167,6 +171,7 @@ class chat extends Component {
             placeholder= {`Enviale un mensaje a ${this.state.chatUser}`}
             //error={errors.nombre ? true : false}
             //helperText={errors.nombre}
+            value={this.state.postBody}
             onChange={this.handleChange}
             className={classes.text}
 
@@ -186,7 +191,7 @@ class chat extends Component {
                 className={classes.progressSpinner}
                 />
             )}*/}
-            enviar 
+            Enviar 
             </Button>
           </Grid>
           

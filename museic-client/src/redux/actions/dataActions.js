@@ -24,7 +24,9 @@ import {
     SET_USUARIOS,
     SET_CHAT,
     SET_MENSAJES,
-    POST_MENSAJE
+    POST_MENSAJE,
+    DISLIKE_EVENTO,
+    UNDISLIKE_EVENTO
   } from '../types';
 import axios from 'axios';
 
@@ -234,6 +236,29 @@ export const unlikeEvento = (postId) => (dispatch) => {
     .catch(err => console.log(err));
 };
 
+//dislike Evento
+export const dislikeEvento = (postId) => (dispatch) => {
+  axios.get(`/Eventos/${postId}/dislike`)
+    .then(res => {
+      dispatch({
+        type: DISLIKE_EVENTO,
+        payload: res.data
+      })
+    })
+    .catch(err => console.log(err));
+}
+
+export const undislikeEvento = (postId) => (dispatch) => {
+  axios.get(`/Eventos/${postId}/undislike`)
+    .then(res => {
+      dispatch({
+        type: UNDISLIKE_EVENTO,
+        payload: res.data
+      })
+    })
+    .catch(err => console.log(err));
+}
+
 //Realizar Comentarios:
 export const comentarPublicacion = (postId , dataComentario) => (dispatch) => {
   axios.post(`/publicaciones/${postId}/comentar`, dataComentario)
@@ -335,7 +360,8 @@ export const sharePublicacion = (newPublicacion) => (dispatch) => {
     axios.post(`/editPublicacion/${postId}`, postDetails)
       .then(() => {
         //dispatch(getUserData());
-        
+        window.location.reload(true);
+        //window.location.href = `/usuarios/${postDetails.postedBy}`;
       })
       .catch((err) => console.log(err));
   };
@@ -343,7 +369,7 @@ export const sharePublicacion = (newPublicacion) => (dispatch) => {
     dispatch({ type: LOADING_DATA });
     axios.post(`/editEvento/${postId}`, postDetails)
       .then(() => {
-        dispatch(getEventos());
+        window.location.reload(true);
       })
       .catch((err) => console.log(err));
   };

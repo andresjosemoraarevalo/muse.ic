@@ -24,6 +24,7 @@ const styles = {
     marginTop: 20,
     marginBottom: 10,
     float: 'right',
+    textTransform: "none"
     
   },
   progressSpinner: {
@@ -32,7 +33,7 @@ const styles = {
   closeButton: {
     position: "absolute",
     left: "91%",
-    top: "6%",
+    top: "1%",
   },
   TextField: {
     marginBottom: 20
@@ -103,7 +104,7 @@ class PostPublicacion extends Component {
           variant="contained"
           color="primary"
           buttonStyle={{ borderRadius: 25 }}
-          style={{ borderRadius: 25 }}
+          style={{ borderRadius: 25, textTransform: "none" }}
           onClick={this.handleOpen}
           startIcon={<PostAddIcon />}
         >

@@ -77,6 +77,7 @@ class Recomendacion extends Component {
         postedBy,
        puntuacion,
        Fotolink,
+       generos,
       },
       user: {
           authenticated,
@@ -141,6 +142,22 @@ class Recomendacion extends Component {
 
           <div className={classes.section2}>
 
+          {generos && (
+              <Grid container className={classes.boxDiv}>
+                {generos.map((genero) => (
+                  <Box
+                    component="div"
+                    display="inline"
+                    borderRadius={8}
+                    p={1}
+                    color="primary"
+                    className={classes.box}
+                  >
+                    {genero}
+                  </Box>
+                ))}
+              </Grid>
+            )}
             </div>
           
         </CardContent>

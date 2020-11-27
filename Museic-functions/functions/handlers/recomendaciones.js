@@ -265,6 +265,7 @@ exports.recomendarPublicacion= (req,res) => {
                 postBody: publicaciones[pub].postBody,
                 postedBy: publicaciones[pub].postedBy,
                 Fotolink: publicaciones[pub].Fotolink,
+                generos: publicaciones[pub].generos,
                 puntuacion: sumatoria})
             sumatoria=0;
                 

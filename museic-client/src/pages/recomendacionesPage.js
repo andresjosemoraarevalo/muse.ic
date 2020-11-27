@@ -12,6 +12,10 @@ import { connect } from "react-redux";
 import { getRecomendaciones } from "../redux/actions/dataActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import PostEvento from '../components/PostEvento';
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Box from "@material-ui/core/Box";
 //import Button from "@material-ui/core/Button";
  // <Menu />
 const styles = {
@@ -36,12 +40,42 @@ const styles = {
     text: "center"
   }
 };
+function a11yProps(index) {
+  return {
+    id: `wrapped-tab-${index}`,
+    "aria-controls": `wrapped-tabpanel-${index}`,
+  };
+}
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box p={3}>{children}</Box>}
+    </div>
+  );
+}
 
 class recomendacionesPage extends Component {
+  state = {
+    value: 0,
+    buscar: ''
+  };
   componentDidMount() {
     this.props.getRecomendaciones(this.props.user.credentials.username);
   }
+  handleChange = (value) => {
+    this.setState({
+      value,
+    });
+    console.log(this.state.value);
+  };
   render() {
     const { 
       user: {
@@ -88,24 +122,31 @@ class recomendacionesPage extends Component {
             ) : null}
           </div>      
           </Grid>
-          <Grid item sm={5} >
+          <Grid item sm={9} >
+          <AppBar position="static" color="white">
+                <Tabs
+                  value={this.state.value}
+                  onChange={(e, v) => {
+                    this.handleChange(v);
+                  }}
+                  aria-label="wrapped label tabs example"
+                  indicatorColor="primary"
+                  textColor="primary"
+                  centered
+                >
+                  <Tab label="Publicaciones" {...a11yProps(0)} />
+                  <Tab label="Eventos" {...a11yProps(1)} />
+                  <Tab label="Usuarios" {...a11yProps(2)} />
+                  <Tab label="Artistas" {...a11yProps(3)} />
+                </Tabs>
+              </AppBar>
+              <div id="paneles" >
+              <TabPanel value={this.state.value} index={0}>
+              {recentRecomendaciones}
+              </TabPanel>
+              </div>
+          </Grid>
           
-          <div id="homePublicaciones" >
-          {recentRecomendaciones}
-            </div>
-          </Grid>
-          <Grid item sm={4}>
-          <Typography
-            variant="h5"
-            color="primary"
-            className={classes.eventos}
-          >
-            Eventos
-          </Typography>
-          <div id="homeEventos">
-            {/*recentEventosMarkup*/}
-          </div>
-          </Grid>
           
           
         </Grid>

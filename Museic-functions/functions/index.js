@@ -32,8 +32,9 @@ const {
   followUsuario,
   unfollowUsuario,
   getUserDetails,
+  agregarPerfilMusical,
   marcarNotificacionLeida,
-  resetContrasena
+  resetContrasena,
 } = require("./handlers/usuarios");
 
 const {
@@ -57,6 +58,9 @@ const {
   crearGrupo
 } = require("./handlers/grupos");
 
+const {
+  actualizarPMunLikePublicacion
+}= require("./handlers/recomendaciones");
 
 const FBAuthUsuarios = require("./utilidades/fbauthUsuarios");
 const FBAuthArtistas = require("./utilidades/fbauthArtistas");
@@ -69,6 +73,8 @@ const {db}=require('./utilidades/administrador');
 
 //funciones trasladada a publicaciones.js
 //funciones publicaciones
+app.get("/getRecomendacion", actualizarPMunLikePublicacion);
+
 
 app.get("/getUsuarios", getUsuarios);
 app.post("/publicaciones", postUsuario);
@@ -80,9 +86,7 @@ app.get("/publicaciones/:postId/like", FBAuthUsuarios, likePublicacion);
 app.get("/publicaciones/:postId/unlike", FBAuthUsuarios, unlikePublicacion);
 app.post("/publicaciones/:postId/comentar", FBAuthUsuarios, comentarPublicacion);
 app.post("/editPublicacion/:postId", FBAuthUsuarios, editPublicacion);
-app.get("/publicaciones/:postId/dontlike", FBAuthUsuarios, dontLikePublicacion);
-app.get("/publicaciones/:postId/undodontlike", FBAuthUsuarios, undoDontlikePublicacion);
-
+app.post("/AgregarPerfilmusical",agregarPerfilMusical);
 // Eventos
 app.post("/crearEvento", FBAuthUsuarios,crearEvento);
 app.post("/editEvento/:postId", FBAuthUsuarios, editEvento);

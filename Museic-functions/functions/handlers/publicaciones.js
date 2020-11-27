@@ -1,6 +1,9 @@
 const { db, admin } = require("../utilidades/administrador");
 
-
+const {
+  actualizarPMLikePublicacion,
+  actualizarPMunLikePublicacion
+} = require("./recomendaciones");
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
@@ -217,7 +220,7 @@ exports.likePublicacion = (req, res) => {
   const postDocument = db.doc(`/Publicaciones/${req.params.postId}`);
 
   let postData;
-
+  actualizarPMLikePublicacion(req);
   like2Document
     .get()
     .then(data => {
@@ -295,7 +298,7 @@ exports.unlikePublicacion = (req, res) => {
   const postDocument = db.doc(`/Publicaciones/${req.params.postId}`);
 
   let postData;
-
+  actualizarPMunLikePublicacion(req)
   postDocument
     .get()
     .then((doc) => {

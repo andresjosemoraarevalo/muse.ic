@@ -27,7 +27,8 @@ import {
     POST_MENSAJE,
     DISLIKE_EVENTO,
     UNDISLIKE_EVENTO,
-    SET_RECOMENDACIONES
+    SET_RECOMENDACIONES,
+    SET_RECOMENDACIONESE
   } from '../types';
 import axios from 'axios';
 
@@ -103,6 +104,22 @@ export const getRecomendaciones = (username)  => (dispatch) => {
   .catch(err => {
     dispatch({
       type: SET_RECOMENDACIONES,
+      payload: []
+    })
+  });
+} 
+export const getRecomendacionesE = (username)  => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios.get(`/getRecomendacionE/${username}`)
+  .then(res => {
+    dispatch({
+      type: SET_RECOMENDACIONESE,
+      payload: res.data
+    })
+  })
+  .catch(err => {
+    dispatch({
+      type: SET_RECOMENDACIONESE,
       payload: []
     })
   });

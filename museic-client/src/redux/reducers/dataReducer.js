@@ -22,12 +22,14 @@ import {
   SUBMIT_COMMENT,
   DISLIKE_EVENTO,
   UNDISLIKE_EVENTO,
-  SET_RECOMENDACIONES
+  SET_RECOMENDACIONES,
+  SET_RECOMENDACIONESE
 } from "../types";
 
 const initialState = {
   eventos: [],
   recomendaciones:[],
+  recomendacionese:[],
   chat: {},
   mensajes: [],
   publicaciones: [],
@@ -70,6 +72,12 @@ export default function (state = initialState, action) {
       return{
         ...state,
         recomendaciones: action.payload,
+        loading: false,
+      };
+      case SET_RECOMENDACIONESE:
+      return{
+        ...state,
+        recomendacionese: action.payload,
         loading: false,
       };
     case LIKE_EVENTO:

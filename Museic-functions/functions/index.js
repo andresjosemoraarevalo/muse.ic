@@ -59,7 +59,8 @@ const {
 } = require("./handlers/grupos");
 
 const {
-  recomendarPublicacion
+  recomendarPublicacion,
+  recomendarEvento,
 }= require("./handlers/recomendaciones");
 
 const FBAuthUsuarios = require("./utilidades/fbauthUsuarios");
@@ -74,7 +75,7 @@ const {db}=require('./utilidades/administrador');
 //funciones trasladada a publicaciones.js
 //funciones publicaciones
 app.get("/getRecomendacion/:username", recomendarPublicacion);
-
+app.get("/getRecomendacionE/:username", recomendarEvento);
 
 app.get("/getUsuarios", getUsuarios);
 app.post("/publicaciones", postUsuario);

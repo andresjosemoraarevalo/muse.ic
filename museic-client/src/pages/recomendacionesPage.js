@@ -4,12 +4,13 @@ import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import Recomendacion from "../components/Recomendacion";
+import RecomendacionE from "../components/RecomendacionE";
 import Evento from "../components/Evento";
 import PostPublicacion from '../components/PostPublicacion';
 import Profile from '../components/Profile';
 import Menu from '../components/menu';
 import { connect } from "react-redux";
-import { getRecomendaciones } from "../redux/actions/dataActions";
+import { getRecomendaciones, getRecomendacionesE } from "../redux/actions/dataActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import PostEvento from '../components/PostEvento';
 import AppBar from "@material-ui/core/AppBar";
@@ -69,6 +70,7 @@ class recomendacionesPage extends Component {
   };
   componentDidMount() {
     this.props.getRecomendaciones(this.props.user.credentials.username);
+    this.props.getRecomendacionesE(this.props.user.credentials.username);
   }
   handleChange = (value) => {
     this.setState({
@@ -90,7 +92,7 @@ class recomendacionesPage extends Component {
      // 
        
     } = this.props;
-    const {recomendaciones}= this.props.data;
+    const {recomendaciones, recomendacionese}= this.props.data;
     const { classes } = this.props;
 
     let recentRecomendaciones = !loading ? (
@@ -106,7 +108,19 @@ class recomendacionesPage extends Component {
     ) : (
       null
     );
-    
+    let recentRecomendacionesE = !loading ? (
+      recomendacionese.length > 0 ? (
+        recomendacionese.map((recomendacion) => (
+          <RecomendacionE key={recomendacion.postId} recomendacion={recomendacion} />
+        ))
+      ) : (
+        <Typography variant="h6" color="textPrimary">
+          {"Hoy no tienes recomendaciones"}
+        </Typography>
+      )
+    ) : (
+      null
+    );
 
     let homes = ! loading ?(
       authenticated ?(
@@ -144,6 +158,9 @@ class recomendacionesPage extends Component {
               <TabPanel value={this.state.value} index={0}>
               {recentRecomendaciones}
               </TabPanel>
+              <TabPanel value={this.state.value} index={1}>
+              {recentRecomendacionesE}
+              </TabPanel>
               </div>
           </Grid>
           
@@ -172,8 +189,9 @@ recomendacionesPage.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   getRecomendaciones: PropTypes.func.isRequired,
+  getRecomendacionesE: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
 };
-export default connect(mapStateToProps, { getRecomendaciones})(
+export default connect(mapStateToProps, { getRecomendaciones,getRecomendacionesE})(
   withStyles(styles)(recomendacionesPage)
 );

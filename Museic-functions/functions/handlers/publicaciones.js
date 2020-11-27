@@ -257,7 +257,6 @@ exports.likePublicacion = (req, res) => {
             return postDocument.update({ likes: postData.likes });
           })
           .then(() => {
-            
             return res.json(postData);
           });
       } else {

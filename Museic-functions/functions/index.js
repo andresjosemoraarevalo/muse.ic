@@ -73,6 +73,7 @@ const {db}=require('./utilidades/administrador');
 //funciones publicaciones
 app.get("/getRecomendacion", actualizarPMunLikePublicacion);
 
+
 app.get("/getUsuarios", getUsuarios);
 app.post("/publicaciones", postUsuario);
 app.get("/getPublicaciones", getPublicaciones);

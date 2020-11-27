@@ -3,13 +3,13 @@ import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
-import Publicacion from "../components/Publicacion";
+import Recomendacion from "../components/Recomendacion";
 import Evento from "../components/Evento";
 import PostPublicacion from '../components/PostPublicacion';
 import Profile from '../components/Profile';
 import Menu from '../components/menu';
 import { connect } from "react-redux";
-import { getPublicaciones, getEventos } from "../redux/actions/dataActions";
+import { getRecomendaciones } from "../redux/actions/dataActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import PostEvento from '../components/PostEvento';
 //import Button from "@material-ui/core/Button";
@@ -40,8 +40,7 @@ const styles = {
 
 class recomendacionesPage extends Component {
   componentDidMount() {
-    this.props.getPublicaciones();
-    this.props.getEventos();
+    this.props.getRecomendaciones(this.props.user.credentials.username);
   }
   render() {
     const { 
@@ -57,34 +56,19 @@ class recomendacionesPage extends Component {
      // 
        
     } = this.props;
-    const {publicaciones,eventos}= this.props.data;
+    const {recomendaciones}= this.props.data;
     const { classes } = this.props;
 
-    var publicacionesQueSigo = publicaciones.filter(n => seguidos.some(n2 => n.postedBy === n2.follows ) || n.postedBy === username);
-    var eventosQueSigo = eventos.filter(n => seguidos.some(n2 => n.postedBy === n2.follows || n.postedBy === username));
-    let recentPublicacionesMarkup = !loading ? (
-      publicacionesQueSigo.length > 0 ? (
-        publicacionesQueSigo.map((publicacion) => (
-          <Publicacion key={publicacion.postId} publicacion={publicacion} />
+    let recentRecomendaciones = !loading ? (
+      recomendaciones.length > 0 ? (
+        recomendaciones.map((recomendacion) => (
+          <Recomendacion key={recomendacion.postId} recomendacion={recomendacion} />
         ))
       ) : (
         <Typography variant="h6" color="textPrimary">
-          {"Empieza a seguir usuarios para ver sus publicaciones!"}
+          {"Hoy no tienes recomendaciones"}
         </Typography>
       )
-    ) : (
-      null
-    );
-    let recentEventosMarkup = !loading ? (
-      eventosQueSigo.length > 0 ? (
-        Array.from(eventosQueSigo).map((evento) => (
-          <Evento key={evento.postId} evento={evento} />
-        ))
-      ) : (
-        <Typography variant="h6" color="textPrimary" className={classes.sineventos}>
-          {"Empieza a seguir Artistas para ver sus eventos!"}
-        </Typography>
-      ) 
     ) : (
       null
     );
@@ -107,7 +91,7 @@ class recomendacionesPage extends Component {
           <Grid item sm={5} >
           
           <div id="homePublicaciones" >
-          {/*recentPublicacionesMarkup*/}
+          {recentRecomendaciones}
             </div>
           </Grid>
           <Grid item sm={4}>
@@ -146,10 +130,9 @@ const mapStateToProps = (state) => ({
 recomendacionesPage.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  getPublicaciones: PropTypes.func.isRequired,
-  getEventos: PropTypes.func.isRequired,
+  getRecomendaciones: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
 };
-export default connect(mapStateToProps, { getPublicaciones, getEventos })(
+export default connect(mapStateToProps, { getRecomendaciones})(
   withStyles(styles)(recomendacionesPage)
 );

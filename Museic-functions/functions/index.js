@@ -59,7 +59,7 @@ const {
 } = require("./handlers/grupos");
 
 const {
-  actualizarPMunLikePublicacion
+  recomendarPublicacion
 }= require("./handlers/recomendaciones");
 
 const FBAuthUsuarios = require("./utilidades/fbauthUsuarios");
@@ -73,7 +73,7 @@ const {db}=require('./utilidades/administrador');
 
 //funciones trasladada a publicaciones.js
 //funciones publicaciones
-app.get("/getRecomendacion", actualizarPMunLikePublicacion);
+app.get("/getRecomendacion/:username", recomendarPublicacion);
 
 
 app.get("/getUsuarios", getUsuarios);

@@ -26,7 +26,8 @@ import {
     SET_MENSAJES,
     POST_MENSAJE,
     DISLIKE_EVENTO,
-    UNDISLIKE_EVENTO
+    UNDISLIKE_EVENTO,
+    SET_RECOMENDACIONES
   } from '../types';
 import axios from 'axios';
 
@@ -88,6 +89,25 @@ export const getMensajes = (chatt) => (dispatch) => {
     })
   });
 } 
+//obtener recomendaciones
+// ${username}
+export const getRecomendaciones = (username)  => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  axios.get(`/getRecomendacion/${username}`)
+  .then(res => {
+    dispatch({
+      type: SET_RECOMENDACIONES,
+      payload: res.data
+    })
+  })
+  .catch(err => {
+    dispatch({
+      type: SET_RECOMENDACIONES,
+      payload: []
+    })
+  });
+} 
+
 //post un mensaje nuevo 
 export const postMensaje = (newMensaje) => (dispatch) => {
   dispatch({ type: LOADING_UI});

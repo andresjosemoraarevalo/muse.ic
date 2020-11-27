@@ -126,7 +126,7 @@ exports.actualizarPMunLikePublicacion= (req) => {
     });
 }
 
-exports.actualizarPMunLikePublicacion= (req,res) => {
+exports.recomendarPublicacion= (req,res) => {
     let publicaciones = [];
     let publicacionesFiltradas=[];
     let userData = {};
@@ -134,7 +134,6 @@ exports.actualizarPMunLikePublicacion= (req,res) => {
     let dislikes=[]
     let comentarios=[];
     db.collection("Publicaciones")
-    .orderBy("postDate", "desc")
     .get()
     .then((data) => {
       data.forEach((doc) => {
@@ -155,8 +154,8 @@ exports.actualizarPMunLikePublicacion= (req,res) => {
         });
       });
       for (const publicacion in publicaciones ){
-        if((req.body.username == publicaciones[publicacion].postedBy) ||
-        (req.body.username == publicaciones[publicacion].remixUsername)
+        if((req.params.username == publicaciones[publicacion].postedBy) ||
+        (req.params.username == publicaciones[publicacion].remixUsername)
         ){
             
             publicacionesFiltradas.push(publicaciones[publicacion]);
@@ -169,7 +168,6 @@ exports.actualizarPMunLikePublicacion= (req,res) => {
         return res.json({publicaciones});
     }
     return db.collection("Comentarios")
-        .orderBy("postDate", "desc")
         .get()
     })
     .then((data)=>{
@@ -180,7 +178,7 @@ exports.actualizarPMunLikePublicacion= (req,res) => {
             var encontrado=false;
             for ( const comentario in comentarios ){
                 if(comentarios[comentario].postId== publicaciones[pub].postId){
-                    if(comentarios[comentario].username==req.body.username){
+                    if(comentarios[comentario].username==req.params.username){
                         encontrado=true;
                 }
             }
@@ -205,7 +203,7 @@ exports.actualizarPMunLikePublicacion= (req,res) => {
         for (const pub in publicaciones){
             for (const like in likes){
                 if(publicaciones[pub].postId == likes[like].postId){
-                    if(likes[like].username == req.body.username){
+                    if(likes[like].username == req.params.username){
                         publicacionesFiltradas.push(publicaciones[pub]);
                     }
                 }
@@ -228,7 +226,7 @@ exports.actualizarPMunLikePublicacion= (req,res) => {
         for (const pub in publicaciones){
             for (const dislike in dislikes){
                 if(publicaciones[pub].postId == dislikes[dislike].postId){
-                    if(dislikes[dislike].username == req.body.username){
+                    if(dislikes[dislike].username == req.params.username){
                         publicacionesFiltradas.push(publicaciones[pub]);
                     }
                 }
@@ -240,7 +238,7 @@ exports.actualizarPMunLikePublicacion= (req,res) => {
         if(publicaciones.length==0){
             return res.json(publicaciones);
         }
-        return db.doc(`/Usuarios/${req.body.username}`)
+        return db.doc(`/Usuarios/${req.params.username}`)
         .get()
     })
     .then((doc) => {
@@ -266,6 +264,7 @@ exports.actualizarPMunLikePublicacion= (req,res) => {
                 postId: publicaciones[pub].postId,
                 postBody: publicaciones[pub].postBody,
                 postedBy: publicaciones[pub].postedBy,
+                Fotolink: publicaciones[pub].Fotolink,
                 puntuacion: sumatoria})
             sumatoria=0;
                 
